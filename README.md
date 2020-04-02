@@ -3,7 +3,7 @@
 --------------------------------------------------------------------------------
 ## Description
 
-Given a vertex set, using the [Randomized Incremental Delaunay Triangulation](http://www.wias-berlin.de/people/si/course/files/Guibas92-RandomizeIncr.pdf) we can delaunay-triangulate it with complexity = O(n^2).
+Given a vertex set, using the [Bowyer-Watson Algorithm](https://en.wikipedia.org/wiki/Bowyer%E2%80%93Watson_algorithm) we can delaunay-triangulate it with complexity = O(n^2).
 
 There is no warranty whatsoever. Use at your own risk.
 
