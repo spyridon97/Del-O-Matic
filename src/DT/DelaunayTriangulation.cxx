@@ -7,6 +7,7 @@
  * Created on   4/1/20.
  */
 
+#include <algorithm>
 #include "DelaunayTriangulation.hxx"
 
 
@@ -21,11 +22,17 @@ DelaunayTriangulation::~DelaunayTriangulation()
         delete vertex;
     }
     vertices.clear();
+
+    for (auto& triangle : triangles) {
+        delete triangle;
+    }
     triangles.clear();
 }
 
 void DelaunayTriangulation::setInputPoints(std::vector<Point>& points)
 {
+    std::cout << std::endl << "Sort points and remove duplicates" << std::endl;
+
     //  sort vertices lexicographically in decreasing order. Cost: O(n log n )
     std::sort(points.rbegin(), points.rend());
 
@@ -39,15 +46,15 @@ void DelaunayTriangulation::setInputPoints(std::vector<Point>& points)
 
     //  convert points to Vertices (a.k.a Point*): Cost O(n)
     for (const auto& point : points) {
-        vertices.emplace_back(new Point(point));
+        vertices.emplace_back(new Vertex(point));
     }
 }
 
-Triangle DelaunayTriangulation::createBoundingTriangle()
+void DelaunayTriangulation::createBoundingTriangle()
 {
     std::cout << std::endl << "Compute Bounding Triangle..." << std::endl;
 
-    computeBoundaryTriangleTimer.start_seconds_timer();
+    computeBoundaryTriangleTimer.startTimer();
 
     double minX = (*vertices[0])[0];
     double minY = (*vertices[0])[1];
@@ -55,17 +62,18 @@ Triangle DelaunayTriangulation::createBoundingTriangle()
     double maxY = minY;
 
     for (auto& vertex : vertices) {
-        if ((*vertex)[0] < minX) {
-            minX = (*vertex)[0];
+        VertexHandle point = vertex;
+        if ((*point)[0] < minX) {
+            minX = (*point)[0];
         }
-        if ((*vertex)[1] < minY) {
-            minY = (*vertex)[1];
+        if ((*point)[1] < minY) {
+            minY = (*point)[1];
         }
-        if ((*vertex)[0] > maxX) {
-            maxX = (*vertex)[0];
+        if ((*point)[0] > maxX) {
+            maxX = (*point)[0];
         }
-        if ((*vertex)[1] > maxY) {
-            maxY = (*vertex)[1];
+        if ((*point)[1] > maxY) {
+            maxY = (*point)[1];
         }
     }
 
@@ -77,89 +85,114 @@ Triangle DelaunayTriangulation::createBoundingTriangle()
     const double midX = (minX + maxX) / 2;
     const double midY = (minY + maxY) / 2;
 
-    const auto p1 = new Point({midX - multiplier * deltaMax, midY - deltaMax});
-    const auto p2 = new Point({midX, midY + multiplier * deltaMax});
-    const auto p3 = new Point({midX + multiplier * deltaMax, midY - deltaMax});
+    const auto p1 = new Vertex(Point({midX - multiplier * deltaMax, midY - deltaMax}));
+    const auto p2 = new Vertex(Point({midX, midY + multiplier * deltaMax}));
+    const auto p3 = new Vertex(Point({midX + multiplier * deltaMax, midY - deltaMax}));
 
-    computeBoundaryTriangleTimer.stop_seconds_timer();
+    boundingTriangle = new Triangle({p1, p2, p3});
 
-    return Triangle({p1, p2, p3});
+    computeBoundaryTriangleTimer.stopTimer();
 }
 
 void DelaunayTriangulation::generateMesh()
 {
-    Triangle boundingTriangle = createBoundingTriangle();
+    createBoundingTriangle();
 
     std::cout << std::endl << "Compute Delaunay Triangulation..." << std::endl;
 
-    meshingTimer.start_seconds_timer();
+    meshingTimer.startTimer();
 
-    auto p1 = boundingTriangle.vertex(0);
-    auto p2 = boundingTriangle.vertex(1);
-    auto p3 = boundingTriangle.vertex(2);
+    auto p1 = boundingTriangle->vertex(0);
+    auto p2 = boundingTriangle->vertex(1);
+    auto p3 = boundingTriangle->vertex(2);
 
-    //  create a list of triangles, and add the super-triangle in it
+    //  add the bounding triangle in the list of triangles
     triangles.emplace_back(boundingTriangle);
 
+    size_t counter = 0;
     for (const auto& vertex : vertices) {
-
-        std::vector<Edge> polygon;
+        std::vector<EdgeHandle> polygon;
 
         //  TODO use point location to improve complexity
+        //  identify bad triangles
         for (auto& triangle : triangles) {
-            if (triangle.inCircleTest(vertex)) {
-                triangle.isBad = true;
-                polygon.push_back(Edge({triangle.vertex(0), triangle.vertex(1)}));
-                polygon.push_back(Edge({triangle.vertex(1), triangle.vertex(2)}));
-                polygon.push_back(Edge({triangle.vertex(2), triangle.vertex(0)}));
+            if (triangle->inCircleTest(vertex)) {
+                triangle->isBad = true;
+                polygon.push_back(new Edge({triangle->vertex(0), triangle->vertex(1)}));
+                polygon.push_back(new Edge({triangle->vertex(1), triangle->vertex(2)}));
+                polygon.push_back(new Edge({triangle->vertex(2), triangle->vertex(0)}));
             }
         }
 
-        triangles.erase(std::remove_if(triangles.begin(), triangles.end(),
-                                       [](Triangle& t) {
-                                           return t.isBad;
-                                       }), triangles.end());
+        //  remove bad triangles
+        for (size_t i = 0; i < triangles.size(); ++i) {
+            if (triangles[i]->isBad) {
+                delete triangles[i];
+                triangles.erase(triangles.begin() + i);
+                i--;
+            }
+        }
 
+        //  identify bad edges
         for (auto e1 = polygon.begin(); e1 != polygon.end(); ++e1) {
             for (auto e2 = e1 + 1; e2 != polygon.end(); ++e2) {
-                if (e1->compareEdges(*e2)) {
-                    e1->isBad = true;
-                    e2->isBad = true;
+                if ((*e1)->isSame(**e2)) {
+                    (*e1)->isBad = true;
+                    (*e2)->isBad = true;
                 }
             }
         }
 
-        polygon.erase(std::remove_if(polygon.begin(), polygon.end(),
-                                     [](Edge& edge) {
-                                         return edge.isBad;
-                                     }), end(polygon));
-
-        for (const auto& edge : polygon) {
-            //edge.point(0), edge.vertex(1), vertex;
-            triangles.push_back(Triangle({edge.vertex(0), edge.vertex(1), vertex}));
+        //  remove bad edges
+        for (size_t i = 0; i < polygon.size(); ++i) {
+            if (polygon[i]->isBad) {
+                delete polygon[i];
+                polygon.erase(polygon.begin() + i);
+                i--;
+            }
         }
 
+        //  add new triangles
+        for (const auto& edge : polygon) {
+            triangles.push_back(new Triangle({edge->vertex(0), edge->vertex(1), vertex}));
+        }
+
+        //  delete edges
+        for (auto& edge : polygon) {
+            delete edge;
+        }
+        polygon.clear();
+
+        counter++;
+        //std::cout << "Iteration: " << counter++ << ", Number of triangles " << triangles.size() << std::endl;
+
+        // if (counter == 200) {
+        //     exit(EXIT_FAILURE);
+        // }
     }
 
     //  remove triangles that contain vertices of the super triangle
-    triangles.erase(std::remove_if(triangles.begin(), triangles.end(),
-                                   [p1, p2, p3](Triangle& triangle) {
-                                       return triangle.containsVertex(p1) || triangle.containsVertex(p2) ||
-                                              triangle.containsVertex(p3);
-                                   }), triangles.end());
+    for (size_t i = 0; i < triangles.size(); ++i) {
+        if (triangles[i]->containsVertex(p1) || triangles[i]->containsVertex(p2) || triangles[i]->containsVertex(p3)) {
+            delete triangles[i];
+            triangles.erase(triangles.begin() + i);
+            i--;
+        }
+    }
 
-    delete boundingTriangle.vertex(0);
-    delete boundingTriangle.vertex(1);
-    delete boundingTriangle.vertex(2);
+    //  delete bounding triangle vertices
+    delete p1;
+    delete p2;
+    delete p3;
 
-    meshingTimer.stop_seconds_timer();
+    meshingTimer.stopTimer();
 }
 
 Mesh DelaunayTriangulation::getCleanMesh()
 {
     std::cout << std::endl << "Compute Mesh Results..." << std::endl;
 
-    computeMeshResultsTimer.start_seconds_timer();
+    computeMeshResultsTimer.startTimer();
 
     Mesh mesh = Mesh();
 
@@ -169,10 +202,9 @@ Mesh DelaunayTriangulation::getCleanMesh()
     for (auto& triangle : triangles) {
         for (int j = 0; j < 3; ++j) {
             //  if vertex of triangle has not been traversed
-            if (triangle.vertex(j)->id == std::numeric_limits<size_t>::max()) {
-                triangle.vertex(j)->id = visitedTrianglesCounter;
-                mesh.points.emplace_back(*triangle.vertex(j));
-                visitedTrianglesCounter++;
+            if (triangle->vertex(j)->id == std::numeric_limits<size_t>::max()) {
+                triangle->vertex(j)->id = visitedTrianglesCounter++;
+                mesh.points.emplace_back(*triangle->vertex(j));
             }
         }
     }
@@ -180,13 +212,16 @@ Mesh DelaunayTriangulation::getCleanMesh()
     for (auto triangle : triangles) {
         Mesh::Triangle newTriangle = Mesh::Triangle();
         for (int d = 0; d < 3; ++d) {
-            newTriangle.indices[d] = triangle.vertex(d)->id;
+            newTriangle.indices[d] = triangle->vertex(d)->id;
         }
 
         mesh.triangles.emplace_back(newTriangle);
     }
 
-    computeMeshResultsTimer.stop_seconds_timer();
+    std::cout << std::endl << "Mesh Vertices: " << mesh.points.size() << std::endl;
+    std::cout << "Mesh Triangles: " << mesh.triangles.size() << std::endl;
+
+    computeMeshResultsTimer.stopTimer();
 
     return mesh;
 }

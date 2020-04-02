@@ -13,7 +13,6 @@
 Point::Point()
 {
     coordinates.fill(0);
-    id = std::numeric_limits<size_t>::max();
 }
 
 Point::Point(std::array<double, 2> coordinates)
@@ -21,7 +20,6 @@ Point::Point(std::array<double, 2> coordinates)
     for (size_t i = 0; i < 2; i++) {
         this->coordinates[i] = coordinates[i];
     }
-    id = std::numeric_limits<size_t>::max();
 }
 
 Point::Point(const Point& point)
@@ -29,21 +27,13 @@ Point::Point(const Point& point)
     for (size_t i = 0; i < 2; i++) {
         this->coordinates[i] = point[i];
     }
-    id = point.id;
 }
 
-double* Point::toArray()
-{
-    //  return *reinterpret_cast<double (*)[coordinates.size()]>(coordinates.data());
-    return coordinates.begin();
-}
+Point::~Point() = default;
 
-double Point::distance(const Point& point) const
+double* Point::toArray() const
 {
-    const double dx = coordinates[0] - point[0];
-    const double dy = coordinates[1] - point[1];
-
-    return dx * dx + dy * dy;
+    return const_cast<double*>(coordinates.begin());
 }
 
 Point& Point::operator=(const Point& point)

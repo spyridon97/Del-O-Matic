@@ -3,14 +3,16 @@ project(DelaunayTriangulation)
 
 set(CMAKE_CXX_STANDARD 17)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -O3 -g")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -O3")
 
 set(DT_SOURCE_FILES
         src/DT/DelaunayTriangulation.cxx
+        src/DT/Edge.cxx
         src/DT/Point.cxx
         src/DT/Predicates.c
-        src/DT/Simplex.cxx
+        src/DT/Triangle.cxx
         src/DT/Timer.cxx
+        src/DT/Vertex.cxx
         )
 
 set(INTERFACE_SOURCE_FILES

@@ -12,9 +12,9 @@
 
 
 #include <vector>
-#include <algorithm>
+#include "Edge.hxx"
 #include "Mesh.hxx"
-#include "Simplex.hxx"
+#include "Triangle.hxx"
 #include "Timer.hxx"
 
 
@@ -42,7 +42,7 @@ private:
     /**
      * @brief Create bounding Triangle
      */
-    Triangle createBoundingTriangle();
+    void createBoundingTriangle();
 
 public:
     /**
@@ -56,8 +56,10 @@ public:
     Mesh getCleanMesh();
 
 private:
-    std::vector<Triangle> triangles;
-    std::vector<Vertex> vertices;
+    TriangleHandle boundingTriangle{};
+
+    std::vector<TriangleHandle> triangles;
+    std::vector<VertexHandle> vertices;
 public:
     Timer computeBoundaryTriangleTimer{}, meshingTimer{}, computeMeshResultsTimer{};
 };

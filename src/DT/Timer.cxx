@@ -10,28 +10,20 @@
 #include "Timer.hxx"
 
 
-void Timer::start_seconds_timer()
+void Timer::startTimer()
 {
-    clock_gettime(CLOCK_MONOTONIC, &(this->first_seconds));
+    clock_gettime(CLOCK_MONOTONIC, &(this->firstSeconds));
 }
 
-void Timer::stop_seconds_timer()
+void Timer::stopTimer()
 {
-    clock_gettime(CLOCK_MONOTONIC, &(this->second_seconds));
+    clock_gettime(CLOCK_MONOTONIC, &(this->secondSeconds));
 }
 
-double Timer::get_seconds()
+double Timer::getSeconds()
 {
-    double nsecs_start = this->first_seconds.tv_sec * 1000000000 + this->first_seconds.tv_nsec;
-    double nsecs_end = this->second_seconds.tv_sec * 1000000000 + this->second_seconds.tv_nsec;
+    double nsecs_start = this->firstSeconds.tv_sec * 1000000000 + this->firstSeconds.tv_nsec;
+    double nsecs_end = this->secondSeconds.tv_sec * 1000000000 + this->secondSeconds.tv_nsec;
 
     return (nsecs_end - nsecs_start) / 1000000000.0;
-}
-
-double Timer::get_nanoseconds()
-{
-    double nsecs_start = this->first_seconds.tv_sec * 1000000000 + this->first_seconds.tv_nsec;
-    double nsecs_end = this->second_seconds.tv_sec * 1000000000 + this->second_seconds.tv_nsec;
-
-    return nsecs_end - nsecs_start;
 }

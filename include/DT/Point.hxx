@@ -16,7 +16,7 @@
 
 
 /**
- * @brief Facilitates a 2D cartesian vertex.
+ * @brief Facilitates a 2D cartesian Point.
  */
 class Point
 {
@@ -43,22 +43,14 @@ public:
     /**
      * @brief Destructor of Point class.
      */
-    ~Point() = default;
+    ~Point();
 
     /**
      * @brief Converts vertex to an array of double coordinates.
      *
      * @return an array of double coordinates
      */
-    double* toArray();
-
-    /**
-     * @brief Compute the distance from another Point.
-     *
-     * @param point is the other vertex
-     * @return the distance from the other vertex
-     */
-    [[nodiscard]] double distance(const Point& point) const;
+    [[nodiscard]] double* toArray() const;
 
     /**
      * @brief Overloads operator "=".
@@ -152,13 +144,9 @@ public:
      */
     double& operator[](size_t index);
 
-private:
+protected:
     std::array<double, 2> coordinates{};
-public:
-    size_t id;
 };
-
-using Vertex = Point*;
 
 /**
  * @brief Overloads operator ">>".

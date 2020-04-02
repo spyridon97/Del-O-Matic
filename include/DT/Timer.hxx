@@ -19,16 +19,14 @@ class Timer
 public:
     Timer() = default;;
 
-    void start_seconds_timer();
+    void startTimer();
 
-    void stop_seconds_timer();
+    void stopTimer();
 
-    double get_seconds();
-
-    double get_nanoseconds();
+    double getSeconds();
 
 public:
-    struct timespec first_seconds, second_seconds;
+    struct timespec firstSeconds, secondSeconds;
 };
 
 

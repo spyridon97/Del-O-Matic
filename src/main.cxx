@@ -25,14 +25,14 @@ int main(int argc, char** argv)
     Args::display(std::cout);
 
     Timer timer{};
-    timer.start_seconds_timer();
+    timer.startTimer();
 
     Timer readingInputTimer{};
-    readingInputTimer.start_seconds_timer();
+    readingInputTimer.startTimer();
 
     std::vector<Point> inputPoints = Io::readInput(Args::inputFileName);
 
-    readingInputTimer.stop_seconds_timer();
+    readingInputTimer.stopTimer();
 
     std::unique_ptr<DelaunayTriangulation> triangulator = std::make_unique<DelaunayTriangulation>();
 
@@ -43,25 +43,25 @@ int main(int argc, char** argv)
     Mesh outputMesh = triangulator->getCleanMesh();
 
     Timer writingMeshTimer{};
-    writingMeshTimer.start_seconds_timer();
+    writingMeshTimer.startTimer();
 
     Io::printMesh(outputMesh, Args::outputFileName);
 
-    writingMeshTimer.stop_seconds_timer();
+    writingMeshTimer.stopTimer();
 
     //  print timers
-    timer.stop_seconds_timer();
+    timer.stopTimer();
 
     std::cout << std::endl << "DelaunayTriangulion Times" << std::endl;
     std::cout << "================================================" << std::endl;
-    std::cout << "Reading Input I/O time: " << readingInputTimer.get_seconds() << " seconds" << std::endl;
+    std::cout << "Reading Input I/O time: " << readingInputTimer.getSeconds() << " seconds" << std::endl;
     std::cout << "Computing Boundary Triangle time: "
-              << triangulator->computeBoundaryTriangleTimer.get_seconds() << " seconds" << std::endl;
-    std::cout << "Meshing time: " << triangulator->meshingTimer.get_seconds() << " seconds" << std::endl;
-    std::cout << "Computing Mesh Results time: " << triangulator->computeMeshResultsTimer.get_seconds()
+              << triangulator->computeBoundaryTriangleTimer.getSeconds() << " seconds" << std::endl;
+    std::cout << "Meshing time: " << triangulator->meshingTimer.getSeconds() << " seconds" << std::endl;
+    std::cout << "Computing Mesh Results time: " << triangulator->computeMeshResultsTimer.getSeconds()
               << " seconds" << std::endl;
-    std::cout << "Writing Mesh I/O time: " << writingMeshTimer.get_seconds() << " seconds" << std::endl;
-    std::cout << std::endl << "Execution Wall time: " << timer.get_seconds() << " seconds" << std::endl;
+    std::cout << "Writing Mesh I/O time: " << writingMeshTimer.getSeconds() << " seconds" << std::endl;
+    std::cout << std::endl << "Execution Wall time: " << timer.getSeconds() << " seconds" << std::endl;
     std::cout << "================================================" << std::endl;
 
     //  print memory used
