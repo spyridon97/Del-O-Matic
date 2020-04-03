@@ -50,7 +50,7 @@ public:
      *
      * @return an array of double coordinates
      */
-    [[nodiscard]] double* toArray() const;
+    double* toArray();
 
     /**
      * @brief Overloads operator "=".

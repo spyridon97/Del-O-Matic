@@ -31,9 +31,9 @@ Point::Point(const Point& point)
 
 Point::~Point() = default;
 
-double* Point::toArray() const
+double* Point::toArray()
 {
-    return const_cast<double*>(coordinates.begin());
+    return coordinates.data();
 }
 
 Point& Point::operator=(const Point& point)

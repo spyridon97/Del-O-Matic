@@ -54,37 +54,26 @@ VertexHandle& Triangle::vertex(unsigned char index)
 
 bool Triangle::inCircleTest(const VertexHandle& vertex) const
 {
-    // double pa[2] = {vertices[0]->point()[0], vertices[0]->point()[1]};
-    // double pb[2] = {vertices[1]->point()[0], vertices[1]->point()[1]};
-    // double pc[2] = {vertices[2]->point()[0], vertices[2]->point()[1]};
-    // double pd[2] = {vertex->point()[0], vertex->point()[1]};
-    //  std::cout << pa[0] << " " << pa[1] << std::endl;
-    // double* pa = vertices[0]->point().toArray();
-    // double* pb = vertices[1]->point().toArray();
-    // double* pc = vertices[2]->point().toArray();
-    // double* pd = vertex->point().toArray();
+    // double orientResult = orient2d(vertices[0]->toArray(), vertices[1]->toArray(),
+    //                                vertices[2]->toArray());
+    // std::cout << orientResult << *vertices[0] << *vertices[1] << *vertices[2] << std::endl;
+    //
+    // if (orientResult > 0) { //  ClockWise order
+    //     double inCircleResult = incircle(vertices[0]->toArray(), vertices[1]->toArray(),
+    //                                      vertices[2]->toArray(),
+    //                                      vertex->toArray());
+    //     return inCircleResult > 0;
+    // } else if (orientResult < 0) { //  Counter-ClockWise order
+    //     double inCircleResult = incircle(vertices[0]->toArray(), vertices[1]->toArray(),
+    //                                      vertices[2]->toArray(),
+    //                                      vertex->toArray());
+    //     return inCircleResult < 0;
+    // } else {
+    //     return false;
+    // }
 
-    //double orientResult = orient2d(pa, pb, pc);
-    double orientResult = orient2d(vertices[0]->toArray(), vertices[1]->toArray(),
-                                   vertices[2]->toArray());
-    // std::cout << orientResult << " " << orientResult2 << vertices[0]->point() << vertices[1]->point()
-    //           << vertices[2]->point() << std::endl;
-
-    if (orientResult > 0) { //  ClockWise order
-        double inCircleResult = incircle(vertices[0]->toArray(), vertices[1]->toArray(),
-                                         vertices[2]->toArray(),
-                                         vertex->toArray());
-        //double inCircleResult = incircle(pa, pb, pc, pd);
-        return inCircleResult > 0;
-    } else if (orientResult < 0) { //  Counter-ClockWise order
-        double inCircleResult = incircle(vertices[0]->toArray(), vertices[1]->toArray(),
-                                         vertices[2]->toArray(),
-                                         vertex->toArray());
-        //double inCircleResult = incircle(pa, pb, pc, pd);
-        return inCircleResult < 0;
-    } else {
-        return false;
-    }
+    //  triangle vertices are oriented in counter-clockwise order
+    return incircle(vertices[0]->toArray(), vertices[1]->toArray(), vertices[2]->toArray(), vertex->toArray()) < 0;
 }
 
 bool Triangle::containsVertex(const VertexHandle& vertex) const

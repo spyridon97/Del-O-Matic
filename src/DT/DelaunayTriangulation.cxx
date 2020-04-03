@@ -109,7 +109,6 @@ void DelaunayTriangulation::generateMesh()
     //  add the bounding triangle in the list of triangles
     triangles.emplace_back(boundingTriangle);
 
-    size_t counter = 0;
     for (const auto& vertex : vertices) {
         std::vector<EdgeHandle> polygon;
 
@@ -134,11 +133,11 @@ void DelaunayTriangulation::generateMesh()
         }
 
         //  identify bad edges
-        for (auto e1 = polygon.begin(); e1 != polygon.end(); ++e1) {
-            for (auto e2 = e1 + 1; e2 != polygon.end(); ++e2) {
-                if ((*e1)->isSame(**e2)) {
-                    (*e1)->isBad = true;
-                    (*e2)->isBad = true;
+        for (size_t i = 0; i < polygon.size(); ++i) {
+            for (size_t j = i + 1; j < polygon.size(); ++j) {
+                if (polygon[i]->isSame(*polygon[j])) {
+                    polygon[i]->isBad = true;
+                    polygon[j]->isBad = true;
                 }
             }
         }
@@ -154,21 +153,11 @@ void DelaunayTriangulation::generateMesh()
 
         //  add new triangles
         for (const auto& edge : polygon) {
+            //  triangle's vertices are oriented in counter-clockwise order
             triangles.push_back(new Triangle({edge->vertex(0), edge->vertex(1), vertex}));
-        }
-
-        //  delete edges
-        for (auto& edge : polygon) {
             delete edge;
         }
         polygon.clear();
-
-        counter++;
-        //std::cout << "Iteration: " << counter++ << ", Number of triangles " << triangles.size() << std::endl;
-
-        // if (counter == 200) {
-        //     exit(EXIT_FAILURE);
-        // }
     }
 
     //  remove triangles that contain vertices of the super triangle
