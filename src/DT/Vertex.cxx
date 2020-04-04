@@ -10,7 +10,7 @@
 #include "Vertex.hxx"
 
 
-Vertex::Vertex()
+Vertex::Vertex() : Point()
 {
     id = std::numeric_limits<size_t>::max();
 }
@@ -18,7 +18,7 @@ Vertex::Vertex()
 Vertex::Vertex(const Point& point) : Vertex()
 {
     for (size_t i = 0; i < 2; i++) {
-        this->coordinates[i] = point[i];
+        coord[i] = point[i];
     }
 }
 
