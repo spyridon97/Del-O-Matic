@@ -73,7 +73,7 @@ bool Triangle::inCircleTest(const VertexHandle& vertex) const
     // }
 
     //  triangle vertices are oriented in counter-clockwise order
-    return incircle(vertices[0]->toArray(), vertices[1]->toArray(), vertices[2]->toArray(), vertex->toArray()) < 0;
+    return incircle(vertices[0]->coord, vertices[1]->coord, vertices[2]->coord, vertex->coord) < 0;
 }
 
 bool Triangle::containsVertex(const VertexHandle& vertex) const

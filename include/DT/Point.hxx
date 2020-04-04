@@ -45,47 +45,7 @@ public:
      */
     ~Point();
 
-    /**
-     * @brief Converts vertex to an array of double coordinates.
-     *
-     * @return an array of double coordinates
-     */
-    double* toArray();
-
-    /**
-     * @brief Overloads operator "*".
-     *
-     * @param constant which will be used to multiply the coordinates of the Point
-     * @return a vertex whose coordinates have be multiplied by the given constant
-     */
-    Point operator*(double constant) const;
-
-    /**
-     * @brief Overloads operator "/".
-     *
-     * @param constant which will be used to divide the coordinates of the Point
-     * @return a vertex whose coordinates have be divided by the given constant
-     */
-    Point operator/(double constant) const;
-
-    /**
-     * @brief Overloads operator "+".
-     *
-     * @param otherPoint is a vertex whose coordinates will be added to the current object's ones
-     * @return a vertex whose coordinates are the sum of the coordinates of the 2 Points
-     */
-    Point operator+(const Point& otherPoint) const;
-
-    /**
-     * @brief Overloads operator "-".
-     *
-     * @tparam Dimensions is the dimensions of the vertex
-     * @param otherPoint is a vertex whose coordinates will be subtracted from the current object's ones
-     * @return a vertex whose coordinates are the subtraction of the coordinates of the 2 Points
-     */
-    Point operator-(const Point& otherPoint) const;
-
-    #define coord _AT_Type::_S_ptr(_M_elems)
+    #define coord _M_elems
 };
 
 /**

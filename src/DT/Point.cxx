@@ -10,67 +10,26 @@
 #include "Point.hxx"
 
 
-Point::Point()
+Point::Point() : array()
 {
     this->fill(0);
 }
 
-Point::Point(std::array<double, 2> coordinates)
+Point::Point(std::array<double, 2> coordinates) : array()
 {
     for (size_t i = 0; i < 2; i++) {
-        coord[i] = coordinates[i];
+        this->coord[i] = coordinates[i];
     }
 }
 
-Point::Point(const Point& point)
+Point::Point(const Point& point) : array(point)
 {
     for (size_t i = 0; i < 2; i++) {
-        coord[i] = point[i];
+        this->coord[i] = point[i];
     }
 }
 
 Point::~Point() = default;
-
-double* Point::toArray()
-{
-    return coord;
-}
-
-Point Point::operator*(double constant) const
-{
-    std::array<double, 2> temporaryCoordinates{};
-    for (size_t i = 0; i < 2; i++) {
-        temporaryCoordinates[i] = coord[i] * constant;
-    }
-    return Point(temporaryCoordinates);
-}
-
-Point Point::operator/(double constant) const
-{
-    std::array<double, 2> temporaryCoordinates{};
-    for (size_t i = 0; i < 2; i++) {
-        temporaryCoordinates[i] = coord[i] / constant;
-    }
-    return Point(temporaryCoordinates);
-}
-
-Point Point::operator+(const Point& otherPoint) const
-{
-    std::array<double, 2> temporaryCoordinates{};
-    for (size_t i = 0; i < 2; i++) {
-        temporaryCoordinates[i] = coord[i] + otherPoint[i];
-    }
-    return Point(temporaryCoordinates);
-}
-
-Point Point::operator-(const Point& otherPoint) const
-{
-    std::array<double, 2> temporaryCoordinates{};
-    for (size_t i = 0; i < 2; i++) {
-        temporaryCoordinates[i] = coord[i] - otherPoint[i];
-    }
-    return Point(temporaryCoordinates);
-}
 
 std::istream& operator>>(std::istream& input, Point& point)
 {
