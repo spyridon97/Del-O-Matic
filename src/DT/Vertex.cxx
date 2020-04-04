@@ -18,8 +18,13 @@ Vertex::Vertex() : Point()
 Vertex::Vertex(const Point& point) : Vertex()
 {
     for (size_t i = 0; i < 2; i++) {
-        coord[i] = point[i];
+        coordinates[i] = point[i];
     }
+}
+
+Vertex::Vertex(std::array<double, 2> coord) : Point(coord)
+{
+    id = std::numeric_limits<size_t>::max();
 }
 
 Vertex::~Vertex() = default;

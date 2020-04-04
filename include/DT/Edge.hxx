@@ -19,7 +19,7 @@ class Edge;
 
 using EdgeHandle = Edge*;
 
-class Edge
+class Edge : public std::array<VertexHandle, 2>
 {
 public:
     /**
@@ -30,11 +30,6 @@ public:
     explicit Edge(std::array<VertexHandle, 2> points);
 
     /**
-     * @brief Destructor of Edge class
-     */
-    ~Edge();
-
-    /**
      * @brief Copy Constructor.
      *
      * @param otherEdge to be copied
@@ -42,20 +37,9 @@ public:
     Edge(const Edge& otherEdge);
 
     /**
-     * @brief Gets a vertex of the Edge.
-     *
-     * @param index is the index of the vertex of the edge that is requested
-     * @return a vertex of the Edge
+     * @brief Destructor of Edge class
      */
-    [[nodiscard]] VertexHandle vertex(unsigned char index) const;
-
-    /**
-     * @brief Gets a vertex of the Edge.
-     *
-     * @param index is the index of the vertex of the edge that is requested
-     * @return a vertex of the Edge
-     */
-    VertexHandle& vertex(unsigned char index);
+    ~Edge();
 
     /**
      * @brief Compares Edges.
@@ -71,9 +55,9 @@ public:
      */
     [[nodiscard]] double getSquaredLength() const;
 
-private:
-    std::array<VertexHandle, 2> vertices{};
 public:
+    #define vertices _M_elems
+
     bool isBad;
     size_t id;
 };

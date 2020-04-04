@@ -34,6 +34,13 @@ public:
     explicit Vertex(const Point& point);
 
     /**
+     * @brief Constructor of Vertex class which set all dimensions using a specific array.
+     *
+     * @param coord is the array that includes the coordinates of the vertex
+     */
+    explicit Vertex(std::array<double, 2> coord);
+
+    /**
      * @brief Default Destructor.
      */
     ~Vertex();

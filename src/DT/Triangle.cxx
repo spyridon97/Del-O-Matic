@@ -10,7 +10,13 @@
 #include "Triangle.hxx"
 
 
-Triangle::Triangle(std::array<VertexHandle, 3> points)
+Triangle::Triangle() : array()
+{
+    fill(nullptr);
+    id = std::numeric_limits<size_t>::max();
+}
+
+Triangle::Triangle(std::array<VertexHandle, 3> points) : array()
 {
     for (size_t i = 0; i < points.size(); ++i) {
         this->vertices[i] = points[i];
@@ -18,37 +24,15 @@ Triangle::Triangle(std::array<VertexHandle, 3> points)
     id = std::numeric_limits<size_t>::max();
 }
 
-Triangle::~Triangle() = default;
-
-Triangle::Triangle(const Triangle& otherTriangle)
+Triangle::Triangle(const Triangle& otherTriangle) : array(otherTriangle)
 {
-    for (size_t i = 0; i < vertices.size(); i++) {
-        vertices[i] = otherTriangle.vertex(i);
+    for (size_t i = 0; i < size(); i++) {
+        vertices[i] = otherTriangle.vertices[i];
     }
     id = otherTriangle.id;
 }
 
-VertexHandle Triangle::vertex(unsigned char index) const
-{
-    if (index > 2 || index < 0) {
-        throw std::out_of_range(
-                "index is bigger compared to what Triangle Supports, where max = " +
-                std::to_string(2));
-    }
-
-    return vertices[index];
-}
-
-VertexHandle& Triangle::vertex(unsigned char index)
-{
-    if (index > 2 || index < 0) {
-        throw std::out_of_range(
-                "index is bigger compared to what Triangle Supports, where max = " +
-                std::to_string(2));
-    }
-
-    return vertices[index];
-}
+Triangle::~Triangle() = default;
 
 bool Triangle::inCircleTest(const VertexHandle& vertex) const
 {
@@ -73,7 +57,7 @@ bool Triangle::inCircleTest(const VertexHandle& vertex) const
     // }
 
     //  triangle vertices are oriented in counter-clockwise order
-    return incircle(vertices[0]->coord, vertices[1]->coord, vertices[2]->coord, vertex->coord) < 0;
+    return incircle(vertices[0]->coordinates, vertices[1]->coordinates, vertices[2]->coordinates, vertex->coordinates) < 0;
 }
 
 bool Triangle::containsVertex(const VertexHandle& vertex) const

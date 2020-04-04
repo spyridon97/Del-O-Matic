@@ -27,13 +27,6 @@ public:
     Point();
 
     /**
-     * @brief Constructor of Point class which set all dimensions using a specific array.
-     *
-     * @param coordinates is the array that includes the coordinates of the vertex
-     */
-    explicit Point(std::array<double, 2> coordinates);
-
-    /**
      * @brief Copy Constructor of Point class.
      *
      * @param point is the vertex of which its coordinates will be extracted
@@ -41,11 +34,19 @@ public:
     Point(const Point& point);
 
     /**
+     * @brief Constructor of Point class which set all dimensions using a specific array.
+     *
+     * @param coord is the array that includes the coordinates of the vertex
+     */
+    explicit Point(std::array<double, 2> coord);
+
+    /**
      * @brief Destructor of Point class.
      */
     ~Point();
 
-    #define coord _M_elems
+public:
+    #define coordinates _M_elems
 };
 
 /**

@@ -19,13 +19,13 @@ class Triangle;
 
 using TriangleHandle = Triangle*;
 
-class Triangle
+class Triangle : public std::array<VertexHandle, 3>
 {
 public:
     /**
      * @brief Constructor of Triangle class.
      */
-    Triangle() = default;
+    Triangle();
 
     /**
      * @brief Constructor of Triangle class.
@@ -35,11 +35,6 @@ public:
     explicit Triangle(std::array<VertexHandle, 3> points);
 
     /**
-     * @brief Destructor of Triangle class
-     */
-    ~Triangle();
-
-    /**
      * @brief Copy Constructor.
      *
      * @param otherTriangle to be copied
@@ -47,20 +42,9 @@ public:
     Triangle(const Triangle& otherTriangle);
 
     /**
-     * @brief Gets a vertex of the Triangle.
-     *
-     * @param index is the index of the vertex of the Triangle that is requested
-     * @return a vertex of the Triangle
+     * @brief Destructor of Triangle class
      */
-    [[nodiscard]] VertexHandle vertex(unsigned char index) const;
-
-    /**
-     * @brief Gets a vertex of the Triangle.
-     *
-     * @param index is the index of the vertex of the Triangle that is requested
-     * @return a vertex of the Triangle
-     */
-    VertexHandle& vertex(unsigned char index);
+    ~Triangle();
 
     /**
      * @brief Checks if a vertex lies in the circumcircle of a triangle.
@@ -78,9 +62,8 @@ public:
      */
     [[nodiscard]] bool containsVertex(const VertexHandle& vertex) const;
 
-private:
-    std::array<VertexHandle, 3> vertices{};
 public:
+    #define vertices _M_elems
     size_t id;
 };
 

@@ -10,7 +10,7 @@
 #include "Edge.hxx"
 
 
-Edge::Edge(std::array<VertexHandle, 2> points)
+Edge::Edge(std::array<VertexHandle, 2> points) : array()
 {
     for (size_t i = 0; i < points.size(); ++i) {
         this->vertices[i] = points[i];
@@ -21,41 +21,19 @@ Edge::Edge(std::array<VertexHandle, 2> points)
 
 Edge::~Edge() = default;
 
-Edge::Edge(const Edge& otherEdge)
+Edge::Edge(const Edge& otherEdge) : array(otherEdge)
 {
-    for (size_t i = 0; i < vertices.size(); i++) {
-        vertices[i] = otherEdge.vertex(i);
+    for (size_t i = 0; i < size(); i++) {
+        vertices[i] = otherEdge.vertices[i];
     }
     isBad = otherEdge.isBad;
     id = otherEdge.id;
 }
 
-VertexHandle Edge::vertex(unsigned char index) const
-{
-    if (index > 1 || index < 0) {
-        throw std::out_of_range(
-                "index is bigger compared to what Edge Supports, where max = " +
-                std::to_string(1));
-    }
-
-    return vertices[index];
-}
-
-VertexHandle& Edge::vertex(unsigned char index)
-{
-    if (index > 1 || index < 0) {
-        throw std::out_of_range(
-                "index is bigger compared to what Edge Supports, where max = " +
-                std::to_string(1));
-    }
-
-    return vertices[index];
-}
-
 bool Edge::isSame(const Edge& edge) const
 {
-    return (*vertices[0] == *edge.vertex(0) && *vertices[1] == *edge.vertex(1)) ||
-           (*vertices[0] == *edge.vertex(1) && *vertices[1] == *edge.vertex(0));
+    return (*vertices[0] == *edge.vertices[0] && *vertices[1] == *edge.vertices[1]) ||
+           (*vertices[0] == *edge.vertices[1] && *vertices[1] == *edge.vertices[0]);
 }
 
 double Edge::getSquaredLength() const

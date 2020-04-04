@@ -58,8 +58,8 @@ public:
 private:
     TriangleHandle boundingTriangle{};
 
-    std::vector<TriangleHandle> triangles;
-    std::vector<VertexHandle> vertices;
+    std::vector<TriangleHandle> meshTriangles;
+    std::vector<VertexHandle> meshVertices;
 public:
     Timer computeBoundaryTriangleTimer{}, meshingTimer{}, computeMeshResultsTimer{};
 };

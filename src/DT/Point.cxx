@@ -15,17 +15,17 @@ Point::Point() : array()
     this->fill(0);
 }
 
-Point::Point(std::array<double, 2> coordinates) : array()
-{
-    for (size_t i = 0; i < 2; i++) {
-        this->coord[i] = coordinates[i];
-    }
-}
-
 Point::Point(const Point& point) : array(point)
 {
     for (size_t i = 0; i < 2; i++) {
-        this->coord[i] = point[i];
+        this->coordinates[i] = point[i];
+    }
+}
+
+Point::Point(std::array<double, 2> coord) : array()
+{
+    for (size_t i = 0; i < 2; i++) {
+        this->coordinates[i] = coord[i];
     }
 }
 
