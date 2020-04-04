@@ -15,7 +15,6 @@ Triangle::Triangle(std::array<VertexHandle, 3> points)
     for (size_t i = 0; i < points.size(); ++i) {
         this->vertices[i] = points[i];
     }
-    isBad = false;
     id = std::numeric_limits<size_t>::max();
 }
 
@@ -26,7 +25,6 @@ Triangle::Triangle(const Triangle& otherTriangle)
     for (size_t i = 0; i < vertices.size(); i++) {
         vertices[i] = otherTriangle.vertex(i);
     }
-    isBad = otherTriangle.isBad;
     id = otherTriangle.id;
 }
 

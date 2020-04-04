@@ -81,7 +81,6 @@ public:
 private:
     std::array<VertexHandle, 3> vertices{};
 public:
-    bool isBad;
     size_t id;
 };
 

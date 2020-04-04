@@ -113,19 +113,12 @@ void DelaunayTriangulation::generateMesh()
         std::vector<EdgeHandle> polygon;
 
         //  TODO use point location to improve complexity
-        //  identify bad triangles
-        for (auto& triangle : triangles) {
-            if (triangle->inCircleTest(vertex)) {
-                triangle->isBad = true;
-                polygon.push_back(new Edge({triangle->vertex(0), triangle->vertex(1)}));
-                polygon.push_back(new Edge({triangle->vertex(1), triangle->vertex(2)}));
-                polygon.push_back(new Edge({triangle->vertex(2), triangle->vertex(0)}));
-            }
-        }
-
-        //  remove bad triangles
+        //  identify and remove bad triangles
         for (size_t i = 0; i < triangles.size(); ++i) {
-            if (triangles[i]->isBad) {
+            if (triangles[i]->inCircleTest(vertex)) {
+                polygon.push_back(new Edge({triangles[i]->vertex(0), triangles[i]->vertex(1)}));
+                polygon.push_back(new Edge({triangles[i]->vertex(1), triangles[i]->vertex(2)}));
+                polygon.push_back(new Edge({triangles[i]->vertex(2), triangles[i]->vertex(0)}));
                 delete triangles[i];
                 triangles.erase(triangles.begin() + i);
                 i--;
