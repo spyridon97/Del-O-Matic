@@ -18,7 +18,7 @@
 /**
  * @brief Facilitates a 2D cartesian Point.
  */
-class Point
+class Point : public std::array<double, 2>
 {
 public:
     /**
@@ -53,49 +53,6 @@ public:
     double* toArray();
 
     /**
-     * @brief Overloads operator "=".
-     *
-     * @param point is a vertex whose coordinates will be copied to another vertex
-     * @return a vertex whose coordinates will be the same as the given vertex
-     */
-    Point& operator=(const Point& point);
-
-    /**
-     * @brief Overloads operator "==".
-     *
-     * @param point is a vertex whose coordinates will be checked if they are equal with the current's object ones
-     * @return a boolean value which indicates if the coordinates of the given vertex are equal as the current's object ones
-     */
-    bool operator==(const Point& point) const;
-
-    /**
-     * @brief Overloads operator "!=".
-     *
-     * @param point is a vertex whose coordinates will be checked if they are not equal with the current's object ones
-     * @return a boolean value which indicates if the coordinates of the
-     * given vertex are not equal same as the current's object ones
-     */
-    bool operator!=(const Point& point) const;
-
-    /**
-     * @brief Overloads operator "<".
-     *
-     * @param point is a vertex whose coordinates will be checked if they are are smaller than the current's object ones
-     * @return a boolean value which indicates if the coordinates of the
-     * given vertex are smaller than the current's object ones
-     */
-    bool operator<(const Point& point) const;
-
-    /**
-     * @brief Overloads operator ">".
-     *
-     * @param point is a vertex whose coordinates will be checked if they are are bigger than the current's object ones
-     * @return a boolean value which indicates if the coordinates of the
-     * given vertex are bigger than the current's object ones
-     */
-    bool operator>(const Point& point) const;
-
-    /**
      * @brief Overloads operator "*".
      *
      * @param constant which will be used to multiply the coordinates of the Point
@@ -128,24 +85,7 @@ public:
      */
     Point operator-(const Point& otherPoint) const;
 
-    /**
-     * @brief Overloads operator "[]".
-     *
-     * @param index is an integer which is used to extract a coordinate of a specific dimension
-     * @return a coordinate of a specific dimension
-     */
-    double operator[](size_t index) const;
-
-    /**
-     * @brief Overloads operator "[]".
-     *
-     * @param index is an integer which is used to extract a coordinate of a specific dimension
-     * @return a coordinate of a specific dimension
-     */
-    double& operator[](size_t index);
-
-protected:
-    std::array<double, 2> coordinates{};
+    #define coord _AT_Type::_S_ptr(_M_elems)
 };
 
 /**

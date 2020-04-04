@@ -8,6 +8,7 @@
  */
 
 #include <algorithm>
+#include <random>
 #include "DelaunayTriangulation.hxx"
 
 
@@ -43,6 +44,11 @@ void DelaunayTriangulation::setInputPoints(std::vector<Point>& points)
             --i;
         }
     }
+
+    //  shuffle points
+    // std::random_device rd;
+    // auto rng = std::default_random_engine(rd());
+    // std::shuffle(points.begin(), points.end(), rng);
 
     //  convert points to Vertices (a.k.a Point*): Cost O(n)
     for (const auto& point : points) {
