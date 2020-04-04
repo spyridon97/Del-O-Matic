@@ -15,6 +15,10 @@
 #include "Vertex.hxx"
 
 
+class Edge;
+
+using EdgeHandle = Edge*;
+
 class Edge
 {
 public:
@@ -73,8 +77,6 @@ public:
     bool isBad;
     size_t id;
 };
-
-using EdgeHandle = Edge*;
 
 
 #endif /* DELAUNAY_TRIANGULATION_EDGE_HXX */

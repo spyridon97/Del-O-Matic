@@ -48,9 +48,12 @@ Usage: ./delaunayTriangulation [OPTIONS]
 
 Options:
   -h,--help                   Print this help message and exit
-  -i,--input TEXT:FILE REQUIRED
+  -i,--input TEXT:FILE Excludes: --random
                               Input file to triangulate.
-
+                              
+  -r,--random UINT:POSITIVE Excludes: --input
+                              Generates and uniformly random set of N 2D points.
+                              
   -o,--output TEXT REQUIRED   Output file that includes triangulation.
 ```
 

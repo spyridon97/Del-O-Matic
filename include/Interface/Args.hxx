@@ -24,6 +24,7 @@ namespace Args
     // CLI Arguments
     ////////////////////////////////////////////
     extern std::string inputFileName;
+    extern size_t numberOfRandomPoints;
     extern std::string outputFileName;
 
     /**

@@ -28,6 +28,15 @@ namespace Io
     std::vector<Point> readInput(const std::string& filename);
 
     /**
+     * @brief Generates a set of random uniform points.
+     *
+     * @param numberOfRandomPoints is the amount of points that will be created
+     *
+     * @return a set of random uniform points
+     */
+    std::vector<Point> generateUniformRandomInput(const size_t& numberOfRandomPoints);
+
+    /**
      * @brief Prints output .node, .edge, and .ele files.
      *
      * @param mesh the triangulated mesh

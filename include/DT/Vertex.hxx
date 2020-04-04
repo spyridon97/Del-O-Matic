@@ -14,6 +14,10 @@
 #include "Point.hxx"
 
 
+class Vertex;
+
+using VertexHandle = Vertex*;
+
 class Vertex : public Point
 {
 public:
@@ -37,8 +41,6 @@ public:
 public:
     size_t id;
 };
-
-using VertexHandle = Vertex*;
 
 
 #endif /* DELAUNAY_TRIANGULATION_VERTEX_HXX */

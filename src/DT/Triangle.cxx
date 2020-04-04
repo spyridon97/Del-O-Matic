@@ -56,7 +56,9 @@ bool Triangle::inCircleTest(const VertexHandle& vertex) const
 {
     // double orientResult = orient2d(vertices[0]->toArray(), vertices[1]->toArray(),
     //                                vertices[2]->toArray());
-    // std::cout << orientResult << *vertices[0] << *vertices[1] << *vertices[2] << std::endl;
+    // if (orientResult > 0) {
+    //     std::cout << orientResult << *vertices[0] << *vertices[1] << *vertices[2] << std::endl;
+    // }
     //
     // if (orientResult > 0) { //  ClockWise order
     //     double inCircleResult = incircle(vertices[0]->toArray(), vertices[1]->toArray(),

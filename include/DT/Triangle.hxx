@@ -15,6 +15,10 @@
 #include "Vertex.hxx"
 
 
+class Triangle;
+
+using TriangleHandle = Triangle*;
+
 class Triangle
 {
 public:
@@ -22,6 +26,7 @@ public:
      * @brief Constructor of Triangle class.
      */
     Triangle() = default;
+
     /**
      * @brief Constructor of Triangle class.
      *
@@ -79,8 +84,6 @@ public:
     bool isBad;
     size_t id;
 };
-
-using TriangleHandle = Triangle*;
 
 
 #endif /* DELAUNAY_TRIANGULATION_TRIANGLE_HXX */

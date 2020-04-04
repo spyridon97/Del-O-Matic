@@ -30,7 +30,12 @@ int main(int argc, char** argv)
     Timer readingInputTimer{};
     readingInputTimer.startTimer();
 
-    std::vector<Point> inputPoints = Io::readInput(Args::inputFileName);
+    std::vector<Point> inputPoints;
+    if (!Args::inputFileName.empty()) {
+        inputPoints = Io::readInput(Args::inputFileName);
+    } else {
+        inputPoints = Io::generateUniformRandomInput(Args::numberOfRandomPoints);
+    }
 
     readingInputTimer.stopTimer();
 
@@ -54,7 +59,12 @@ int main(int argc, char** argv)
 
     std::cout << std::endl << "DelaunayTriangulion Times" << std::endl;
     std::cout << "================================================" << std::endl;
-    std::cout << "Reading Input I/O time: " << readingInputTimer.getSeconds() << " seconds" << std::endl;
+    if (!Args::inputFileName.empty()) {
+        std::cout << "Reading Input I/O time: " << readingInputTimer.getSeconds() << " seconds" << std::endl;
+    } else {
+        std::cout << "Generating uniformly random Input time: " << readingInputTimer.getSeconds() << " seconds"
+                  << std::endl;
+    }
     std::cout << "Computing Boundary Triangle time: "
               << triangulator->computeBoundaryTriangleTimer.getSeconds() << " seconds" << std::endl;
     std::cout << "Meshing time: " << triangulator->meshingTimer.getSeconds() << " seconds" << std::endl;

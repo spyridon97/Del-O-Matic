@@ -10,6 +10,7 @@
 #include <cassert>
 #include <fstream>
 #include <iostream>
+#include <random>
 #include "IO.hxx"
 
 
@@ -22,6 +23,8 @@ namespace Io
 
     std::vector<Point> readInput(const std::string& filename)
     {
+        std::cout << std::endl << "Reading Input file..." << std::endl;
+
         std::vector<Point> points;
 
         std::ifstream inputFile;
@@ -74,10 +77,27 @@ namespace Io
         return points;
     }
 
+    std::vector<Point> generateUniformRandomInput(const size_t& numberOfRandomPoints)
+    {
+        std::default_random_engine eng(std::random_device{}());
+        std::uniform_real_distribution<double> dist_w(0, 1000);
+        std::uniform_real_distribution<double> dist_h(0, 1000);
+
+        std::cout << std::endl << "Generating " << numberOfRandomPoints << " uniformly random points..." << std::endl;
+
+        std::vector<Point> points;
+        points.reserve(numberOfRandomPoints);
+        for (size_t i = 0; i < numberOfRandomPoints; ++i) {
+            points.push_back(Point({dist_w(eng), dist_h(eng)}));
+        }
+
+        return points;
+    }
+
     void printMesh(const Mesh& mesh, const std::string& filename)
     {
         std::string rawFilename;
-        size_t lastdot = filename.find_last_of(".");
+        size_t lastdot = filename.find_last_of('.');
         if (lastdot == std::string::npos) {
             rawFilename = filename;
         } else {

@@ -18,6 +18,7 @@ namespace Args
     // CLI Arguments
     ////////////////////////////////////////////
     std::string inputFileName;
+    size_t numberOfRandomPoints = 0;
     std::string outputFileName;
     ////////////////////////////////////////////
 
@@ -28,7 +29,7 @@ namespace Args
      */
     int parseArguments(int argc, char** argv)
     {
-        constexpr char DESCRIPTION[] = "TriangulateMonotonePolygon";
+        constexpr char DESCRIPTION[] = "DelaunayTriangulation";
 
         // Initialize CLI application
         std::unique_ptr<CLI::App> app = std::make_unique<CLI::App>(DESCRIPTION);
@@ -38,13 +39,25 @@ namespace Args
         ////////////////////////////////////////////
         //  --------------------------------------------------------------------------  *
 
-        app->add_option("-i,--input", inputFileName, "Input file to triangulate.\n")
-                ->required()
+        auto inputFileOption = app->add_option("-i,--input", inputFileName, "Input file to triangulate.\n")
                 ->check(CLI::ExistingFile);
+
+        auto randomPointSetOption = app->add_option("-r, --random", numberOfRandomPoints,
+                                                    "Generates and uniformly random set of N 2D points.\n")
+                ->check(CLI::PositiveNumber);
+
+        inputFileOption->excludes(randomPointSetOption);
+        randomPointSetOption->excludes(inputFileOption);
 
         app->add_option("-o,--output", outputFileName,
                         "Output file that includes triangulation.\n")
                 ->required();
+
+        app->final_callback([]() {
+            if (numberOfRandomPoints == 0 && inputFileName.empty()) {
+                throw (CLI::ValidationError("Use ither --input or --random options"));
+            }
+        });
 
         try {
             app->parse(argc, argv);
@@ -83,11 +96,15 @@ namespace Args
             << std::endl << std::endl;
 
         constexpr char SEPARATOR[] = "================================================";
-        out << "DelaunayTriangulation Argument Values" << '\n';
-        out << SEPARATOR << '\n';
-        out << "Input Image: " << inputFileName << '\n';
-        out << "Output Mesh: " << outputFileName << '\n';
-        out << SEPARATOR << '\n';
+        out << "DelaunayTriangulation Argument Values" << std::endl;;
+        out << SEPARATOR << std::endl;;
+        if (!inputFileName.empty()) {
+            out << "Input Image: " << inputFileName << std::endl;;
+        } else {
+            out << "Number of random uniform points: " << numberOfRandomPoints << std::endl;
+        }
+        out << "Output Mesh: " << outputFileName << std::endl;;
+        out << SEPARATOR << std::endl;;
     }
 }
 
