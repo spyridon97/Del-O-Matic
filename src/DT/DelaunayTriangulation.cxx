@@ -12,9 +12,9 @@
 #include "DelaunayTriangulation.hxx"
 
 
-DelaunayTriangulation::DelaunayTriangulation() : TrianglesDAG()
+DelaunayTriangulation::DelaunayTriangulation(bool robustPredicates) : TrianglesDAG()
 {
-
+    GeometricPredicates::initialize(robustPredicates);
 }
 
 DelaunayTriangulation::~DelaunayTriangulation()
@@ -25,26 +25,28 @@ DelaunayTriangulation::~DelaunayTriangulation()
     meshVertices.clear();
 }
 
-void DelaunayTriangulation::setInputPoints(std::vector<Point>& points)
+void DelaunayTriangulation::setInputVertices(std::vector<Vertex>& vertices)
 {
-    std::cout << std::endl << "Sort lexicographically, Remove possible duplicates, and Shuffle Points..." << std::endl;
+    std::cout << std::endl << "Sort lexicographically, Remove possible duplicates, and Shuffle Vertices..."
+              << std::endl;
 
     //  sort vertices lexicographically in descending order. Cost: O(n log n)
-    std::sort(points.begin(), points.end(), std::greater<>());
+    std::sort(vertices.begin(), vertices.end(), std::greater<>());
 
-    //  remove duplicate points. Cost: O(n)
-    points.erase(std::unique(points.begin(), points.end()), points.end());
+    //  remove duplicate vertices. Cost: O(n)
+    vertices.erase(std::unique(vertices.begin(), vertices.end()), vertices.end());
 
-    //  compute a random permutation of the points
-    //  Note: if this is not activated, the complexity of the algorithm becomes: O(n^2).
-    //  Note: this step could be skipped if the input is already shuffled
+    //  compute a random permutation of the vertices
+    //  Note: if shuffle is not activated, the complexity of the algorithm becomes: O(n^2).
     auto randomGenerator = std::default_random_engine(std::random_device{}());
-    std::shuffle(points.begin(), points.end(), randomGenerator);
+    std::shuffle(vertices.begin(), vertices.end(), randomGenerator);
 
     meshVertices.clear();
-    //  convert points to Vertices (a.k.a Point*): Cost O(n)
-    for (const auto& point : points) {
-        meshVertices.push_back(new Vertex(point));
+    //  extract unique vertices. Cost O(n)
+    for (size_t i = 0; i < vertices.size(); ++i) {
+        auto vertex = new Vertex(vertices[i]);
+        vertex->id = static_cast<int>(i + 1);
+        meshVertices.push_back(vertex);
     }
 }
 
@@ -59,19 +61,18 @@ void DelaunayTriangulation::createBoundingTriangle()
     double maxX = minX;
     double maxY = minY;
 
-    for (auto& vertex : meshVertices) {
-        Vertex testedVertex = *vertex;
-        if (testedVertex[0] < minX) {
-            minX = testedVertex[0];
+    for (auto vertex : meshVertices) {
+        if ((*vertex)[0] < minX) {
+            minX = (*vertex)[0];
         }
-        if (testedVertex[1] < minY) {
-            minY = testedVertex[1];
+        if ((*vertex)[1] < minY) {
+            minY = (*vertex)[1];
         }
-        if (testedVertex[0] > maxX) {
-            maxX = testedVertex[0];
+        if ((*vertex)[0] > maxX) {
+            maxX = (*vertex)[0];
         }
-        if (testedVertex[1] > maxY) {
-            maxY = testedVertex[1];
+        if ((*vertex)[1] > maxY) {
+            maxY = (*vertex)[1];
         }
     }
 
@@ -112,27 +113,27 @@ void DelaunayTriangulation::legalizeEdge(EdgeHandle& PiPj, const VertexHandle& P
     //  PiPj is not a boundary edge
     if (PiPj->getNumberOfAdjacentTriangles() != 1) {
         //  find adjacent triangles of edge PiPj
-        TrianglePair PiPkPjPermutationTrianglePair, PiPjPrPermutationTrianglePair;
+        TrianglePair PiPkPj, PiPjPr;
         if (PiPj->adjacentTrianglesWithEdgeIds[0].first->containsVertex(Pr)) {
-            PiPjPrPermutationTrianglePair = PiPj->adjacentTrianglesWithEdgeIds[0];
-            PiPkPjPermutationTrianglePair = PiPj->adjacentTrianglesWithEdgeIds[1];
+            PiPjPr = PiPj->adjacentTrianglesWithEdgeIds[0];
+            PiPkPj = PiPj->adjacentTrianglesWithEdgeIds[1];
         } else {
-            PiPjPrPermutationTrianglePair = PiPj->adjacentTrianglesWithEdgeIds[1];
-            PiPkPjPermutationTrianglePair = PiPj->adjacentTrianglesWithEdgeIds[0];
+            PiPjPr = PiPj->adjacentTrianglesWithEdgeIds[1];
+            PiPkPj = PiPj->adjacentTrianglesWithEdgeIds[0];
         }
 
-        //  find Pk point
+        //  find Pk vertex
         VertexHandle Pk;
-        if (PiPkPjPermutationTrianglePair.second == 0) {
-            Pk = PiPkPjPermutationTrianglePair.first->vertices[2];
-        } else if (PiPkPjPermutationTrianglePair.second == 1) {
-            Pk = PiPkPjPermutationTrianglePair.first->vertices[0];
+        if (PiPkPj.second == 0) {
+            Pk = PiPkPj.first->vertices[2];
+        } else if (PiPkPj.second == 1) {
+            Pk = PiPkPj.first->vertices[0];
         } else {
-            Pk = PiPkPjPermutationTrianglePair.first->vertices[1];
+            Pk = PiPkPj.first->vertices[1];
         }
 
         //  Check if PiPj is illegal
-        if (predicates.inCircle(PiPjPrPermutationTrianglePair.first, Pk)) {
+        if (GeometricPredicates::inCircle(PiPjPr.first, Pk)) {
             ////////////////////////////////////////////////////////////////
             //                      Flip Edge Started                     //
             ////////////////////////////////////////////////////////////////
@@ -142,51 +143,51 @@ void DelaunayTriangulation::legalizeEdge(EdgeHandle& PiPj, const VertexHandle& P
             EdgeHandle PrPi, PjPr;
 
             //  retrieve information from triangle PiPjPr
-            if (PiPjPrPermutationTrianglePair.second == 0) {
-                Pi = PiPjPrPermutationTrianglePair.first->vertices[0];
-                Pj = PiPjPrPermutationTrianglePair.first->vertices[1];
+            if (PiPjPr.second == 0) {
+                Pi = PiPjPr.first->vertices[0];
+                Pj = PiPjPr.first->vertices[1];
 
-                PrPi = PiPjPrPermutationTrianglePair.first->edges[2];
-                PjPr = PiPjPrPermutationTrianglePair.first->edges[1];
-            } else if (PiPjPrPermutationTrianglePair.second == 1) {
-                Pi = PiPjPrPermutationTrianglePair.first->vertices[1];
-                Pj = PiPjPrPermutationTrianglePair.first->vertices[2];
+                PrPi = PiPjPr.first->edges[2];
+                PjPr = PiPjPr.first->edges[1];
+            } else if (PiPjPr.second == 1) {
+                Pi = PiPjPr.first->vertices[1];
+                Pj = PiPjPr.first->vertices[2];
 
-                PrPi = PiPjPrPermutationTrianglePair.first->edges[0];
-                PjPr = PiPjPrPermutationTrianglePair.first->edges[2];
+                PrPi = PiPjPr.first->edges[0];
+                PjPr = PiPjPr.first->edges[2];
                 std::cout << " I am here 1" << std::endl;
             } else {
-                Pi = PiPjPrPermutationTrianglePair.first->vertices[2];
-                Pj = PiPjPrPermutationTrianglePair.first->vertices[0];
+                Pi = PiPjPr.first->vertices[2];
+                Pj = PiPjPr.first->vertices[0];
 
-                PrPi = PiPjPrPermutationTrianglePair.first->edges[1];
-                PjPr = PiPjPrPermutationTrianglePair.first->edges[0];
+                PrPi = PiPjPr.first->edges[1];
+                PjPr = PiPjPr.first->edges[0];
                 std::cout << " I am here 2" << std::endl;
             }
 
             EdgeHandle PiPk, PkPj;
             //  retrieve information from triangle PiPkPj
-            if (PiPkPjPermutationTrianglePair.second == 0) {
-                PiPk = PiPkPjPermutationTrianglePair.first->edges[1];
-                PkPj = PiPkPjPermutationTrianglePair.first->edges[2];
-            } else if (PiPkPjPermutationTrianglePair.second == 1) {
-                PiPk = PiPkPjPermutationTrianglePair.first->edges[2];
-                PkPj = PiPkPjPermutationTrianglePair.first->edges[0];
+            if (PiPkPj.second == 0) {
+                PiPk = PiPkPj.first->edges[1];
+                PkPj = PiPkPj.first->edges[2];
+            } else if (PiPkPj.second == 1) {
+                PiPk = PiPkPj.first->edges[2];
+                PkPj = PiPkPj.first->edges[0];
             } else {
-                PiPk = PiPkPjPermutationTrianglePair.first->edges[0];
-                PkPj = PiPkPjPermutationTrianglePair.first->edges[1];
+                PiPk = PiPkPj.first->edges[0];
+                PkPj = PiPkPj.first->edges[1];
             }
 
             //  remove the PiPj edge because we are gonna flip it
             delete PiPj;
 
             //  remove the PiPjPr triangle as an adjacent triangle of its edges (except PiPj)
-            PrPi->removeAdjacentTriangle(PiPjPrPermutationTrianglePair.first);
-            PjPr->removeAdjacentTriangle(PiPjPrPermutationTrianglePair.first);
+            PrPi->removeAdjacentTriangle(PiPjPr.first);
+            PjPr->removeAdjacentTriangle(PiPjPr.first);
 
             //  remove the PiPkPj triangle as an adjacent triangle of its edges (except PiPj)
-            PkPj->removeAdjacentTriangle(PiPkPjPermutationTrianglePair.first);
-            PiPk->removeAdjacentTriangle(PiPkPjPermutationTrianglePair.first);
+            PkPj->removeAdjacentTriangle(PiPkPj.first);
+            PiPk->removeAdjacentTriangle(PiPkPj.first);
 
             //  create the new triangles
             auto PiPkPr = new Triangle({Pi, Pk, Pr});
@@ -209,11 +210,11 @@ void DelaunayTriangulation::legalizeEdge(EdgeHandle& PiPj, const VertexHandle& P
             PkPjPr->setEdges({PkPj, PjPr, PkPr});
 
             // update the DAG
-            PiPkPjPermutationTrianglePair.first->childrenTriangles.push_back(PiPkPr);
-            PiPkPjPermutationTrianglePair.first->childrenTriangles.push_back(PkPjPr);
+            PiPkPj.first->childrenTriangles.push_back(PiPkPr);
+            PiPkPj.first->childrenTriangles.push_back(PkPjPr);
 
-            PiPjPrPermutationTrianglePair.first->childrenTriangles.push_back(PiPkPr);
-            PiPjPrPermutationTrianglePair.first->childrenTriangles.push_back(PkPjPr);
+            PiPjPr.first->childrenTriangles.push_back(PiPkPr);
+            PiPjPr.first->childrenTriangles.push_back(PkPjPr);
 
             ////////////////////////////////////////////////////////////////
             //                       Flip Edge Ended                      //
@@ -233,16 +234,11 @@ void DelaunayTriangulation::generateMesh()
 
     meshingTimer.startTimer();
 
-    int verticesCounter = 1;
-
     //  iterate over the meshVertices and insert them in the current triangulation. Cost: O(n)
     for (auto& Pr : meshVertices) {
-        //  initialize vertex id
-        Pr->id = verticesCounter++;
-
         //  locate a triangle that includes Pr. Cost: O(log n)
 
-        //  This complexity is accurate because our points are shuffled uniformly,
+        //  This complexity is accurate because our vertices are shuffled uniformly,
         //  therefore the depth of the History DaG is almost uniformly distributed.
         //  Since the max number of triangles created by this algorithm is 9n + 1,
         //  and assuming almost uniformly distributed DAG, we can say that: log(9n + 1) = O (log n)
@@ -366,27 +362,24 @@ void DelaunayTriangulation::generateMesh()
             EdgeHandle PiPm;
             EdgeHandle PmPj;
 
-            TriangleHandle PiPmPj;
-
-            TrianglePair PiPmPjPermutationTrianglePair = PiPj->getAdjacentTriangle(PiPjPk);
-            PiPmPj = PiPmPjPermutationTrianglePair.first;
+            TrianglePair PiPmPj = PiPj->getAdjacentTriangle(PiPjPk);
 
             //  retrieve information from triangle PiPmPj
-            if (PiPmPjPermutationTrianglePair.second == 0) {
-                Pm = PiPmPj->vertices[2];
+            if (PiPmPj.second == 0) {
+                Pm = PiPmPj.first->vertices[2];
 
-                PiPm = PiPmPj->edges[1];
-                PmPj = PiPmPj->edges[2];
-            } else if (PiPmPjPermutationTrianglePair.second == 1) {
-                Pm = PiPmPj->vertices[0];
+                PiPm = PiPmPj.first->edges[1];
+                PmPj = PiPmPj.first->edges[2];
+            } else if (PiPmPj.second == 1) {
+                Pm = PiPmPj.first->vertices[0];
 
-                PiPm = PiPmPj->edges[2];
-                PmPj = PiPmPj->edges[0];
+                PiPm = PiPmPj.first->edges[2];
+                PmPj = PiPmPj.first->edges[0];
             } else {
-                Pm = PiPmPj->vertices[1];
+                Pm = PiPmPj.first->vertices[1];
 
-                PiPm = PiPmPj->edges[0];
-                PmPj = PiPmPj->edges[1];
+                PiPm = PiPmPj.first->edges[0];
+                PmPj = PiPmPj.first->edges[1];
             }
 
             ////////////////////////////////////////////////////////////////
@@ -394,8 +387,8 @@ void DelaunayTriangulation::generateMesh()
             ////////////////////////////////////////////////////////////////
 
             //  remove the badTriangles as an adjacent triangle of the edges of the triangles
-            PiPm->removeAdjacentTriangle(PiPmPj);
-            PmPj->removeAdjacentTriangle(PiPmPj);
+            PiPm->removeAdjacentTriangle(PiPmPj.first);
+            PmPj->removeAdjacentTriangle(PiPmPj.first);
 
             PjPk->removeAdjacentTriangle(PiPjPk);
             PkPi->removeAdjacentTriangle(PiPjPk);
@@ -444,8 +437,8 @@ void DelaunayTriangulation::generateMesh()
             PiPjPk->childrenTriangles.push_back(PjPkPr);
             PiPjPk->childrenTriangles.push_back(PkPiPr);
 
-            PiPmPj->childrenTriangles.push_back(PiPmPr);
-            PiPmPj->childrenTriangles.push_back(PmPjPr);
+            PiPmPj.first->childrenTriangles.push_back(PiPmPr);
+            PiPmPj.first->childrenTriangles.push_back(PmPjPr);
 
             ////////////////////////////////////////////////////////////////
             //                   Split Triangles Ended                    //
@@ -467,7 +460,7 @@ bool DelaunayTriangulation::validateDelaunayTriangulation(const std::vector<Tria
     bool validDelaunay = true;
     for (auto meshTriangle : meshTriangles) {
         for (auto meshVertex : meshVertices) {
-            if (predicates.inCircle(meshTriangle, meshVertex)) {
+            if (GeometricPredicates::inCircle(meshTriangle, meshVertex)) {
                 // std::cout << "Triangle " << *meshTriangle->vertices[0] << *meshTriangle->vertices[1]
                 //           << *meshTriangle->vertices[2] << " is not Delaunay." << std::endl;
                 validDelaunay = false;
@@ -485,32 +478,21 @@ Mesh DelaunayTriangulation::getCleanMesh(bool validateDelaunayProperty)
 
     Mesh mesh = Mesh();
 
-    mesh.numberOfPoints = meshVertices.size();
+    mesh.numberOfVertices = meshVertices.size();
 
     std::vector<TriangleHandle> meshTriangles = getTriangulation();
 
     if (validateDelaunayProperty) {
         if (!this->validateDelaunayTriangulation(meshTriangles)) {
-            std::cout << "Triangulation is not Delaunay" << std::endl;
+            std::cout << std::endl << "Triangulation is not Delaunay" << std::endl;
             exit(EXIT_FAILURE);
         } else {
-            std::cout << "Triangulation is Delaunay" << std::endl;
+            std::cout << std::endl << "Triangulation is Delaunay" << std::endl;
         }
     }
 
-    // size_t visitedTrianglesCounter = 1;
-    // for (auto& triangle : meshTriangles) {
-    //     for (int j = 0; j < 3; ++j) {
-    //         //  if vertex of triangle has not been traversed
-    //         if (triangle->vertices[j]->id == std::numeric_limits<size_t>::max()) {
-    //             triangle->vertices[j]->id = visitedTrianglesCounter++;
-    //             mesh.points.emplace_back(*triangle->vertices[j]);
-    //         }
-    //     }
-    // }
-
     for (auto& meshVertex : meshVertices) {
-        mesh.points.emplace_back((Point) *meshVertex);
+        mesh.vertices.emplace_back(*meshVertex);
     }
 
     for (auto triangle : meshTriangles) {
@@ -522,7 +504,7 @@ Mesh DelaunayTriangulation::getCleanMesh(bool validateDelaunayProperty)
         mesh.triangles.push_back(newTriangle);
     }
 
-    std::cout << std::endl << "Mesh Vertices: " << mesh.points.size() << std::endl;
+    std::cout << std::endl << "Mesh Vertices: " << mesh.vertices.size() << std::endl;
     std::cout << "Mesh Triangles: " << mesh.triangles.size() << std::endl;
 
     computeMeshResultsTimer.stopTimer();

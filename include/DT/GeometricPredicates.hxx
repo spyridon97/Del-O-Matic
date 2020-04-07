@@ -14,10 +14,14 @@
 #include "Triangle.hxx"
 
 
-class GeometricPredicates
+namespace GeometricPredicates
 {
-public:
-    GeometricPredicates();
+    /**
+     * @brief Initializes Predicates.
+     *
+     * @param robustPredicates is a boolean value which indicates if the robust predicates are requested
+     */
+    void initialize(bool robustPredicates);
 
     /**
      * @brief Checks if a vertex lies inside the circumcircle of a triangle
@@ -38,7 +42,7 @@ public:
      */
     bool
     inTriangle(const TriangleHandle& triangle, const VertexHandle& vertex, std::array<double, 3>& orientationTests);
-};
+}
 
 
 #endif /* DELAUNAY_TRIANGULATION_GEOMETRIC_PREDICATES_HXX */

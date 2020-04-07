@@ -3,7 +3,7 @@
 --------------------------------------------------------------------------------
 ## Description
 
-Given a vertex set, using the [Randomized Incremental Algorithm](http://www.cs.uu.nl/geobook/interpolation.pdf) we can delaunay-triangulate it with complexity = O(n^2).
+Given a set of vertices, using the [Randomized Incremental Algorithm](http://www.cs.uu.nl/geobook/interpolation.pdf) we can Delaunay-triangulate it with complexity = O(n log n).
 
 There is no warranty whatsoever. Use at your own risk.
 
@@ -54,14 +54,19 @@ Usage: ./delaunayTriangulation [OPTIONS]
 Options:
   -h,--help                   Print this help message and exit
   -i,--input TEXT:FILE Excludes: --random
-                              Input file to triangulate.
+                              Input Vertices file to triangulate.
                               
   -r,--random UINT:POSITIVE Excludes: --input
-                              Generates and uniformly random set of N 2D points.
+                              Generates and uniformly random set of N 2D Vertices.
+                              
+  -p,--robust-predicates BOOLEAN
+                              Uses Robust Predicates. '0' doesn't use robust predicates, '1' uses Robust Predicates.
+                              (Default: 1)
                               
   -d,--validate-delaunay      Validates the Delaunay Property of the triangulation.
                               
   -o,--output TEXT REQUIRED   Output file that includes triangulation.
+
 ```
 
 --------------------------------------------------------------------------------

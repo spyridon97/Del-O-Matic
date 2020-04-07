@@ -24,17 +24,22 @@ namespace Args
     // CLI Arguments
     ////////////////////////////////////////////
     extern std::string inputFileName;
-    extern size_t numberOfRandomPoints;
+    extern size_t numberOfRandomVertices;
+    extern bool robustPredicates;
     extern bool validateDelaunayProperty;
     extern std::string outputFileName;
 
     /**
      * @brief Parse Command line Arguments.
+     *
+     * @return 0 on success , otherwise CLI11 error code
      */
     int parseArguments(int argc, char** argv);
 
     /**
-     * @brief Display TriangulateMonotonePolygon argument values.
+     * @brief Display DelaunayTriangulation argument values.
+     *
+     * @param out Output stream to pipe output to
      */
     void display(std::ostream& out);
 }

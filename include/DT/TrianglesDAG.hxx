@@ -22,10 +22,10 @@ public:
 
     ~TrianglesDAG();
 
-    void setRootTriangle(TriangleHandle triangle);
+    void setRootTriangle(TriangleHandle& triangle);
 
 private:
-    TriangleHandle locateTriangle(TriangleHandle triangle, VertexHandle vertex,
+    TriangleHandle& locateTriangle(TriangleHandle& triangle, VertexHandle vertex,
                                   std::array<double, 3>& orientationTests);
 
     [[nodiscard]] bool containsRootTriangleVertices(TriangleHandle triangle) const;
@@ -33,14 +33,12 @@ private:
     void getTriangulation(std::vector<TriangleHandle>& triangles, TriangleHandle& triangle);
 
 public:
-    TriangleHandle locateTriangle(VertexHandle vertex, std::array<double, 3>& orientationTests);
+    TriangleHandle& locateTriangle(VertexHandle vertex, std::array<double, 3>& orientationTests);
 
     std::vector<TriangleHandle> getTriangulation();
 
 private:
     TriangleHandle rootTriangle;
-protected:
-    GeometricPredicates predicates;
 };
 
 

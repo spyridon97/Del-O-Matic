@@ -24,8 +24,10 @@ class DelaunayTriangulation : public TrianglesDAG
 public:
     /**
      * @brief Constructor of DelaunayTriangulation.
+     *
+     * @param robustPredicates is a boolean value that indicates if robust predicates will be used
      */
-    DelaunayTriangulation();
+    explicit DelaunayTriangulation(bool robustPredicates);
 
     /**
      * @brief Destructor of DelaunayTriangulation.
@@ -35,9 +37,9 @@ public:
     /**
      * @brief Sets the input vertices of the triangulation.
      *
-     * @param points are the input vertices
+     * @param vertices are the input vertices
      */
-    void setInputPoints(std::vector<Point>& points);
+    void setInputVertices(std::vector<Vertex>& vertices);
 
 private:
     /**

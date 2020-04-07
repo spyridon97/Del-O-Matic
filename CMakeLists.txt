@@ -9,12 +9,11 @@ set(DT_SOURCE_FILES
         src/DT/DelaunayTriangulation.cxx
         src/DT/Edge.cxx
         src/DT/GeometricPredicates.cxx
-        src/DT/Point.cxx
+        src/DT/Vertex.cxx
         src/DT/TrianglesDAG.cxx
-        src/DT/Predicates.c
+        src/DT/predicates.c
         src/DT/Triangle.cxx
         src/DT/Timer.cxx
-        src/DT/Vertex.cxx
         )
 
 set(INTERFACE_SOURCE_FILES
