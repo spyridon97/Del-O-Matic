@@ -12,34 +12,56 @@
 
 
 #include <cmath>
+#include <vector>
 #include "Vertex.hxx"
 
+
+class Triangle;
+
+using TriangleHandle = Triangle*;
+
+using TrianglePair = std::pair<TriangleHandle, size_t>;
 
 class Edge;
 
 using EdgeHandle = Edge*;
 
-class Edge : public std::array<VertexHandle, 2>
+class Edge
 {
 public:
     /**
      * @brief Constructor of Edge class.
      *
-     * @param points are the vertices that are used to define the ege
+     * @param verticesIds are the vertices that are used to define the edge
      */
-    explicit Edge(std::array<VertexHandle, 2> points);
-
-    /**
-     * @brief Copy Constructor.
-     *
-     * @param otherEdge to be copied
-     */
-    Edge(const Edge& otherEdge);
+    explicit Edge(std::array<int, 2> verticesIds);
 
     /**
      * @brief Destructor of Edge class
      */
     ~Edge();
+
+    /**
+     * @brief Adds an adjacent triangle of the edge.
+     *
+     * @param adjacentTriangleWithEdgeId is the adjacent triangle along with it edgeId
+     */
+    void addAdjacentTriangle(TrianglePair adjacentTriangleWithEdgeId);
+
+    /**
+     * @brief Removes an adjacent triangle of the edge.
+     *
+     * @param triangle is the adjacent triangle
+     */
+    void removeAdjacentTriangle(const TriangleHandle& triangle);
+
+    /**
+     * @brief Finds the adjacent triangle of a triangle.
+     *
+     * @param triangle is the triangle that we trying to find its neighbor
+     * @return the adjacent triangle along the given edge and its edge id
+     */
+    TrianglePair getAdjacentTriangle(const TriangleHandle& triangle);
 
     /**
      * @brief Compares Edges.
@@ -49,17 +71,17 @@ public:
     [[nodiscard]] bool isSame(const Edge& edge) const;
 
     /**
-     * @brief Gets squared length of the Edge.
-     *
-     * @return squared length of the Edge
+     * @brief Gets number of adjacentTriangles.
+     * @return number of adjacentTriangles
      */
-    [[nodiscard]] double getSquaredLength() const;
+    [[nodiscard]] size_t getNumberOfAdjacentTriangles() const;
 
 public:
-    #define vertices _M_elems
+    std::array<int, 2> verticesIds;
 
-    bool isBad;
     size_t id;
+public:
+    std::vector<std::pair<TriangleHandle, size_t>> adjacentTrianglesWithEdgeIds;
 };
 
 

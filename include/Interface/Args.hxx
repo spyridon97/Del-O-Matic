@@ -25,6 +25,7 @@ namespace Args
     ////////////////////////////////////////////
     extern std::string inputFileName;
     extern size_t numberOfRandomPoints;
+    extern bool validateDelaunayProperty;
     extern std::string outputFileName;
 
     /**

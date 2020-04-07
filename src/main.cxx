@@ -45,7 +45,7 @@ int main(int argc, char** argv)
 
     triangulator->generateMesh();
 
-    Mesh outputMesh = triangulator->getCleanMesh();
+    Mesh outputMesh = triangulator->getCleanMesh(Args::validateDelaunayProperty);
 
     Timer writingMeshTimer{};
     writingMeshTimer.startTimer();

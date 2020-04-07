@@ -46,7 +46,14 @@ public:
     ~Vertex();
 
 public:
-    size_t id;
+    /**
+     * @brief This id is used to define vertex for edge and to print fast the triangulation
+     * If id = 0, that's the default.
+     * If id = -3, it's the first vertex of the boundary triangle
+     * If id = -2, it's the second vertex of the boundary triangle
+     * If id = -1, it's the third vertex of the boundary triangle
+     */
+    int id;
 };
 
 

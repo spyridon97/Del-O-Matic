@@ -10,57 +10,41 @@
 #include "Triangle.hxx"
 
 
-Triangle::Triangle() : array()
+Triangle::Triangle(std::array<VertexHandle, 3> vertices)
 {
-    fill(nullptr);
-    id = std::numeric_limits<size_t>::max();
+    for (size_t i = 0; i < vertices.size(); ++i) {
+        this->vertices[i] = vertices[i];
+    }
+    edges.fill(nullptr);
+    childrenTriangles.reserve(3);
+    visitedTriangle = false;
 }
 
-Triangle::Triangle(std::array<VertexHandle, 3> points) : array()
+Triangle::Triangle(TriangleHandle& triangle)
 {
-    for (size_t i = 0; i < points.size(); ++i) {
-        this->vertices[i] = points[i];
+    for (size_t i = 0; i < vertices.size(); ++i) {
+        this->vertices[i] = triangle->vertices[i];
     }
-    id = std::numeric_limits<size_t>::max();
-}
-
-Triangle::Triangle(const Triangle& otherTriangle) : array(otherTriangle)
-{
-    for (size_t i = 0; i < size(); i++) {
-        vertices[i] = otherTriangle.vertices[i];
+    for (size_t i = 0; i < edges.size(); ++i) {
+        this->edges[i] = triangle->edges[i];
     }
-    id = otherTriangle.id;
+    for (size_t i = 0; i < childrenTriangles.size(); ++i) {
+        this->childrenTriangles.push_back(triangle->childrenTriangles[i]);
+    }
+    visitedTriangle = triangle->visitedTriangle;
 }
 
 Triangle::~Triangle() = default;
 
-bool Triangle::inCircleTest(const VertexHandle& vertex) const
+void Triangle::setEdges(std::array<EdgeHandle, 3> edges)
 {
-    // double orientResult = orient2d(vertices[0]->toArray(), vertices[1]->toArray(),
-    //                                vertices[2]->toArray());
-    // if (orientResult > 0) {
-    //     std::cout << orientResult << *vertices[0] << *vertices[1] << *vertices[2] << std::endl;
-    // }
-    //
-    // if (orientResult > 0) { //  ClockWise order
-    //     double inCircleResult = incircle(vertices[0]->toArray(), vertices[1]->toArray(),
-    //                                      vertices[2]->toArray(),
-    //                                      vertex->toArray());
-    //     return inCircleResult > 0;
-    // } else if (orientResult < 0) { //  Counter-ClockWise order
-    //     double inCircleResult = incircle(vertices[0]->toArray(), vertices[1]->toArray(),
-    //                                      vertices[2]->toArray(),
-    //                                      vertex->toArray());
-    //     return inCircleResult < 0;
-    // } else {
-    //     return false;
-    // }
-
-    //  triangle vertices are oriented in counter-clockwise order
-    return incircle(vertices[0]->coordinates, vertices[1]->coordinates, vertices[2]->coordinates, vertex->coordinates) < 0;
+    for (size_t i = 0; i < edges.size(); ++i) {
+        this->edges[i] = edges[i];
+    }
 }
 
 bool Triangle::containsVertex(const VertexHandle& vertex) const
 {
-    return *vertices[0] == *vertex || *vertices[1] == *vertex || *vertices[2] == *vertex;
+    //std::cout << vertex->id << std::endl;
+    return vertices[0]->id == vertex->id || vertices[1]->id == vertex->id || vertices[2]->id == vertex->id;
 }

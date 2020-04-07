@@ -19,6 +19,7 @@ namespace Args
     ////////////////////////////////////////////
     std::string inputFileName;
     size_t numberOfRandomPoints = 0;
+    bool validateDelaunayProperty = false;
     std::string outputFileName;
     ////////////////////////////////////////////
 
@@ -48,6 +49,9 @@ namespace Args
 
         inputFileOption->excludes(randomPointSetOption);
         randomPointSetOption->excludes(inputFileOption);
+
+        app->add_flag("-d,--validate-delaunay", validateDelaunayProperty,
+                      "Validates the Delaunay Property of the triangulation.\n");
 
         app->add_option("-o,--output", outputFileName,
                         "Output file that includes triangulation.\n")
@@ -98,12 +102,18 @@ namespace Args
         constexpr char SEPARATOR[] = "================================================";
         out << "DelaunayTriangulation Argument Values" << std::endl;;
         out << SEPARATOR << std::endl;;
+
+        const auto yesNo = [](bool val) -> std::string {
+            return val ? "yes" : "no";
+        };
+
         if (!inputFileName.empty()) {
-            out << "Input Image: " << inputFileName << std::endl;;
+            out << "Input Points file: " << inputFileName << std::endl;;
         } else {
             out << "Number of random uniform points: " << numberOfRandomPoints << std::endl;
         }
-        out << "Output Mesh: " << outputFileName << std::endl;;
+        out << "Validate Delaunay property: " << yesNo(validateDelaunayProperty) << std::endl;
+        out << "Output Mesh file: " << outputFileName << std::endl;;
         out << SEPARATOR << std::endl;;
     }
 }

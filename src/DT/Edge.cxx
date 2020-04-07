@@ -10,38 +10,47 @@
 #include "Edge.hxx"
 
 
-Edge::Edge(std::array<VertexHandle, 2> points) : array()
+Edge::Edge(std::array<int, 2> verticesIds)
 {
-    for (size_t i = 0; i < points.size(); ++i) {
-        this->vertices[i] = points[i];
+    adjacentTrianglesWithEdgeIds.reserve(2);
+    for (size_t i = 0; i < verticesIds.size(); ++i) {
+        this->verticesIds[i] = verticesIds[i];
     }
-    isBad = false;
     id = std::numeric_limits<size_t>::max();
 }
 
 Edge::~Edge() = default;
 
-Edge::Edge(const Edge& otherEdge) : array(otherEdge)
+void Edge::addAdjacentTriangle(TrianglePair adjacentTriangleWithEdgeId)
 {
-    for (size_t i = 0; i < size(); i++) {
-        vertices[i] = otherEdge.vertices[i];
+    adjacentTrianglesWithEdgeIds.push_back(adjacentTriangleWithEdgeId);
+}
+
+void Edge::removeAdjacentTriangle(const TriangleHandle& triangle)
+{
+    if (adjacentTrianglesWithEdgeIds[0].first == triangle) {
+        adjacentTrianglesWithEdgeIds.erase(adjacentTrianglesWithEdgeIds.begin() + 0);
+    } else {
+        adjacentTrianglesWithEdgeIds.erase(adjacentTrianglesWithEdgeIds.begin() + 1);
     }
-    isBad = otherEdge.isBad;
-    id = otherEdge.id;
+}
+
+TrianglePair Edge::getAdjacentTriangle(const TriangleHandle& triangle)
+{
+    if (triangle == adjacentTrianglesWithEdgeIds[0].first) {
+        return adjacentTrianglesWithEdgeIds[1];
+    } else {
+        return adjacentTrianglesWithEdgeIds[0];
+    }
 }
 
 bool Edge::isSame(const Edge& edge) const
 {
-    return (*vertices[0] == *edge.vertices[0] && *vertices[1] == *edge.vertices[1]) ||
-           (*vertices[0] == *edge.vertices[1] && *vertices[1] == *edge.vertices[0]);
+    return (verticesIds[0] == edge.verticesIds[0] && verticesIds[1] == edge.verticesIds[1]) ||
+           (verticesIds[0] == edge.verticesIds[1] && verticesIds[1] == edge.verticesIds[0]);
 }
 
-double Edge::getSquaredLength() const
+size_t Edge::getNumberOfAdjacentTriangles() const
 {
-    double squaredLength = 0;
-    for (size_t i = 0; i < 2; i++) {
-        squaredLength += std::pow((*vertices[1])[i] - (*vertices[0])[i], 2);
-    }
-
-    return squaredLength;
+    return adjacentTrianglesWithEdgeIds.size();
 }

@@ -57,14 +57,14 @@ namespace Io
                     size_t pointId = std::stoi(line);
                     Point point;
                     inputFile >> point[0] >> point[1];
-                    points.emplace_back(point);
+                    points.push_back(point);
                     std::getline(inputFile, restLine);
 
                     //defining the rest of the vertices
                     for (size_t i = 0; i < numberOfPoints - 1; i++) {
                         Point point;
                         inputFile >> pointId >> point[0] >> point[1];
-                        points.emplace_back(point);
+                        points.push_back(point);
                     }
                 }
                 std::getline(inputFile, restLine);
@@ -79,16 +79,16 @@ namespace Io
 
     std::vector<Point> generateUniformRandomInput(const size_t& numberOfRandomPoints)
     {
-        std::default_random_engine eng(std::random_device{}());
-        std::uniform_real_distribution<double> dist_w(0, 1000);
-        std::uniform_real_distribution<double> dist_h(0, 1000);
+        std::default_random_engine randomGenerator(std::random_device{}());
+        std::uniform_real_distribution<double> distributionX(0, 1000000);
+        std::uniform_real_distribution<double> distributionY(0, 1000000);
 
         std::cout << std::endl << "Generating " << numberOfRandomPoints << " uniformly random points..." << std::endl;
 
         std::vector<Point> points;
         points.reserve(numberOfRandomPoints);
         for (size_t i = 0; i < numberOfRandomPoints; ++i) {
-            points.push_back(Point({dist_w(eng), dist_h(eng)}));
+            points.push_back(Point({distributionX(randomGenerator), distributionY(randomGenerator)}));
         }
 
         return points;

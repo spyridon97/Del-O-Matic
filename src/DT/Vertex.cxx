@@ -12,7 +12,7 @@
 
 Vertex::Vertex() : Point()
 {
-    id = std::numeric_limits<size_t>::max();
+    id = 0;
 }
 
 Vertex::Vertex(const Point& point) : Vertex()
@@ -24,7 +24,7 @@ Vertex::Vertex(const Point& point) : Vertex()
 
 Vertex::Vertex(std::array<double, 2> coord) : Point(coord)
 {
-    id = std::numeric_limits<size_t>::max();
+    id = 0;
 }
 
 Vertex::~Vertex() = default;
