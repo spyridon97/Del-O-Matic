@@ -50,6 +50,7 @@ int main(int argc, char** argv)
     Timer writingMeshTimer{};
     writingMeshTimer.startTimer();
 
+    std::cout << std::endl << "Printing mesh..." << std::endl;
     Io::printMesh(outputMesh, Args::outputFileName);
 
     writingMeshTimer.stopTimer();

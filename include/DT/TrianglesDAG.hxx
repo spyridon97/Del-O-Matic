@@ -28,9 +28,9 @@ private:
     TriangleHandle locateTriangle(TriangleHandle triangle, VertexHandle vertex,
                                   std::array<double, 3>& orientationTests);
 
-    void getTriangulation(std::vector<TriangleHandle>& triangles, TriangleHandle& triangle);
-
     [[nodiscard]] bool containsRootTriangleVertices(TriangleHandle triangle) const;
+
+    void getTriangulation(std::vector<TriangleHandle>& triangles, TriangleHandle& triangle);
 
 public:
     TriangleHandle locateTriangle(VertexHandle vertex, std::array<double, 3>& orientationTests);
