@@ -77,19 +77,16 @@ void DelaunayTriangulation::createBoundingTriangle()
         }
     }
 
-    const double dx = maxX - minX;
-    const double dy = maxY - minY;
-    const double deltaMax = std::max(dx, dy);
-
-    const double multiplier = 100;
     const double midX = (minX + maxX) / 2;
     const double midY = (minY + maxY) / 2;
+    const double maxWidth = std::max(maxX - minX, maxY - minY);
+    const double multiplier = 100.0;
 
-    auto Pi = new Vertex({midX - multiplier * deltaMax, midY - deltaMax});
+    auto Pi = new Vertex({midX - multiplier * maxWidth, midY - maxWidth});
     Pi->id = -3;
-    auto Pj = new Vertex({midX, midY + multiplier * deltaMax});
+    auto Pj = new Vertex({midX, midY + multiplier * maxWidth});
     Pj->id = -2;
-    auto Pk = new Vertex({midX + multiplier * deltaMax, midY - deltaMax});
+    auto Pk = new Vertex({midX + multiplier * maxWidth, midY - maxWidth});
     Pk->id = -1;
 
     auto PiPj = new Edge(Pi->id, Pj->id);
@@ -114,7 +111,7 @@ void DelaunayTriangulation::legalizeEdge(EdgeHandle& PiPj, const VertexHandle& P
     //  PiPj is not a boundary edge
     if (!PiPj->isBoundaryTriangle()) {
         //  find adjacent triangles of edge PiPj
-        PiPj->checkNeighbors(Pr->id);
+        PiPj->checkOrientation(Pr->id);
 
         TriangleHandle PiPjPr = PiPj->getLeftTriangle();
         TriangleHandle PiPkPj = PiPj->getRightTriangle();
@@ -268,50 +265,33 @@ void DelaunayTriangulation::generateMesh()
             legalizeEdge(PkPi, Pr);
         } else {
             //  retrieve information from PiPjPk
-            std::cout << "Same edge test, badEdge = " << edgeId << std::endl;
-            VertexHandle Pi;
-            VertexHandle Pj;
             VertexHandle Pk;
-
             EdgeHandle PiPj;
-            EdgeHandle PjPk;
-            EdgeHandle PkPi;
 
             //  define the above variables to treat each edge the same way
             if (edgeId == 0) {  //  lies on first edge
-                Pi = PiPjPk->vertices[0];
-                Pj = PiPjPk->vertices[1];
                 Pk = PiPjPk->vertices[2];
-
                 PiPj = PiPjPk->edges[0];
-                PjPk = PiPjPk->edges[1];
-                PkPi = PiPjPk->edges[2];
             } else if (edgeId == 1) {   //  lies on second edge
-                Pi = PiPjPk->vertices[1];
-                Pj = PiPjPk->vertices[2];
                 Pk = PiPjPk->vertices[0];
-
                 PiPj = PiPjPk->edges[1];
-                PjPk = PiPjPk->edges[2];
-                PkPi = PiPjPk->edges[0];
             } else {    //  lies on third edge
-                Pi = PiPjPk->vertices[2];
-                Pj = PiPjPk->vertices[0];
                 Pk = PiPjPk->vertices[1];
-
                 PiPj = PiPjPk->edges[2];
-                PjPk = PiPjPk->edges[0];
-                PkPi = PiPjPk->edges[1];
             }
 
+            PiPj->checkOrientation(Pk->id);
+
+            auto Pi = PiPj->getOriginVertexLeftTriangle();
+            auto Pj = PiPj->getDestinationVertexLeftTriangle();
+            auto PjPk = PiPj->getDestinationEdgeLeftTriangle();
+            auto PkPi = PiPj->getApexEdgeLeftTriangle();
+
             //  retrieve information from PiPmPj
-            PiPj->checkNeighbors(Pk->id);
-
-
-            TriangleHandle PiPmPj = PiPj->getRightTriangle();
-            VertexHandle Pm = PiPj->getDestinationVertexRightTriangle();
-            EdgeHandle PiPm = PiPj->getOriginEdgeRightTriangle();
-            EdgeHandle PmPj = PiPj->getDestinationEdgeRightTriangle();
+            auto PiPmPj = PiPj->getRightTriangle();
+            auto Pm = PiPj->getDestinationVertexRightTriangle();
+            auto PiPm = PiPj->getOriginEdgeRightTriangle();
+            auto PmPj = PiPj->getDestinationEdgeRightTriangle();
 
             ////////////////////////////////////////////////////////////////
             //                   Split Triangles Started                  //
@@ -359,8 +339,8 @@ void DelaunayTriangulation::generateMesh()
             PkPiPr->setEdges({PkPi, PiPr, PkPr});
 
             // update the DAG
-            PiPjPk->childrenTriangles.push_back(PjPkPr);
             PiPjPk->childrenTriangles.push_back(PkPiPr);
+            PiPjPk->childrenTriangles.push_back(PjPkPr);
 
             PiPmPj->childrenTriangles.push_back(PiPmPr);
             PiPmPj->childrenTriangles.push_back(PmPjPr);
@@ -411,7 +391,6 @@ Mesh DelaunayTriangulation::getCleanMesh(bool validateDelaunayProperty)
     if (validateDelaunayProperty) {
         if (!this->validateDelaunayTriangulation(meshTriangles)) {
             std::cout << std::endl << "Triangulation is not Delaunay" << std::endl;
-            exit(EXIT_FAILURE);
         } else {
             std::cout << std::endl << "Triangulation is Delaunay" << std::endl;
         }

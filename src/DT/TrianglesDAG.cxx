@@ -28,6 +28,8 @@ TriangleHandle& TrianglesDAG::locateTriangle(TriangleHandle& triangle, VertexHan
     size_t childrenSize = triangle->childrenTriangles.size();
 
     if (childrenSize == 0) {  //  base case
+        //  this is mandatory to be executed because orientationTests array has to be updated
+        GeometricPredicates::inTriangle(triangle, vertex, orientationTests);
         return triangle;
     } else if (childrenSize == 2) {
         if (GeometricPredicates::inTriangle(triangle->childrenTriangles[0], vertex, orientationTests)) {

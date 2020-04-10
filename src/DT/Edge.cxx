@@ -52,13 +52,10 @@ void Edge::replaceAdjacentTriangle(const TriangleHandle& oldTriangle, const Tria
     }
 }
 
-void Edge::checkNeighbors(int apexVertexTriangleId)
+void Edge::checkOrientation(int apexVertexTriangleId)
 {
-    if (leftTriangle->vertices[minus1mod3[leftTriangleEdgeId]]->id != apexVertexTriangleId) {
-        //  swap trianglesInfo
-        auto temp = leftTriangleInfo;
-        leftTriangleInfo = rightTriangleInfo;
-        rightTriangleInfo = temp;
+    if (getApexVertexLeftTriangle()->id != apexVertexTriangleId) {
+        std::swap(leftTriangleInfo, rightTriangleInfo);
     }
 }
 

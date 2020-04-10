@@ -14,6 +14,7 @@
 #include <vector>
 #include "Triangle.hxx"
 
+
 //                                [Triangle, id of edge]
 using TrianglePair = std::pair<TriangleHandle, size_t>;
 
@@ -69,10 +70,10 @@ public:
      *                                  \/
      *                                  Pr
      *
-     * Before using the below primitives check Neighbors
+     * Before using the below primitives check orientation of PiPj edge against Pr vertex.
      */
 
-    void checkNeighbors(int apexVertexTriangleId);
+    void checkOrientation(int apexVertexTriangleId);
 
     ////////////////////////////////////////////////////////////////
     //                 Left Triangle Primitives                   //
