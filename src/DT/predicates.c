@@ -1,6 +1,6 @@
 /*****************************************************************************/
 /*                                                                           */
-/*  Routines for Arbitrary Precision Floating-vertex Arithmetic               */
+/*  Routines for Arbitrary Precision Floating-vertex Arithmetic              */
 /*  and Fast Robust Geometric Predicates                                     */
 /*  (predicates.c)                                                           */
 /*                                                                           */
@@ -15,11 +15,11 @@
 /*  jrs@cs.cmu.edu                                                           */
 /*                                                                           */
 /*  This file contains C implementation of algorithms for exact addition     */
-/*    and multiplication of floating-vertex numbers, and predicates for       */
+/*    and multiplication of floating-vertex numbers, and predicates for      */
 /*    robustly performing the orientation and incircle tests used in         */
 /*    computational geometry.  The algorithms and underlying theory are      */
 /*    described in Jonathan Richard Shewchuk.  "Adaptive Precision Floating- */
-/*    Point Arithmetic and Fast Robust Geometric Predicates."  Technical     */
+/*    Vertex Arithmetic and Fast Robust Geometric Predicates."  Technical     */
 /*    Report CMU-CS-96-140, School of Computer Science, Carnegie Mellon      */
 /*    University, Pittsburgh, Pennsylvania, May 1996.  (Submitted to         */
 /*    Discrete & Computational Geometry.)                                    */
@@ -42,7 +42,7 @@
 /*                                                                           */
 /*                                                                           */
 /*  Several geometric predicates are defined.  Their parameters are all      */
-/*    vertices.  Each vertex is an array of two or three floating-vertex         */
+/*    vertices.  Each vertex is an array of two or three floating-vertex     */
 /*    numbers.  The geometric predicates, described in the papers, are       */
 /*                                                                           */
 /*    orient2d(pa, pb, pc)                                                   */
@@ -104,7 +104,7 @@
 /*  If you look around below, you'll also find macros for a bunch of         */
 /*    simple unrolled arithmetic operations, and procedures for printing     */
 /*    expansions (commented out because they don't work with all C           */
-/*    compilers) and for generating random floating-vertex numbers whose      */
+/*    compilers) and for generating random floating-vertex numbers whose     */
 /*    significand bits are all random.  Most of the macros have undocumented */
 /*    requirements that certain of their parameters should not be the same   */
 /*    variable; for safety, better to make sure all the parameters are       */
@@ -119,7 +119,7 @@
 #include <sys/time.h>
 
 /* On some machines, the exact arithmetic routines might be defeated by the  */
-/*   use of internal extended precision floating-vertex registers.  Sometimes */
+/*   use of internal extended precision floating-vertex registers.  Sometimes*/
 /*   this problem can be fixed by defining certain values to be volatile,    */
 /*   thus forcing them to be stored to memory and rounded off.  This isn't   */
 /*   a great solution, though, as it slows the arithmetic down.              */
@@ -1410,11 +1410,11 @@ REAL estimate(elen, e)
 /*  orient2dslow()   Another exact 2D orientation test.  Robust.             */
 /*  orient2d()   Adaptive exact 2D orientation test.  Robust.                */
 /*                                                                           */
-/*               Return a positive value if the vertices pa, pb, and pc occur  */
+/*               Return a positive value if the vertices pa, pb, and pc occur*/
 /*               in counterclockwise order; a negative value if they occur   */
 /*               in clockwise order; and zero if they are collinear.  The    */
 /*               result is also a rough approximation of twice the signed    */
-/*               area of the triangle defined by the three vertices.           */
+/*               area of the triangle defined by the three vertices.         */
 /*                                                                           */
 /*  Only the first and last routine should be used; the middle two are for   */
 /*  timings.                                                                 */
@@ -1424,7 +1424,7 @@ REAL estimate(elen, e)
 /*  this determinant is computed adaptively, in the sense that exact         */
 /*  arithmetic is used only to the degree it is needed to ensure that the    */
 /*  returned value has the correct sign.  Hence, orient2d() is usually quite */
-/*  fast, but will run more slowly when the input vertices are collinear or    */
+/*  fast, but will run more slowly when the input vertices are collinear or  */
 /*  nearly so.                                                               */
 /*                                                                           */
 /*****************************************************************************/
@@ -1659,14 +1659,14 @@ REAL orient2d(pa, pb, pc)
 /*  orient3dslow()   Another exact 3D orientation test.  Robust.             */
 /*  orient3d()   Adaptive exact 3D orientation test.  Robust.                */
 /*                                                                           */
-/*               Return a positive value if the vertex pd lies below the      */
+/*               Return a positive value if the vertex pd lies below the     */
 /*               plane passing through pa, pb, and pc; "below" is defined so */
 /*               that pa, pb, and pc appear in counterclockwise order when   */
 /*               viewed from above the plane.  Returns a negative value if   */
-/*               pd lies above the plane.  Returns zero if the vertices are    */
+/*               pd lies above the plane.  Returns zero if the vertices are  */
 /*               coplanar.  The result is also a rough approximation of six  */
 /*               times the signed volume of the tetrahedron defined by the   */
-/*               four vertices.                                                */
+/*               four vertices.                                              */
 /*                                                                           */
 /*  Only the first and last routine should be used; the middle two are for   */
 /*  timings.                                                                 */
@@ -1676,7 +1676,7 @@ REAL orient2d(pa, pb, pc)
 /*  this determinant is computed adaptively, in the sense that exact         */
 /*  arithmetic is used only to the degree it is needed to ensure that the    */
 /*  returned value has the correct sign.  Hence, orient3d() is usually quite */
-/*  fast, but will run more slowly when the input vertices are coplanar or     */
+/*  fast, but will run more slowly when the input vertices are coplanar or   */
 /*  nearly so.                                                               */
 /*                                                                           */
 /*****************************************************************************/
@@ -2382,10 +2382,10 @@ REAL orient3d(pa, pb, pc, pd)
 /*  incircleslow()   Another exact 2D incircle test.  Robust.                */
 /*  incircle()   Adaptive exact 2D incircle test.  Robust.                   */
 /*                                                                           */
-/*               Return a positive value if the vertex pd lies inside the     */
+/*               Return a positive value if the vertex pd lies inside the    */
 /*               circle passing through pa, pb, and pc; a negative value if  */
 /*               it lies outside; and zero if the four vertices are cocircular.*/
-/*               The vertices pa, pb, and pc must be in counterclockwise       */
+/*               The vertices pa, pb, and pc must be in counterclockwise     */
 /*               order, or the sign of the result will be reversed.          */
 /*                                                                           */
 /*  Only the first and last routine should be used; the middle two are for   */
@@ -2396,7 +2396,7 @@ REAL orient3d(pa, pb, pc, pd)
 /*  this determinant is computed adaptively, in the sense that exact         */
 /*  arithmetic is used only to the degree it is needed to ensure that the    */
 /*  returned value has the correct sign.  Hence, incircle() is usually quite */
-/*  fast, but will run more slowly when the input vertices are cocircular or   */
+/*  fast, but will run more slowly when the input vertices are cocircular or */
 /*  nearly so.                                                               */
 /*                                                                           */
 /*****************************************************************************/
@@ -3365,10 +3365,10 @@ REAL incircle(pa, pb, pc, pd)
 /*  insphereslow()   Another exact 3D insphere test.  Robust.                */
 /*  insphere()   Adaptive exact 3D insphere test.  Robust.                   */
 /*                                                                           */
-/*               Return a positive value if the vertex pe lies inside the     */
+/*               Return a positive value if the vertex pe lies inside the    */
 /*               sphere passing through pa, pb, pc, and pd; a negative value */
-/*               if it lies outside; and zero if the five vertices are         */
-/*               cospherical.  The vertices pa, pb, pc, and pd must be ordered */
+/*               if it lies outside; and zero if the five vertices are       */
+/*               cospherical.  The vertices pa, pb, pc, and pd must be ordered*/
 /*               so that they have a positive orientation (as defined by     */
 /*               orient3d()), or the sign of the result will be reversed.    */
 /*                                                                           */
@@ -3380,7 +3380,7 @@ REAL incircle(pa, pb, pc, pd)
 /*  this determinant is computed adaptively, in the sense that exact         */
 /*  arithmetic is used only to the degree it is needed to ensure that the    */
 /*  returned value has the correct sign.  Hence, insphere() is usually quite */
-/*  fast, but will run more slowly when the input vertices are cospherical or  */
+/*  fast, but will run more slowly when the input vertices are cospherical or*/
 /*  nearly so.                                                               */
 /*                                                                           */
 /*****************************************************************************/

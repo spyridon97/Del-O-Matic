@@ -11,35 +11,34 @@
 #define DELAUNAY_TRIANGULATION_TRIANGLE_HXX
 
 
-#include "Predicates.hxx"
+#include <vector>
 #include "Vertex.hxx"
 
+
+class Edge;
+
+using EdgeHandle = Edge*;
 
 class Triangle;
 
 using TriangleHandle = Triangle*;
 
-class Triangle : public std::array<VertexHandle, 3>
+class Triangle
 {
 public:
     /**
      * @brief Constructor of Triangle class.
+     *
+     * @param vertices are the vertices that are used to define the triangle
      */
-    Triangle();
+    explicit Triangle(std::array<VertexHandle, 3> vertices);
 
     /**
-     * @brief Constructor of Triangle class.
+     * @brief Copy Constructor of Triangle class.
      *
-     * @param points are the vertices that are used to define the triangle
+     * @param triangle is the triangle that will be copied
      */
-    explicit Triangle(std::array<VertexHandle, 3> points);
-
-    /**
-     * @brief Copy Constructor.
-     *
-     * @param otherTriangle to be copied
-     */
-    Triangle(const Triangle& otherTriangle);
+    explicit Triangle(TriangleHandle& triangle);
 
     /**
      * @brief Destructor of Triangle class
@@ -47,12 +46,11 @@ public:
     ~Triangle();
 
     /**
-     * @brief Checks if a vertex lies in the circumcircle of a triangle.
+     * @brief Sets the edges of the triangle.
      *
-     * @param vertex is the checked vertex
-     * @return a boolean value which indicates if a vertex lies in the circumcircle of a triangle
+     * @param edges are the edge of the triangle
      */
-    [[nodiscard]] bool inCircleTest(const VertexHandle& vertex) const;
+    void setEdges(std::array<EdgeHandle, 3> edges);
 
     /**
      * @brief Checks if a vertex is part of a triangle.
@@ -63,8 +61,15 @@ public:
     [[nodiscard]] bool containsVertex(const VertexHandle& vertex) const;
 
 public:
-    #define vertices _M_elems
-    size_t id;
+    std::array<VertexHandle, 3> vertices;
+
+    std::array<EdgeHandle, 3> edges;
+
+    //  used by DAG
+    std::vector<TriangleHandle> childrenTriangles;
+
+    //  used by DAG to extract triangulation
+    bool visitedTriangle;
 };
 
 

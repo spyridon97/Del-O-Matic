@@ -4,34 +4,38 @@
  * Description: Header file of Vertex class.
  *
  * Author:      Spyridon Tsalikis
- * Created on   4/2/20.
+ * Created on   4/1/20.
  */
 
 #ifndef DELAUNAY_TRIANGULATION_VERTEX_HXX
 #define DELAUNAY_TRIANGULATION_VERTEX_HXX
 
 
-#include "Point.hxx"
+#include <array>
+#include <iostream>
 
 
 class Vertex;
 
 using VertexHandle = Vertex*;
 
-class Vertex : public Point
+/**
+ * @brief Facilitates a 2D cartesian Vertex.
+ */
+class Vertex : public std::array<double, 2>
 {
 public:
     /**
-     * @brief Default constructor
+     * @brief Constructor of Vertex class which sets all dimensions to 0.
      */
     Vertex();
 
     /**
-     * @brief Copy Constructor.
+     * @brief Copy Constructor of Vertex class.
      *
-     * @param point the copied point
+     * @param vertex is the vertex of which its coordinates will be extracted
      */
-    explicit Vertex(const Point& point);
+    Vertex(const Vertex& vertex);
 
     /**
      * @brief Constructor of Vertex class which set all dimensions using a specific array.
@@ -41,13 +45,40 @@ public:
     explicit Vertex(std::array<double, 2> coord);
 
     /**
-     * @brief Default Destructor.
+     * @brief Destructor of Vertex class.
      */
     ~Vertex();
 
 public:
-    size_t id;
+    #define coordinates _M_elems
+
+    /**
+     * @brief This id is used to define vertex for edge and to print fast the triangulation
+     * If id =  0, that's the default.
+     * If id = -3, it's the first vertex of the boundary triangle
+     * If id = -2, it's the second vertex of the boundary triangle
+     * If id = -1, it's the third vertex of the boundary triangle
+     */
+    int id;
 };
+
+/**
+ * @brief Overloads operator ">>".
+ *
+ * @param input is the stream which is used to read a vertex
+ * @param vertex is a vertex in which the input coordinates will be saved to
+ * @return a vertex with the input coordinates
+ */
+std::istream& operator>>(std::istream& input, Vertex& vertex);
+
+/**
+ * @brief Overloads operator "<<".
+ *
+ * @param output is the stream which is used to output a vertex
+ * @param vertex is a vertex whose coordinated will be outputed
+ * @return the output coordinates
+ */
+std::ostream& operator<<(std::ostream& output, const Vertex& vertex);
 
 
 #endif /* DELAUNAY_TRIANGULATION_VERTEX_HXX */

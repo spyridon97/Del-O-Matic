@@ -13,7 +13,7 @@
 
 #include <array>
 #include <vector>
-#include "Point.hxx"
+#include "Vertex.hxx"
 
 
 struct Mesh
@@ -23,9 +23,9 @@ struct Mesh
         std::array<size_t, 3> indices;
     };
 
-    size_t numberOfPoints;
+    size_t numberOfVertices;
 
-    std::vector<Point> points;
+    std::vector<Vertex> vertices;
     std::vector<Triangle> triangles;
 };
 

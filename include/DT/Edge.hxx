@@ -11,30 +11,27 @@
 #define DELAUNAY_TRIANGULATION_EDGE_HXX
 
 
-#include <cmath>
-#include "Vertex.hxx"
+#include <vector>
+#include "Triangle.hxx"
 
+
+//                                [Triangle, id of edge]
+using TrianglePair = std::pair<TriangleHandle, size_t>;
 
 class Edge;
 
 using EdgeHandle = Edge*;
 
-class Edge : public std::array<VertexHandle, 2>
+class Edge
 {
 public:
     /**
      * @brief Constructor of Edge class.
      *
-     * @param points are the vertices that are used to define the ege
+     * @param originVertexId is the id of the origin vertex of the edge
+     * @param destinationVertexId is the id of the destination vertex of the edge
      */
-    explicit Edge(std::array<VertexHandle, 2> points);
-
-    /**
-     * @brief Copy Constructor.
-     *
-     * @param otherEdge to be copied
-     */
-    Edge(const Edge& otherEdge);
+    explicit Edge(int originVertexId, int destinationVertexId);
 
     /**
      * @brief Destructor of Edge class
@@ -42,24 +39,91 @@ public:
     ~Edge();
 
     /**
-     * @brief Compares Edges.
+     * @brief Adds an adjacent triangle of the edge.
      *
-     * @return a boolean value which indicates if edges are the same
+     * @param adjacentTriangleWithEdgeId is the adjacent triangle along with it edgeId
      */
-    [[nodiscard]] bool isSame(const Edge& edge) const;
+    void addAdjacentTriangle(TrianglePair adjacentTriangleWithEdgeId);
 
     /**
-     * @brief Gets squared length of the Edge.
+     * @brief Replaces an adjacent triangle we a new one.
      *
-     * @return squared length of the Edge
+     * @param oldTriangle is the old adjacent triangle
+     * @param newTriangleInfo is the new adjacent triangle along with its edge id
      */
-    [[nodiscard]] double getSquaredLength() const;
+    void replaceAdjacentTriangle(const TriangleHandle& oldTriangle, const TrianglePair& newTriangleInfo);
+
+    /*
+     * The following primitives are calculated with the following convention:
+     * Given the following Edge PiPj (with this specific order) that will be DELETED, we can extract:
+     * 1) the left triangle PiPjPr (with this specific order) and its information
+     * 2) the right triangle PiPkPj (with this specific order) and its information
+     *
+     *
+     *                                  Pk
+     *                                  /\
+     *                                 /  \
+     *                                /    \
+     *                             Pi--------Pj
+     *                                \    /
+     *                                 \  /
+     *                                  \/
+     *                                  Pr
+     *
+     * Before using the below primitives check orientation of PiPj edge against Pr vertex.
+     */
+
+    void checkOrientation(int apexVertexTriangleId);
+
+    ////////////////////////////////////////////////////////////////
+    //                 Left Triangle Primitives                   //
+    ////////////////////////////////////////////////////////////////
+
+    TriangleHandle getLeftTriangle();
+
+    VertexHandle getOriginVertexLeftTriangle();
+
+    VertexHandle getDestinationVertexLeftTriangle();
+
+    VertexHandle getApexVertexLeftTriangle();
+
+    EdgeHandle getOriginEdgeLeftTriangle();
+
+    EdgeHandle getDestinationEdgeLeftTriangle();
+
+    EdgeHandle getApexEdgeLeftTriangle();
+
+    ////////////////////////////////////////////////////////////////
+    //                Right Triangle Primitives                   //
+    ////////////////////////////////////////////////////////////////
+
+    TriangleHandle getRightTriangle();
+
+    VertexHandle getOriginVertexRightTriangle();
+
+    VertexHandle getDestinationVertexRightTriangle();
+
+    VertexHandle getApexVertexRightTriangle();
+
+    EdgeHandle getOriginEdgeRightTriangle();
+
+    EdgeHandle getDestinationEdgeRightTriangle();
+
+    EdgeHandle getApexEdgeRightTriangle();
+
+    /**
+     * @brief Checks if the edge is a boundary edge.
+     *
+     * @return a boolean value which indicates if the edge is a boundary edge.
+     */
+    [[nodiscard]] bool isBoundaryTriangle() const;
 
 public:
-    #define vertices _M_elems
+    int originVertexId;
+    int destinationVertexId;
 
-    bool isBad;
-    size_t id;
+    //  [Triangle, id of edge]
+    std::vector<TrianglePair> adjacentTrianglesInfo;
 };
 
 

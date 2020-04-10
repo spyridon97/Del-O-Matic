@@ -30,22 +30,23 @@ int main(int argc, char** argv)
     Timer readingInputTimer{};
     readingInputTimer.startTimer();
 
-    std::vector<Point> inputPoints;
+    std::vector<Vertex> inputVertices;
     if (!Args::inputFileName.empty()) {
-        inputPoints = Io::readInput(Args::inputFileName);
+        inputVertices = Io::readInput(Args::inputFileName);
     } else {
-        inputPoints = Io::generateUniformRandomInput(Args::numberOfRandomPoints);
+        inputVertices = Io::generateUniformRandomInput(Args::numberOfRandomVertices);
     }
 
     readingInputTimer.stopTimer();
 
-    std::unique_ptr<DelaunayTriangulation> triangulator = std::make_unique<DelaunayTriangulation>();
+    std::unique_ptr<DelaunayTriangulation> triangulator =
+            std::make_unique<DelaunayTriangulation>(Args::robustPredicates);
 
-    triangulator->setInputPoints(inputPoints);
+    triangulator->setInputVertices(inputVertices);
 
     triangulator->generateMesh();
 
-    Mesh outputMesh = triangulator->getCleanMesh();
+    Mesh outputMesh = triangulator->getCleanMesh(Args::validateDelaunayProperty);
 
     Timer writingMeshTimer{};
     writingMeshTimer.startTimer();

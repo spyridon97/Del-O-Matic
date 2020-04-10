@@ -9,39 +9,135 @@
 
 #include "Edge.hxx"
 
+////////////////////////////////////////////////////////////
+//                 Triangles Information                  //
+////////////////////////////////////////////////////////////
 
-Edge::Edge(std::array<VertexHandle, 2> points) : array()
+#define leftTriangleId 0
+#define rightTriangleId 1
+
+#define leftTriangleInfo adjacentTrianglesInfo[leftTriangleId]
+#define rightTriangleInfo adjacentTrianglesInfo[rightTriangleId]
+
+#define leftTriangle leftTriangleInfo.first
+#define rightTriangle rightTriangleInfo.first
+
+#define leftTriangleEdgeId leftTriangleInfo.second
+#define rightTriangleEdgeId rightTriangleInfo.second
+
+//  Fast lookup arrays to speed some of the mesh manipulation primitives
+int plus1mod3[3] = {1, 2, 0};
+int minus1mod3[3] = {2, 0, 1};
+
+Edge::Edge(int originVertexId, int destinationVertexId)
 {
-    for (size_t i = 0; i < points.size(); ++i) {
-        this->vertices[i] = points[i];
-    }
-    isBad = false;
-    id = std::numeric_limits<size_t>::max();
+    adjacentTrianglesInfo.reserve(2);
+    this->originVertexId = originVertexId;
+    this->destinationVertexId = destinationVertexId;
 }
 
 Edge::~Edge() = default;
 
-Edge::Edge(const Edge& otherEdge) : array(otherEdge)
+void Edge::addAdjacentTriangle(TrianglePair adjacentTriangleWithEdgeId)
 {
-    for (size_t i = 0; i < size(); i++) {
-        vertices[i] = otherEdge.vertices[i];
-    }
-    isBad = otherEdge.isBad;
-    id = otherEdge.id;
+    adjacentTrianglesInfo.push_back(adjacentTriangleWithEdgeId);
 }
 
-bool Edge::isSame(const Edge& edge) const
+void Edge::replaceAdjacentTriangle(const TriangleHandle& oldTriangle, const TrianglePair& newTriangleInfo)
 {
-    return (*vertices[0] == *edge.vertices[0] && *vertices[1] == *edge.vertices[1]) ||
-           (*vertices[0] == *edge.vertices[1] && *vertices[1] == *edge.vertices[0]);
+    if (leftTriangle == oldTriangle) {
+        leftTriangleInfo = newTriangleInfo;
+    } else {
+        rightTriangleInfo = newTriangleInfo;
+    }
 }
 
-double Edge::getSquaredLength() const
+void Edge::checkOrientation(int apexVertexTriangleId)
 {
-    double squaredLength = 0;
-    for (size_t i = 0; i < 2; i++) {
-        squaredLength += std::pow((*vertices[1])[i] - (*vertices[0])[i], 2);
+    if (getApexVertexLeftTriangle()->id != apexVertexTriangleId) {
+        std::swap(leftTriangleInfo, rightTriangleInfo);
     }
+}
 
-    return squaredLength;
+////////////////////////////////////////////////////////////////
+//                 Left Triangle Primitives                   //
+////////////////////////////////////////////////////////////////
+
+TriangleHandle Edge::getLeftTriangle()
+{
+    return leftTriangle;
+}
+
+VertexHandle Edge::getOriginVertexLeftTriangle()
+{
+    return leftTriangle->vertices[leftTriangleEdgeId];
+}
+
+VertexHandle Edge::getDestinationVertexLeftTriangle()
+{
+    return leftTriangle->vertices[plus1mod3[leftTriangleEdgeId]];
+}
+
+VertexHandle Edge::getApexVertexLeftTriangle()
+{
+    return leftTriangle->vertices[minus1mod3[leftTriangleEdgeId]];
+}
+
+EdgeHandle Edge::getOriginEdgeLeftTriangle()
+{
+    return leftTriangle->edges[leftTriangleEdgeId];
+}
+
+EdgeHandle Edge::getDestinationEdgeLeftTriangle()
+{
+    return leftTriangle->edges[plus1mod3[leftTriangleEdgeId]];
+}
+
+EdgeHandle Edge::getApexEdgeLeftTriangle()
+{
+    return leftTriangle->edges[minus1mod3[leftTriangleEdgeId]];
+}
+
+////////////////////////////////////////////////////////////////
+//                Right Triangle Primitives                   //
+////////////////////////////////////////////////////////////////
+
+TriangleHandle Edge::getRightTriangle()
+{
+    return rightTriangle;
+}
+
+VertexHandle Edge::getOriginVertexRightTriangle()
+{
+    return rightTriangle->vertices[plus1mod3[rightTriangleEdgeId]];
+}
+
+VertexHandle Edge::getDestinationVertexRightTriangle()
+{
+    return rightTriangle->vertices[minus1mod3[rightTriangleEdgeId]];
+}
+
+VertexHandle Edge::getApexVertexRightTriangle()
+{
+    return rightTriangle->vertices[rightTriangleEdgeId];
+}
+
+EdgeHandle Edge::getOriginEdgeRightTriangle()
+{
+    return rightTriangle->edges[plus1mod3[rightTriangleEdgeId]];
+}
+
+EdgeHandle Edge::getDestinationEdgeRightTriangle()
+{
+    return rightTriangle->edges[minus1mod3[rightTriangleEdgeId]];
+}
+
+EdgeHandle Edge::getApexEdgeRightTriangle()
+{
+    return rightTriangle->edges[rightTriangleEdgeId];
+}
+
+bool Edge::isBoundaryTriangle() const
+{
+    return adjacentTrianglesInfo.size() == 1;
 }

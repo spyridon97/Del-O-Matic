@@ -8,11 +8,12 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -O3")
 set(DT_SOURCE_FILES
         src/DT/DelaunayTriangulation.cxx
         src/DT/Edge.cxx
-        src/DT/Point.cxx
-        src/DT/Predicates.c
+        src/DT/GeometricPredicates.cxx
+        src/DT/Vertex.cxx
+        src/DT/TrianglesDAG.cxx
+        src/DT/predicates.c
         src/DT/Triangle.cxx
         src/DT/Timer.cxx
-        src/DT/Vertex.cxx
         )
 
 set(INTERFACE_SOURCE_FILES

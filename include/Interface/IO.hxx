@@ -14,7 +14,7 @@
 #include <string>
 #include <vector>
 #include "Mesh.hxx"
-#include "Point.hxx"
+#include "Vertex.hxx"
 
 
 namespace Io
@@ -25,16 +25,16 @@ namespace Io
      * @param filename is the file name of the .node file
      * @return return a set of input vertices
      */
-    std::vector<Point> readInput(const std::string& filename);
+    std::vector<Vertex> readInput(const std::string& filename);
 
     /**
-     * @brief Generates a set of random uniform points.
+     * @brief Generates a set of random uniform vertices.
      *
-     * @param numberOfRandomPoints is the amount of points that will be created
+     * @param numberOfRandomVertices is the amount of vertices that will be created
      *
-     * @return a set of random uniform points
+     * @return a set of random uniform vertices
      */
-    std::vector<Point> generateUniformRandomInput(const size_t& numberOfRandomPoints);
+    std::vector<Vertex> generateUniformRandomInput(const size_t& numberOfRandomVertices);
 
     /**
      * @brief Prints output .node, .edge, and .ele files.

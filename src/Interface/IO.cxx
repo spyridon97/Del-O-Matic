@@ -21,24 +21,24 @@ namespace Io
         return line == "#" || line.empty();
     }
 
-    std::vector<Point> readInput(const std::string& filename)
+    std::vector<Vertex> readInput(const std::string& filename)
     {
         std::cout << std::endl << "Reading Input file..." << std::endl;
 
-        std::vector<Point> points;
+        std::vector<Vertex> vertices;
 
         std::ifstream inputFile;
         inputFile.open(filename.c_str());
 
         if (inputFile) {
-            size_t numberOfPoints = 0;
+            size_t numberOfVertices = 0;
             std::string line, restLine;
 
             do {
                 inputFile >> line;
                 if (!hasComments(line)) {
-                    numberOfPoints = stoi(line);
-                    points.reserve(numberOfPoints);
+                    numberOfVertices = stoi(line);
+                    vertices.reserve(numberOfVertices);
 
                     size_t numberOfDimensions, numberOfAttributes, boundaryMarker;
                     inputFile >> numberOfDimensions >> numberOfAttributes >> boundaryMarker;
@@ -53,18 +53,17 @@ namespace Io
             do {
                 inputFile >> line;
                 if (!hasComments(line)) {
-                    //defining the first vertex
-                    size_t pointId = std::stoi(line);
-                    Point point;
-                    inputFile >> point[0] >> point[1];
-                    points.emplace_back(point);
+                    //  defining the first vertex
+                    size_t vertexId = std::stoi(line);
+                    Vertex vertex;
+                    inputFile >> vertex[0] >> vertex[1];
+                    vertices.push_back(vertex);
                     std::getline(inputFile, restLine);
 
-                    //defining the rest of the vertices
-                    for (size_t i = 0; i < numberOfPoints - 1; i++) {
-                        Point point;
-                        inputFile >> pointId >> point[0] >> point[1];
-                        points.emplace_back(point);
+                    //  defining the rest of the vertices
+                    for (size_t i = 0; i < numberOfVertices - 1; i++) {
+                        inputFile >> vertexId >> vertex[0] >> vertex[1];
+                        vertices.push_back(vertex);
                     }
                 }
                 std::getline(inputFile, restLine);
@@ -74,28 +73,32 @@ namespace Io
             exit(EXIT_FAILURE);
         }
 
-        return points;
+        return vertices;
     }
 
-    std::vector<Point> generateUniformRandomInput(const size_t& numberOfRandomPoints)
+    std::vector<Vertex> generateUniformRandomInput(const size_t& numberOfRandomVertices)
     {
-        std::default_random_engine eng(std::random_device{}());
-        std::uniform_real_distribution<double> dist_w(0, 1000);
-        std::uniform_real_distribution<double> dist_h(0, 1000);
 
-        std::cout << std::endl << "Generating " << numberOfRandomPoints << " uniformly random points..." << std::endl;
+        std::cout << std::endl << "Generating " << numberOfRandomVertices << " uniformly random vertices..."
+                  << std::endl;
 
-        std::vector<Point> points;
-        points.reserve(numberOfRandomPoints);
-        for (size_t i = 0; i < numberOfRandomPoints; ++i) {
-            points.push_back(Point({dist_w(eng), dist_h(eng)}));
+        std::default_random_engine randomGenerator(std::random_device{}());
+        std::uniform_real_distribution<double> distributionX(0, 1000000);
+        std::uniform_real_distribution<double> distributionY(0, 1000000);
+
+        std::vector<Vertex> vertices;
+        vertices.reserve(numberOfRandomVertices);
+        for (size_t i = 0; i < numberOfRandomVertices; ++i) {
+            vertices.push_back(Vertex({distributionX(randomGenerator), distributionY(randomGenerator)}));
         }
 
-        return points;
+        return vertices;
     }
 
     void printMesh(const Mesh& mesh, const std::string& filename)
     {
+        std::cout << std::endl << "Printing mesh... " << std::endl;
+
         std::string rawFilename;
         size_t lastdot = filename.find_last_of('.');
         if (lastdot == std::string::npos) {
@@ -103,43 +106,48 @@ namespace Io
         } else {
             rawFilename = filename.substr(0, lastdot);
         }
-        std::string pointsFilename = rawFilename + ".node";
-        std::string cellsFilename = rawFilename + ".ele";
+        std::string verticesFilename = rawFilename + ".node";
+        std::string trianglesFilename = rawFilename + ".ele";
 
         //  vertices
-        std::ofstream pointsOutputFile;
-        pointsOutputFile.open(pointsFilename.c_str());
+        std::ofstream verticesOutputFile;
+        verticesOutputFile.open(verticesFilename.c_str());
 
-        if (pointsOutputFile) {
-            pointsOutputFile << mesh.numberOfPoints << " 2 0 0" << std::endl;
+        if (verticesOutputFile) {
+            verticesOutputFile << mesh.numberOfVertices << " 2 0 0" << std::endl;
 
             //  print vertices
-            for (size_t i = 0; i < mesh.points.size(); i++) {
-                pointsOutputFile << i + 1 << " " << mesh.points[i][0] << " " << mesh.points[i][1]
-                                 << std::endl;
+            for (size_t i = 0; i < mesh.vertices.size(); i++) {
+                verticesOutputFile << i + 1 << " " << mesh.vertices[i][0] << " " << mesh.vertices[i][1]
+                                   << std::endl;
             }
         } else {
-            std::cerr << "Could not open " << pointsFilename << " file" << std::endl;
+            std::cerr << "Could not open " << verticesFilename << " file" << std::endl;
             exit(EXIT_FAILURE);
         }
-        pointsOutputFile.close();
+        verticesOutputFile.close();
 
-        //  cells
-        std::ofstream cellsOutputFile;
-        cellsOutputFile.open(cellsFilename.c_str());
+        std::cout << std::endl << "Vertices are stored in: " << verticesFilename << std::endl;
 
-        if (cellsOutputFile) {
-            cellsOutputFile << mesh.triangles.size() << " 3 0" << std::endl;
+        //  triangles
+        std::ofstream trianglesOutputFile;
+        trianglesOutputFile.open(trianglesFilename.c_str());
+
+        if (trianglesOutputFile) {
+            trianglesOutputFile << mesh.triangles.size() << " 3 0" << std::endl;
 
             //  print triangles
             for (size_t i = 0; i < mesh.triangles.size(); i++) {
-                cellsOutputFile << i + 1 << " " << mesh.triangles[i].indices[0] << " " << mesh.triangles[i].indices[1]
-                                << " " << mesh.triangles[i].indices[2] << std::endl;
+                trianglesOutputFile << i + 1 << " " << mesh.triangles[i].indices[0] << " "
+                                    << mesh.triangles[i].indices[1]
+                                    << " " << mesh.triangles[i].indices[2] << std::endl;
             }
         } else {
-            std::cerr << "Could not open " << cellsFilename << " file" << std::endl;
+            std::cerr << "Could not open " << trianglesFilename << " file" << std::endl;
             exit(EXIT_FAILURE);
         }
-        cellsOutputFile.close();
+        trianglesOutputFile.close();
+
+        std::cout << "Triangles are stored in: " << trianglesFilename << std::endl;
     }
 }
