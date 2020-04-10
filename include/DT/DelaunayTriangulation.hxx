@@ -15,7 +15,7 @@
 #include "GeometricPredicates.hxx"
 #include "Mesh.hxx"
 #include "Timer.hxx"
-#include "Triangle.hxx"
+#include "Edge.hxx"
 #include "TrianglesDAG.hxx"
 
 
@@ -77,7 +77,6 @@ public:
     Mesh getCleanMesh(bool validateDelaunayProperty);
 
 private:
-
     std::vector<VertexHandle> meshVertices;
 public:
     Timer computeBoundaryTriangleTimer{}, meshingTimer{}, computeMeshResultsTimer{};

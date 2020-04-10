@@ -85,128 +85,76 @@ void DelaunayTriangulation::createBoundingTriangle()
     const double midX = (minX + maxX) / 2;
     const double midY = (minY + maxY) / 2;
 
-    auto vertex0 = new Vertex({midX - multiplier * deltaMax, midY - deltaMax});
-    vertex0->id = -3;
-    auto vertex1 = new Vertex({midX, midY + multiplier * deltaMax});
-    vertex1->id = -2;
-    auto vertex2 = new Vertex({midX + multiplier * deltaMax, midY - deltaMax});
-    vertex2->id = -1;
+    auto Pi = new Vertex({midX - multiplier * deltaMax, midY - deltaMax});
+    Pi->id = -3;
+    auto Pj = new Vertex({midX, midY + multiplier * deltaMax});
+    Pj->id = -2;
+    auto Pk = new Vertex({midX + multiplier * deltaMax, midY - deltaMax});
+    Pk->id = -1;
 
-    auto edge0 = new Edge({vertex0->id, vertex1->id});
-    auto edge1 = new Edge({vertex1->id, vertex2->id});
-    auto edge2 = new Edge({vertex2->id, vertex0->id});
+    auto PiPj = new Edge(Pi->id, Pj->id);
+    auto PjPk = new Edge(Pj->id, Pk->id);
+    auto PkPi = new Edge(Pk->id, Pi->id);
 
     computeBoundaryTriangleTimer.stopTimer();
 
-    auto boundingTriangle = new Triangle({vertex0, vertex1, vertex2});
-    boundingTriangle->setEdges({edge0, edge1, edge2});
+    auto PiPjPk = new Triangle({Pi, Pj, Pk});
+    PiPjPk->setEdges({PiPj, PjPk, PkPi});
 
-    edge0->addAdjacentTriangle(TrianglePair(boundingTriangle, 0));
-    edge1->addAdjacentTriangle(TrianglePair(boundingTriangle, 1));
-    edge2->addAdjacentTriangle(TrianglePair(boundingTriangle, 2));
+    PiPj->addAdjacentTriangle(TrianglePair(PiPjPk, 0));
+    PjPk->addAdjacentTriangle(TrianglePair(PiPjPk, 1));
+    PkPi->addAdjacentTriangle(TrianglePair(PiPjPk, 2));
 
     //  initialize root triangle of DAG
-    setRootTriangle(boundingTriangle);
+    setRootTriangle(PiPjPk);
 }
 
 void DelaunayTriangulation::legalizeEdge(EdgeHandle& PiPj, const VertexHandle& Pr)
 {
     //  PiPj is not a boundary edge
-    if (PiPj->getNumberOfAdjacentTriangles() != 1) {
+    if (!PiPj->isBoundaryTriangle()) {
         //  find adjacent triangles of edge PiPj
-        TrianglePair PiPkPj, PiPjPr;
-        if (PiPj->adjacentTrianglesWithEdgeIds[0].first->containsVertex(Pr)) {
-            PiPjPr = PiPj->adjacentTrianglesWithEdgeIds[0];
-            PiPkPj = PiPj->adjacentTrianglesWithEdgeIds[1];
-        } else {
-            PiPjPr = PiPj->adjacentTrianglesWithEdgeIds[1];
-            PiPkPj = PiPj->adjacentTrianglesWithEdgeIds[0];
-        }
+        PiPj->checkNeighbors(Pr->id);
 
-        //  find Pk vertex
-        VertexHandle Pk;
-        if (PiPkPj.second == 0) {
-            Pk = PiPkPj.first->vertices[2];
-        } else if (PiPkPj.second == 1) {
-            Pk = PiPkPj.first->vertices[0];
-        } else {
-            Pk = PiPkPj.first->vertices[1];
-        }
+        TriangleHandle PiPjPr = PiPj->getLeftTriangle();
+        TriangleHandle PiPkPj = PiPj->getRightTriangle();
+
+        VertexHandle Pk = PiPj->getDestinationVertexRightTriangle();
 
         //  Check if PiPj is illegal
-        if (GeometricPredicates::inCircle(PiPjPr.first, Pk)) {
+        if (GeometricPredicates::inCircle(PiPjPr, Pk)) {
             ////////////////////////////////////////////////////////////////
             //                      Flip Edge Started                     //
             ////////////////////////////////////////////////////////////////
 
-            //  Find vertices and edges in order to create the new triangles in the correct order
-            VertexHandle Pi, Pj;
-            EdgeHandle PrPi, PjPr;
+            //  Find vertices and edges of PiPjPr and PiPkPj
+            VertexHandle Pi = PiPj->getOriginVertexLeftTriangle();
+            VertexHandle Pj = PiPj->getDestinationVertexLeftTriangle();
 
-            //  retrieve information from triangle PiPjPr
-            if (PiPjPr.second == 0) {
-                Pi = PiPjPr.first->vertices[0];
-                Pj = PiPjPr.first->vertices[1];
+            EdgeHandle PjPr = PiPj->getDestinationEdgeLeftTriangle();
+            EdgeHandle PrPi = PiPj->getApexEdgeLeftTriangle();
 
-                PjPr = PiPjPr.first->edges[1];
-                PrPi = PiPjPr.first->edges[2];
-            } else if (PiPjPr.second == 1) {
-                //  this snippet is never used
-                Pi = PiPjPr.first->vertices[1];
-                Pj = PiPjPr.first->vertices[2];
-
-                PjPr = PiPjPr.first->edges[2];
-                PrPi = PiPjPr.first->edges[0];
-                std::cout << " I am here 1" << std::endl;
-            } else {
-                //  this snippet is never used
-                Pi = PiPjPr.first->vertices[2];
-                Pj = PiPjPr.first->vertices[0];
-
-                PjPr = PiPjPr.first->edges[0];
-                PrPi = PiPjPr.first->edges[1];
-                std::cout << " I am here 2" << std::endl;
-            }
-
-            EdgeHandle PiPk, PkPj;
-            //  retrieve information from triangle PiPkPj
-            if (PiPkPj.second == 0) {
-                PiPk = PiPkPj.first->edges[1];
-                PkPj = PiPkPj.first->edges[2];
-            } else if (PiPkPj.second == 1) {
-                PiPk = PiPkPj.first->edges[2];
-                PkPj = PiPkPj.first->edges[0];
-            } else {
-                PiPk = PiPkPj.first->edges[0];
-                PkPj = PiPkPj.first->edges[1];
-            }
+            EdgeHandle PiPk = PiPj->getOriginEdgeRightTriangle();
+            EdgeHandle PkPj = PiPj->getDestinationEdgeRightTriangle();
 
             //  remove the PiPj edge because we are gonna flip it
             delete PiPj;
-
-            //  remove the PiPjPr triangle as an adjacent triangle of its edges (except PiPj)
-            PrPi->removeAdjacentTriangle(PiPjPr.first);
-            PjPr->removeAdjacentTriangle(PiPjPr.first);
-
-            //  remove the PiPkPj triangle as an adjacent triangle of its edges (except PiPj)
-            PkPj->removeAdjacentTriangle(PiPkPj.first);
-            PiPk->removeAdjacentTriangle(PiPkPj.first);
 
             //  create the new triangles
             auto PiPkPr = new Triangle({Pi, Pk, Pr});
             auto PkPjPr = new Triangle({Pk, Pj, Pr});
 
             //  create the new edge for the new triangles
-            auto PkPr = new Edge({Pk->id, Pr->id});
+            auto PkPr = new Edge(Pk->id, Pr->id);
 
             //  assign adjacent triangles of the PiPkPr edges
-            PiPk->addAdjacentTriangle(TrianglePair(PiPkPr, 0));
+            PiPk->replaceAdjacentTriangle(PiPkPj, TrianglePair(PiPkPr, 0));
             PkPr->addAdjacentTriangle(TrianglePair(PiPkPr, 1));
-            PrPi->addAdjacentTriangle(TrianglePair(PiPkPr, 2));
+            PrPi->replaceAdjacentTriangle(PiPjPr, TrianglePair(PiPkPr, 2));
 
             //  assign adjacent triangles of the PkPjPr edges
-            PkPj->addAdjacentTriangle(TrianglePair(PkPjPr, 0));
-            PjPr->addAdjacentTriangle(TrianglePair(PkPjPr, 1));
+            PkPj->replaceAdjacentTriangle(PiPkPj, TrianglePair(PkPjPr, 0));
+            PjPr->replaceAdjacentTriangle(PiPjPr, TrianglePair(PkPjPr, 1));
             PkPr->addAdjacentTriangle(TrianglePair(PkPjPr, 2));
 
             //  set edges of PiPkPr and PkPjPr
@@ -214,11 +162,11 @@ void DelaunayTriangulation::legalizeEdge(EdgeHandle& PiPj, const VertexHandle& P
             PkPjPr->setEdges({PkPj, PjPr, PkPr});
 
             // update the DAG
-            PiPkPj.first->childrenTriangles.push_back(PiPkPr);
-            PiPkPj.first->childrenTriangles.push_back(PkPjPr);
+            PiPkPj->childrenTriangles.push_back(PiPkPr);
+            PiPkPj->childrenTriangles.push_back(PkPjPr);
 
-            PiPjPr.first->childrenTriangles.push_back(PiPkPr);
-            PiPjPr.first->childrenTriangles.push_back(PkPjPr);
+            PiPjPr->childrenTriangles.push_back(PiPkPr);
+            PiPjPr->childrenTriangles.push_back(PkPjPr);
 
             ////////////////////////////////////////////////////////////////
             //                       Flip Edge Ended                      //
@@ -275,33 +223,28 @@ void DelaunayTriangulation::generateMesh()
             //                    Split Triangle Started                  //
             ////////////////////////////////////////////////////////////////
 
-            //  remove PiPjPk as an adjacent triangle of its edges
-            PiPj->removeAdjacentTriangle(PiPjPk);
-            PjPk->removeAdjacentTriangle(PiPjPk);
-            PkPi->removeAdjacentTriangle(PiPjPk);
-
             //  create the new triangles
             auto PiPjPr = new Triangle({Pi, Pj, Pr});
             auto PjPkPr = new Triangle({Pj, Pk, Pr});
             auto PkPiPr = new Triangle({Pk, Pi, Pr});
 
             //  create the new edges for the new triangles
-            auto PiPr = new Edge({Pi->id, Pr->id});
-            auto PjPr = new Edge({Pj->id, Pr->id});
-            auto PkPr = new Edge({Pk->id, Pr->id});
+            auto PiPr = new Edge(Pi->id, Pr->id);
+            auto PjPr = new Edge(Pj->id, Pr->id);
+            auto PkPr = new Edge(Pk->id, Pr->id);
 
             //  assign adjacent triangles of the PiPjPr Edges
-            PiPj->addAdjacentTriangle(TrianglePair(PiPjPr, 0));
+            PiPj->replaceAdjacentTriangle(PiPjPk, TrianglePair(PiPjPr, 0));
             PjPr->addAdjacentTriangle(TrianglePair(PiPjPr, 1));
             PiPr->addAdjacentTriangle(TrianglePair(PiPjPr, 2));
 
             //  assign adjacent triangles of the PjPkPr Edges
-            PjPk->addAdjacentTriangle(TrianglePair(PjPkPr, 0));
+            PjPk->replaceAdjacentTriangle(PiPjPk, TrianglePair(PjPkPr, 0));
             PkPr->addAdjacentTriangle(TrianglePair(PjPkPr, 1));
             PjPr->addAdjacentTriangle(TrianglePair(PjPkPr, 2));
 
             //  assign adjacent triangles of the PkPiPr Edges
-            PkPi->addAdjacentTriangle(TrianglePair(PkPiPr, 0));
+            PkPi->replaceAdjacentTriangle(PiPjPk, TrianglePair(PkPiPr, 0));
             PiPr->addAdjacentTriangle(TrianglePair(PkPiPr, 1));
             PkPr->addAdjacentTriangle(TrianglePair(PkPiPr, 2));
 
@@ -361,41 +304,18 @@ void DelaunayTriangulation::generateMesh()
                 PkPi = PiPjPk->edges[1];
             }
 
-            VertexHandle Pm;
-
-            EdgeHandle PiPm;
-            EdgeHandle PmPj;
-
-            TrianglePair PiPmPj = PiPj->getAdjacentTriangle(PiPjPk);
-
             //  retrieve information from PiPmPj
-            if (PiPmPj.second == 0) {
-                Pm = PiPmPj.first->vertices[2];
+            PiPj->checkNeighbors(Pk->id);
 
-                PiPm = PiPmPj.first->edges[1];
-                PmPj = PiPmPj.first->edges[2];
-            } else if (PiPmPj.second == 1) {
-                Pm = PiPmPj.first->vertices[0];
 
-                PiPm = PiPmPj.first->edges[2];
-                PmPj = PiPmPj.first->edges[0];
-            } else {
-                Pm = PiPmPj.first->vertices[1];
-
-                PiPm = PiPmPj.first->edges[0];
-                PmPj = PiPmPj.first->edges[1];
-            }
+            TriangleHandle PiPmPj = PiPj->getRightTriangle();
+            VertexHandle Pm = PiPj->getDestinationVertexRightTriangle();
+            EdgeHandle PiPm = PiPj->getOriginEdgeRightTriangle();
+            EdgeHandle PmPj = PiPj->getDestinationEdgeRightTriangle();
 
             ////////////////////////////////////////////////////////////////
             //                   Split Triangles Started                  //
             ////////////////////////////////////////////////////////////////
-
-            //  remove the PiPjPk and PiPmPj as adjacent triangles of their edges
-            PiPm->removeAdjacentTriangle(PiPmPj.first);
-            PmPj->removeAdjacentTriangle(PiPmPj.first);
-
-            PjPk->removeAdjacentTriangle(PiPjPk);
-            PkPi->removeAdjacentTriangle(PiPjPk);
 
             //  remove the bad edge PiPj
             delete PiPj;
@@ -407,28 +327,28 @@ void DelaunayTriangulation::generateMesh()
             auto PkPiPr = new Triangle({Pk, Pi, Pr});
 
             //  create the new edges for the new triangles
-            auto PiPr = new Edge({Pi->id, Pr->id});
-            auto PmPr = new Edge({Pm->id, Pr->id});
-            auto PjPr = new Edge({Pj->id, Pr->id});
-            auto PkPr = new Edge({Pk->id, Pr->id});
+            auto PiPr = new Edge(Pi->id, Pr->id);
+            auto PmPr = new Edge(Pm->id, Pr->id);
+            auto PjPr = new Edge(Pj->id, Pr->id);
+            auto PkPr = new Edge(Pk->id, Pr->id);
 
             //  assign adjacent triangles of the PiPmPr Edges
-            PiPm->addAdjacentTriangle(TrianglePair(PiPmPr, 0));
+            PiPm->replaceAdjacentTriangle(PiPmPj, TrianglePair(PiPmPr, 0));
             PmPr->addAdjacentTriangle(TrianglePair(PiPmPr, 1));
             PiPr->addAdjacentTriangle(TrianglePair(PiPmPr, 2));
 
             //  assign adjacent triangles of the PmPjPr Edges
-            PmPj->addAdjacentTriangle(TrianglePair(PmPjPr, 0));
+            PmPj->replaceAdjacentTriangle(PiPmPj, TrianglePair(PmPjPr, 0));
             PjPr->addAdjacentTriangle(TrianglePair(PmPjPr, 1));
             PmPr->addAdjacentTriangle(TrianglePair(PmPjPr, 2));
 
             //  assign adjacent triangles of the PjPkPr Edges
-            PjPk->addAdjacentTriangle(TrianglePair(PjPkPr, 0));
+            PjPk->replaceAdjacentTriangle(PiPjPk, TrianglePair(PjPkPr, 0));
             PkPr->addAdjacentTriangle(TrianglePair(PjPkPr, 1));
             PjPr->addAdjacentTriangle(TrianglePair(PjPkPr, 2));
 
             //  assign adjacent triangles of the PkPiPr edges
-            PkPi->addAdjacentTriangle(TrianglePair(PkPiPr, 0));
+            PkPi->replaceAdjacentTriangle(PiPjPk, TrianglePair(PkPiPr, 0));
             PiPr->addAdjacentTriangle(TrianglePair(PkPiPr, 1));
             PkPr->addAdjacentTriangle(TrianglePair(PkPiPr, 2));
 
@@ -442,8 +362,8 @@ void DelaunayTriangulation::generateMesh()
             PiPjPk->childrenTriangles.push_back(PjPkPr);
             PiPjPk->childrenTriangles.push_back(PkPiPr);
 
-            PiPmPj.first->childrenTriangles.push_back(PiPmPr);
-            PiPmPj.first->childrenTriangles.push_back(PmPjPr);
+            PiPmPj->childrenTriangles.push_back(PiPmPr);
+            PiPmPj->childrenTriangles.push_back(PmPjPr);
 
             ////////////////////////////////////////////////////////////////
             //                   Split Triangles Ended                    //

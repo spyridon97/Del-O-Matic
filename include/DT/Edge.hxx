@@ -11,15 +11,10 @@
 #define DELAUNAY_TRIANGULATION_EDGE_HXX
 
 
-#include <cmath>
 #include <vector>
-#include "Vertex.hxx"
+#include "Triangle.hxx"
 
-
-class Triangle;
-
-using TriangleHandle = Triangle*;
-
+//                                [Triangle, id of edge]
 using TrianglePair = std::pair<TriangleHandle, size_t>;
 
 class Edge;
@@ -32,9 +27,10 @@ public:
     /**
      * @brief Constructor of Edge class.
      *
-     * @param verticesIds are the vertices that are used to define the edge
+     * @param originVertexId is the id of the origin vertex of the edge
+     * @param destinationVertexId is the id of the destination vertex of the edge
      */
-    explicit Edge(std::array<int, 2> verticesIds);
+    explicit Edge(int originVertexId, int destinationVertexId);
 
     /**
      * @brief Destructor of Edge class
@@ -49,39 +45,84 @@ public:
     void addAdjacentTriangle(TrianglePair adjacentTriangleWithEdgeId);
 
     /**
-     * @brief Removes an adjacent triangle of the edge.
+     * @brief Replaces an adjacent triangle we a new one.
      *
-     * @param triangle is the adjacent triangle
+     * @param oldTriangle is the old adjacent triangle
+     * @param newTriangleInfo is the new adjacent triangle along with its edge id
      */
-    void removeAdjacentTriangle(const TriangleHandle& triangle);
+    void replaceAdjacentTriangle(const TriangleHandle& oldTriangle, const TrianglePair& newTriangleInfo);
+
+    /*
+     * The following primitives are calculated with the following convention:
+     * Given the following Edge PiPj (with this specific order) that will be DELETED, we can extract:
+     * 1) the left triangle PiPjPr (with this specific order) and its information
+     * 2) the right triangle PiPkPj (with this specific order) and its information
+     *
+     *
+     *                                  Pk
+     *                                  /\
+     *                                 /  \
+     *                                /    \
+     *                             Pi--------Pj
+     *                                \    /
+     *                                 \  /
+     *                                  \/
+     *                                  Pr
+     *
+     * Before using the below primitives check Neighbors
+     */
+
+    void checkNeighbors(int apexVertexTriangleId);
+
+    ////////////////////////////////////////////////////////////////
+    //                 Left Triangle Primitives                   //
+    ////////////////////////////////////////////////////////////////
+
+    TriangleHandle getLeftTriangle();
+
+    VertexHandle getOriginVertexLeftTriangle();
+
+    VertexHandle getDestinationVertexLeftTriangle();
+
+    VertexHandle getApexVertexLeftTriangle();
+
+    EdgeHandle getOriginEdgeLeftTriangle();
+
+    EdgeHandle getDestinationEdgeLeftTriangle();
+
+    EdgeHandle getApexEdgeLeftTriangle();
+
+    ////////////////////////////////////////////////////////////////
+    //                Right Triangle Primitives                   //
+    ////////////////////////////////////////////////////////////////
+
+    TriangleHandle getRightTriangle();
+
+    VertexHandle getOriginVertexRightTriangle();
+
+    VertexHandle getDestinationVertexRightTriangle();
+
+    VertexHandle getApexVertexRightTriangle();
+
+    EdgeHandle getOriginEdgeRightTriangle();
+
+    EdgeHandle getDestinationEdgeRightTriangle();
+
+    EdgeHandle getApexEdgeRightTriangle();
 
     /**
-     * @brief Finds the adjacent triangle of a triangle.
+     * @brief Checks if the edge is a boundary edge.
      *
-     * @param triangle is the triangle that we trying to find its neighbor
-     * @return the adjacent triangle along the given edge and its edge id
+     * @return a boolean value which indicates if the edge is a boundary edge.
      */
-    TrianglePair getAdjacentTriangle(const TriangleHandle& triangle);
-
-    /**
-     * @brief Compares Edges.
-     *
-     * @return a boolean value which indicates if edges are the same
-     */
-    [[nodiscard]] bool isSame(const Edge& edge) const;
-
-    /**
-     * @brief Gets number of adjacentTriangles.
-     * @return number of adjacentTriangles
-     */
-    [[nodiscard]] size_t getNumberOfAdjacentTriangles() const;
+    [[nodiscard]] bool isBoundaryTriangle() const;
 
 public:
-    std::array<int, 2> verticesIds;
+    int originVertexId;
+    int destinationVertexId;
 
-    size_t id;
-public:
-    std::vector<std::pair<TriangleHandle, size_t>> adjacentTrianglesWithEdgeIds;
+    //  [Triangle, id of edge]
+    std::vector<TrianglePair> adjacentTrianglesInfo;
 };
 
 

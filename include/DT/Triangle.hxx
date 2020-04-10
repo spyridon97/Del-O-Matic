@@ -12,9 +12,12 @@
 
 
 #include <vector>
-#include "Edge.hxx"
 #include "Vertex.hxx"
 
+
+class Edge;
+
+using EdgeHandle = Edge*;
 
 class Triangle;
 
