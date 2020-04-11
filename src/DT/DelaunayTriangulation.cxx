@@ -339,11 +339,11 @@ void DelaunayTriangulation::generateMesh()
             PkPiPr->setEdges({PkPi, PiPr, PkPr});
 
             // update the DAG
-            PiPjPk->childrenTriangles.push_back(PkPiPr);
-            PiPjPk->childrenTriangles.push_back(PjPkPr);
-
             PiPmPj->childrenTriangles.push_back(PiPmPr);
             PiPmPj->childrenTriangles.push_back(PmPjPr);
+
+            PiPjPk->childrenTriangles.push_back(PjPkPr);
+            PiPjPk->childrenTriangles.push_back(PkPiPr);
 
             ////////////////////////////////////////////////////////////////
             //                   Split Triangles Ended                    //

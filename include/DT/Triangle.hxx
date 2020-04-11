@@ -34,13 +34,6 @@ public:
     explicit Triangle(std::array<VertexHandle, 3> vertices);
 
     /**
-     * @brief Copy Constructor of Triangle class.
-     *
-     * @param triangle is the triangle that will be copied
-     */
-    explicit Triangle(TriangleHandle& triangle);
-
-    /**
      * @brief Destructor of Triangle class
      */
     ~Triangle();
@@ -65,10 +58,14 @@ public:
 
     std::array<EdgeHandle, 3> edges;
 
-    //  used by DAG
+    ////////////////////////////////////////////////////////////////
+    //                   Information used by DAG                  //
+    ////////////////////////////////////////////////////////////////
+
+    //  children triangles in DAG
     std::vector<TriangleHandle> childrenTriangles;
 
-    //  used by DAG to extract triangulation
+    //  used to extract triangulation in DAG
     bool visitedTriangle;
 };
 

@@ -26,7 +26,7 @@ public:
 
 private:
     static TriangleHandle& locateTriangle(TriangleHandle& triangle, VertexHandle vertex,
-                                   std::array<double, 3>& orientationTests);
+                                          std::array<double, 3>& orientationTests);
 
     [[nodiscard]] bool containsRootTriangleVertices(TriangleHandle triangle) const;
 
