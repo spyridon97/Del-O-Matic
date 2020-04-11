@@ -60,7 +60,7 @@ Options:
                               Generates and uniformly random set of N 2D Vertices.
                               
   -p,--robust-predicates BOOLEAN
-                              Uses Robust Predicates. '0' doesn't use robust predicates, '1' uses Robust Predicates.
+                              Uses Robust Predicates. '0' doesn't use Robust Predicates, '1' uses Robust Predicates.
                               (Default: 1)
                               
   -d,--validate-delaunay      Validates the Delaunay Property of the triangulation.

@@ -19,10 +19,6 @@ REAL incircle(REAL* pa, REAL* pb, REAL* pc, REAL* pd);
 REAL incirclefast(REAL* pa, REAL* pb, REAL* pc, REAL* pd);
 }
 
-// double (* orient2dTest)(REAL* pa, REAL* pb, REAL* pc);
-//
-// double (* inCircleTest)(REAL* pa, REAL* pb, REAL* pc, REAL* pd);
-
 namespace GeometricPredicates
 {
     double (* orient2dTest)(REAL* pa, REAL* pb, REAL* pc);

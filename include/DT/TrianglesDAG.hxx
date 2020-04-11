@@ -25,8 +25,8 @@ public:
     void setRootTriangle(TriangleHandle& triangle);
 
 private:
-    TriangleHandle& locateTriangle(TriangleHandle& triangle, VertexHandle vertex,
-                                  std::array<double, 3>& orientationTests);
+    static TriangleHandle& locateTriangle(TriangleHandle& triangle, VertexHandle vertex,
+                                   std::array<double, 3>& orientationTests);
 
     [[nodiscard]] bool containsRootTriangleVertices(TriangleHandle triangle) const;
 

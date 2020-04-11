@@ -28,7 +28,8 @@ TriangleHandle& TrianglesDAG::locateTriangle(TriangleHandle& triangle, VertexHan
     size_t childrenSize = triangle->childrenTriangles.size();
 
     if (childrenSize == 0) {  //  base case
-        //  this is mandatory to be executed because orientationTests array has to be updated
+        //  This is mandatory to be executed because orientationTests array has to be updated
+        //  for the case where a point falls on an edge of a triangle.
         GeometricPredicates::inTriangle(triangle, vertex, orientationTests);
         return triangle;
     } else if (childrenSize == 2) {
@@ -80,13 +81,7 @@ void TrianglesDAG::getTriangulation(std::vector<TriangleHandle>& triangles, Tria
 
 TriangleHandle& TrianglesDAG::locateTriangle(VertexHandle vertex, std::array<double, 3>& orientationTests)
 {
-    //  if vertex is the first vertex that is inserted then
-    if (vertex->id == 1) {
-        orientationTests = {-1, 1, 1};
-        return rootTriangle;
-    } else {
-        return locateTriangle(rootTriangle, vertex, orientationTests);
-    }
+    return locateTriangle(rootTriangle, vertex, orientationTests);
 }
 
 std::vector<TriangleHandle> TrianglesDAG::getTriangulation()

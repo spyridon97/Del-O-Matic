@@ -54,7 +54,7 @@ namespace Args
         });
 
         app->add_option("-p,--robust-predicates", robustPredicates,
-                        "Uses Robust Predicates. '0' doesn't use robust predicates, '1' uses Robust Predicates.\n"
+                        "Uses Robust Predicates. '0' doesn't use Robust Predicates, '1' uses Robust Predicates.\n"
                         "(Default: 1)\n");
 
         app->add_flag("-d,--validate-delaunay", validateDelaunayProperty,
