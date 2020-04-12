@@ -131,10 +131,8 @@ void DelaunayTriangulation::legalizeEdge(EdgeHandle& PiPj, const VertexHandle& P
          */
 
         //  find adjacent triangles of edge PiPj
-        TriangleHandle PiPjPr = PiPj->getLeftTriangle();
-        TriangleHandle PiPkPj = PiPj->getRightTriangle();
-
-        VertexHandle Pk = PiPj->getDestinationVertexRightTriangle();
+        auto PiPjPr = PiPj->getLeftTriangle();
+        auto Pk = PiPj->getDestinationVertexRightTriangle();
 
         //  Check if PiPj is illegal
         if (GeometricPredicates::inCircle(PiPjPr, Pk)) {
@@ -142,15 +140,17 @@ void DelaunayTriangulation::legalizeEdge(EdgeHandle& PiPj, const VertexHandle& P
             //                      Flip Edge Started                     //
             ////////////////////////////////////////////////////////////////
 
+            auto PiPkPj = PiPj->getRightTriangle();
+
             //  Find vertices and edges of PiPjPr and PiPkPj
-            VertexHandle Pi = PiPj->getOriginVertexLeftTriangle();
-            VertexHandle Pj = PiPj->getDestinationVertexLeftTriangle();
+            auto Pi = PiPj->getOriginVertexLeftTriangle();
+            auto Pj = PiPj->getDestinationVertexLeftTriangle();
 
-            EdgeHandle PjPr = PiPj->getDestinationEdgeLeftTriangle();
-            EdgeHandle PrPi = PiPj->getApexEdgeLeftTriangle();
+            auto PjPr = PiPj->getDestinationEdgeLeftTriangle();
+            auto PrPi = PiPj->getApexEdgeLeftTriangle();
 
-            EdgeHandle PiPk = PiPj->getOriginEdgeRightTriangle();
-            EdgeHandle PkPj = PiPj->getDestinationEdgeRightTriangle();
+            auto PiPk = PiPj->getOriginEdgeRightTriangle();
+            auto PkPj = PiPj->getDestinationEdgeRightTriangle();
 
             //  remove the PiPj edge because we are gonna flip it
             delete PiPj;
