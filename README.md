@@ -7,6 +7,8 @@ Given a set of vertices, using the [Randomized Incremental Algorithm](http://www
 
 There is no warranty whatsoever. Use at your own risk.
 
+![Example](https://i.imgur.com/Zlt6oUl.png)
+
 --------------------------------------------------------------------------------
 ## Programming Language & Build System
 * C++, (v17 or newer)
@@ -21,6 +23,8 @@ There is no warranty whatsoever. Use at your own risk.
 ## Structure of repository
 *   include/src:
     *   This directory contains the header and sources files of the DelaunayTriangulation program.
+*   inputFiles:
+    *   This directory contains example input files.
 *   .gitignore
     *   This file includes what git should ignore.
 *   CmakeLists.txt
@@ -37,7 +41,7 @@ There is no warranty whatsoever. Use at your own risk.
 * `cmake  ..`
 
 --------------------------------------------------------------------------------
-## Input and Output files of PODM
+## Input and Output files
 Input files:
 * [.node](http://www.cs.cmu.edu/~quake/triangle.node.html) which can be visualized using [ShowMe](http://www.cs.cmu.edu/~quake/showme.html).
 
