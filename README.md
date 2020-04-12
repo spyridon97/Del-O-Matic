@@ -36,10 +36,9 @@ There is no warranty whatsoever. Use at your own risk.
 *   LICENCE
     *   The file which includes the GNU 3 Licence.
     
-    
 *   README.md            
     *   This file.
-
+    
 --------------------------------------------------------------------------------
 ## Installation & Compilation
 *   create a build directory inside the root of this project
@@ -90,11 +89,11 @@ Author:
 *   email: stsaliki@odu.edu
 
 Supervisor:
-*    Nikos P. Chrisochoides,
-*    Department of Computer Science,
-*    Old Dominion University,
-*    5115 Hampton Blvd, Norfolk, VA 23529, USA,
-*    email: nchrisoc@odu.edu
+*   Nikos P. Chrisochoides,
+*   Department of Computer Science,
+*   Old Dominion University,
+*   5115 Hampton Blvd, Norfolk, VA 23529, USA,
+*   email: nchrisoc@odu.edu
 
 --------------------------------------------------------------------------------
 Copyright (C) 2020 Spyridon Tsalikis
