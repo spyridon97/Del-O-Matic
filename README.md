@@ -81,19 +81,8 @@ Options:
 --------------------------------------------------------------------------------
 ## Contact Information
 
-Author:
-*   Spyridon Tsalikis
-*   Department of Computer Science,
-*   Old Dominion University,
-*   5115 Hampton Blvd, Norfolk, VA 23529, USA,
-*   email: stsaliki@odu.edu
-
-Supervisor:
-*   Nikos P. Chrisochoides,
-*   Department of Computer Science,
-*   Old Dominion University,
-*   5115 Hampton Blvd, Norfolk, VA 23529, USA,
-*   email: nchrisoc@odu.edu
+Author: Spyridon Tsalikis (stsaliki@odu.edu)
+Department of Computer Science, Old Dominion University, 5115 Hampton Blvd, Norfolk, VA 23529, USA
 
 --------------------------------------------------------------------------------
-Copyright (C) 2020 Spyridon Tsalikis
+Copyright (C) Spyridon Tsalikis
