@@ -1,5 +1,7 @@
 # Delaunay Triangulation
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/9fef7ed014c24b2f84dbe6c6ccfc3733)](https://app.codacy.com/manual/spyridon97/DelaunayTriangulation?utm_source=github.com&utm_medium=referral&utm_content=spyridon97/DelaunayTriangulation&utm_campaign=Badge_Grade_Dashboard)
+
 --------------------------------------------------------------------------------
 ## Description
 
