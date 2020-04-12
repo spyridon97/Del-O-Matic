@@ -87,7 +87,7 @@ Options:
 --------------------------------------------------------------------------------
 ## Contact Information
 
-Author: Spyridon Tsalikis (stsaliki@odu.edu)\
+Author: Spiros Tsalikis (stsaliki@odu.edu)\
 Department of Computer Science, Old Dominion University, 5115 Hampton Blvd, Norfolk, VA 23529, USA
 
 --------------------------------------------------------------------------------
