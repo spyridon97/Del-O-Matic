@@ -36,6 +36,7 @@ There is no warranty whatsoever. Use at your own risk.
 *   LICENCE
     *   The file which includes the GNU 3 Licence.
     
+    
 *   README.md            
     *   This file.
 
@@ -56,7 +57,7 @@ Output files
 
 --------------------------------------------------------------------------------
 ## Usage
-```
+```{flags: Array}
 DelaunayTriangulation
 Usage: ./delaunayTriangulation [OPTIONS]
 
@@ -80,21 +81,20 @@ Options:
 
 --------------------------------------------------------------------------------
 ## Contact Information
-```
-Maintainers:
-    Spyridon Tsalikis
-    Department of Computer Science,
-    Old Dominion University,
-    5115 Hampton Blvd, Norfolk, VA 23529, USA,
-    email: stsaliki@odu.edu
+
+Author:
+*   Spyridon Tsalikis
+*   Department of Computer Science,
+*   Old Dominion University,
+*   5115 Hampton Blvd, Norfolk, VA 23529, USA,
+*   email: stsaliki@odu.edu
 
 Supervisor:
-    Nikos P. Chrisochoides,
-    Department of Computer Science,
-    Old Dominion University,
-    5115 Hampton Blvd, Norfolk, VA 23529, USA,
-    phone: +1-757-683-7715,
-    email: nchrisoc@odu.edu
-```
+*    Nikos P. Chrisochoides,
+*    Department of Computer Science,
+*    Old Dominion University,
+*    5115 Hampton Blvd, Norfolk, VA 23529, USA,
+*    email: nchrisoc@odu.edu
+
 --------------------------------------------------------------------------------
 Copyright (C) 2020 Spyridon Tsalikis
