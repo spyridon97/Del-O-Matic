@@ -51,7 +51,6 @@ TriangleHandle& TrianglesDAG::locateTriangle(TriangleHandle& triangle, VertexHan
 
 bool TrianglesDAG::containsRootTriangleVertices(TriangleHandle triangle) const
 {
-    // std::cout << "Check root triangles" << std::endl;
     return triangle->containsVertex(rootTriangle->vertices[0]) ||
            triangle->containsVertex(rootTriangle->vertices[1]) ||
            triangle->containsVertex(rootTriangle->vertices[2]);

@@ -43,6 +43,7 @@ public:
 
     /**
      * @brief Replaces an adjacent triangle with a new one.
+     * @note It also determines which triangle is on the left and on the right respectively.
      *
      * @param oldTriangle is the old adjacent triangle
      * @param newTriangleInfo is the new adjacent triangle along with its edge id
@@ -79,42 +80,117 @@ public:
      * or use replaceAdjacentTriangle if needed.
      */
 
+    /**
+     * @brief Determines which adjacent triangle is on the left and on the right respectively.
+     *
+     * @param apexVertexLeftTriangleId is the id of the apex Vertex (Pr) of the left triangle
+     */
     void determineAdjacentTriangles(int apexVertexLeftTriangleId);
 
     ////////////////////////////////////////////////////////////////
     //                 Left Triangle Primitives                   //
     ////////////////////////////////////////////////////////////////
 
+    /**
+     * @brief Gets left triangle.
+     *
+     * @return left triangle
+     */
     TriangleHandle getLeftTriangle();
 
+    /**
+     * @brief Gets origin vertex of left triangle (Pi).
+     *
+     * @return origin vertex of left triangle
+     */
     VertexHandle getOriginVertexLeftTriangle();
 
+    /**
+     * @brief Gets destination vertex of left triangle (Pj).
+     *
+     * @return destination vertex of left triangle
+     */
     VertexHandle getDestinationVertexLeftTriangle();
 
+    /**
+     * @brief Gets apex vertex of left triangle (Pr).
+     *
+     * @return apex vertex of left triangle
+     */
     VertexHandle getApexVertexLeftTriangle();
 
+    /**
+     * @brief Gets origin edge of left triangle (PiPj).
+     *
+     * @return origin edge of left triangle
+     */
     EdgeHandle getOriginEdgeLeftTriangle();
 
+    /**
+     * @brief Gets destination edge of left triangle (PjPr).
+     *
+     * @return destination edge of left triangle
+     */
     EdgeHandle getDestinationEdgeLeftTriangle();
 
+    /**
+     * @brief Gets apex edge of left triangle (PrPi).
+     *
+     * @return apex edge of left triangle
+     */
     EdgeHandle getApexEdgeLeftTriangle();
 
     ////////////////////////////////////////////////////////////////
     //                Right Triangle Primitives                   //
     ////////////////////////////////////////////////////////////////
 
+    /**
+     * @brief Gets right triangle (PiPkPj).
+     *
+     * @return right triangle
+     */
     TriangleHandle getRightTriangle();
 
+    /**
+     * @brief Gets origin vertex of right triangle (Pi).
+     *
+     * @return origin vertex of right triangle
+     */
     VertexHandle getOriginVertexRightTriangle();
 
+    /**
+     * @brief Gets destination vertex of right triangle (Pk).
+     *
+     * @return destination vertex of right triangle
+     */
     VertexHandle getDestinationVertexRightTriangle();
 
+    /**
+     * @brief Gets apex vertex of right triangle (Pj).
+     *
+     * @return apex vertex of right triangle
+     */
     VertexHandle getApexVertexRightTriangle();
 
+    /**
+     * @brief Gets origin edge of right triangle (PiPK).
+     *
+     * @return origin edge of right triangle
+     */
     EdgeHandle getOriginEdgeRightTriangle();
 
+    /**
+     * @brief Gets destination edge of right triangle (PkPj).
+     *
+     * @return destination edge of right triangle
+     */
     EdgeHandle getDestinationEdgeRightTriangle();
 
+    /**
+     * @brief Gets apex edge of right triangle (PiPj).
+     *
+     * @return apex edge of right triangle
+     */
     EdgeHandle getApexEdgeRightTriangle();
 
     /**
