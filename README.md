@@ -11,16 +11,19 @@ There is no warranty whatsoever. Use at your own risk.
 
 --------------------------------------------------------------------------------
 ## Programming Language & Build System
+
 *   C++, (v17 or newer)
 *   CMAKE/CCMAKE, (v3.1 or newer)
 
 --------------------------------------------------------------------------------
 ## Libraries
+
 *   Predicates, (v1.0.0) : [Routines for Arbitrary Precision Floating-vertex Arithmetic and Fast Robust Geometric Predicates](https://www.cs.cmu.edu/~quake/robust.html)
 *   CLI11, (V1.9.0) : [Command Line Parser for C++11 and above](https://github.com/CLIUtils/CLI11)
 
 --------------------------------------------------------------------------------
 ## Structure of repository
+
 *   include/src:
     *   This directory contains the header and sources files of the DelaunayTriangulation program.
     
@@ -41,12 +44,14 @@ There is no warranty whatsoever. Use at your own risk.
     
 --------------------------------------------------------------------------------
 ## Installation & Compilation
+
 *   create a build directory inside the root of this project
 *   cd into the build directory
 *   `cmake  ..`
 
 --------------------------------------------------------------------------------
 ## Input and Output files
+
 Input files:
 *   [.node](http://www.cs.cmu.edu/~quake/triangle.node.html) which can be visualized using [ShowMe](http://www.cs.cmu.edu/~quake/showme.html).
 
@@ -56,6 +61,7 @@ Output files
 
 --------------------------------------------------------------------------------
 ## Usage
+
 ```{flags: Array}
 DelaunayTriangulation
 Usage: ./delaunayTriangulation [OPTIONS]
@@ -81,7 +87,7 @@ Options:
 --------------------------------------------------------------------------------
 ## Contact Information
 
-Author: Spyridon Tsalikis (stsaliki@odu.edu)
+Author: Spyridon Tsalikis (stsaliki@odu.edu)\
 Department of Computer Science, Old Dominion University, 5115 Hampton Blvd, Norfolk, VA 23529, USA
 
 --------------------------------------------------------------------------------
