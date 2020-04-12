@@ -10,20 +10,19 @@
 #include "Timer.hxx"
 
 
+Timer::Timer() = default;
+
 void Timer::startTimer()
 {
-    clock_gettime(CLOCK_MONOTONIC, &(this->firstSeconds));
+    start = std::chrono::steady_clock::now();
 }
 
 void Timer::stopTimer()
 {
-    clock_gettime(CLOCK_MONOTONIC, &(this->secondSeconds));
+    end = std::chrono::steady_clock::now();
 }
 
 double Timer::getSeconds()
 {
-    double nsecs_start = this->firstSeconds.tv_sec * 1000000000 + this->firstSeconds.tv_nsec;
-    double nsecs_end = this->secondSeconds.tv_sec * 1000000000 + this->secondSeconds.tv_nsec;
-
-    return (nsecs_end - nsecs_start) / 1000000000.0;
+    return std::chrono::duration_cast<std::chrono::microseconds>(end - start).count() / 1000000.0;
 }

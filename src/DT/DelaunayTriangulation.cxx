@@ -89,9 +89,9 @@ void DelaunayTriangulation::createBoundingTriangle()
     auto Pk = new Vertex({midX + multiplier * maxWidth, midY - maxWidth});
     Pk->id = -1;
 
-    auto PiPj = new Edge(Pi->id, Pj->id);
-    auto PjPk = new Edge(Pj->id, Pk->id);
-    auto PkPi = new Edge(Pk->id, Pi->id);
+    auto PiPj = new Edge();
+    auto PjPk = new Edge();
+    auto PkPi = new Edge();
 
     computeBoundaryTriangleTimer.stopTimer();
 
@@ -108,11 +108,29 @@ void DelaunayTriangulation::createBoundingTriangle()
 
 void DelaunayTriangulation::legalizeEdge(EdgeHandle& PiPj, const VertexHandle& Pr)
 {
-    //  PiPj is not a boundary edge
-    if (!PiPj->isBoundaryTriangle()) {
-        //  find adjacent triangles of edge PiPj
-        PiPj->checkOrientation(Pr->id);
+    if (!PiPj->isBoundaryEdge()) {
+        /*
+         *                                  Pk
+         *                                  /\
+         *                                 /  \
+         *                                /    \
+         *                               /      \
+         *                              /        \
+         *                             /          \
+         *                            /            \
+         *                           /              \
+         *                        Pi ---------------- Pj
+         *                            \            /
+         *                             \          /
+         *                              \        /
+         *                               \      /
+         *                                \    /
+         *                                 \  /
+         *                                  \/
+         *                                  Pr
+         */
 
+        //  find adjacent triangles of edge PiPj
         TriangleHandle PiPjPr = PiPj->getLeftTriangle();
         TriangleHandle PiPkPj = PiPj->getRightTriangle();
 
@@ -142,7 +160,7 @@ void DelaunayTriangulation::legalizeEdge(EdgeHandle& PiPj, const VertexHandle& P
             auto PkPjPr = new Triangle({Pk, Pj, Pr});
 
             //  create the new edge for the new triangles
-            auto PkPr = new Edge(Pk->id, Pr->id);
+            auto PkPr = new Edge();
 
             //  assign adjacent triangles of the PiPkPr edges
             PiPk->replaceAdjacentTriangle(PiPkPj, TrianglePair(PiPkPr, 0));
@@ -206,8 +224,19 @@ void DelaunayTriangulation::generateMesh()
             edgeId = -1;
         }
 
-        //  if vertex Pr lies in the interior of the triangle
-        if (edgeId == -1) {
+        if (edgeId == -1) { //  if vertex Pr lies in the interior of the triangle
+            /*
+             *                        Pi ---------------- Pj
+             *                            \            /
+             *                             \          /
+             *                              \   Pr   /
+             *                               \      /
+             *                                \    /
+             *                                 \  /
+             *                                  \/
+             *                                  Pk
+             */
+
             auto Pi = PiPjPk->vertices[0];
             auto Pj = PiPjPk->vertices[1];
             auto Pk = PiPjPk->vertices[2];
@@ -226,9 +255,9 @@ void DelaunayTriangulation::generateMesh()
             auto PkPiPr = new Triangle({Pk, Pi, Pr});
 
             //  create the new edges for the new triangles
-            auto PiPr = new Edge(Pi->id, Pr->id);
-            auto PjPr = new Edge(Pj->id, Pr->id);
-            auto PkPr = new Edge(Pk->id, Pr->id);
+            auto PiPr = new Edge();
+            auto PjPr = new Edge();
+            auto PkPr = new Edge();
 
             //  assign adjacent triangles of the PiPjPr Edges
             PiPj->replaceAdjacentTriangle(PiPjPk, TrianglePair(PiPjPr, 0));
@@ -263,7 +292,28 @@ void DelaunayTriangulation::generateMesh()
             legalizeEdge(PiPj, Pr);
             legalizeEdge(PjPk, Pr);
             legalizeEdge(PkPi, Pr);
-        } else {
+        } else {    //  if vertex lies on an edge
+            /*
+             *                                  Pm
+             *                                  /\
+             *                                 /  \
+             *                                /    \
+             *                               /      \
+             *                              /        \
+             *                             /          \
+             *                            /            \
+             *                           /              \
+             *                        Pi -------Pr------- Pj
+             *                            \            /
+             *                             \          /
+             *                              \        /
+             *                               \      /
+             *                                \    /
+             *                                 \  /
+             *                                  \/
+             *                                  Pk
+             */
+
             //  retrieve information from PiPjPk
             VertexHandle Pk;
             EdgeHandle PiPj;
@@ -280,7 +330,7 @@ void DelaunayTriangulation::generateMesh()
                 PiPj = PiPjPk->edges[2];
             }
 
-            PiPj->checkOrientation(Pk->id);
+            PiPj->determineAdjacentTriangles(Pk->id);
 
             auto Pi = PiPj->getOriginVertexLeftTriangle();
             auto Pj = PiPj->getDestinationVertexLeftTriangle();
@@ -307,10 +357,10 @@ void DelaunayTriangulation::generateMesh()
             auto PkPiPr = new Triangle({Pk, Pi, Pr});
 
             //  create the new edges for the new triangles
-            auto PiPr = new Edge(Pi->id, Pr->id);
-            auto PmPr = new Edge(Pm->id, Pr->id);
-            auto PjPr = new Edge(Pj->id, Pr->id);
-            auto PkPr = new Edge(Pk->id, Pr->id);
+            auto PiPr = new Edge();
+            auto PmPr = new Edge();
+            auto PjPr = new Edge();
+            auto PkPr = new Edge();
 
             //  assign adjacent triangles of the PiPmPr Edges
             PiPm->replaceAdjacentTriangle(PiPmPj, TrianglePair(PiPmPr, 0));

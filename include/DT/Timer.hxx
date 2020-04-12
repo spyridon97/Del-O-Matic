@@ -11,13 +11,13 @@
 #define DELAUNAY_TRIANGULATION_TIMER_HXX
 
 
-#include <ctime>
+#include <chrono>
 
 
 class Timer
 {
 public:
-    Timer() = default;;
+    Timer();
 
     void startTimer();
 
@@ -26,7 +26,8 @@ public:
     double getSeconds();
 
 public:
-    struct timespec firstSeconds, secondSeconds;
+    std::chrono::steady_clock::time_point start;
+    std::chrono::steady_clock::time_point end;
 };
 
 

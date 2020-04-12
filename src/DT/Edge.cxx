@@ -13,27 +13,21 @@
 //                 Triangles Information                  //
 ////////////////////////////////////////////////////////////
 
-#define leftTriangleId 0
-#define rightTriangleId 1
+#define leftTriangle adjacentTrianglesInfo[leftTriangleId].first
+#define rightTriangle adjacentTrianglesInfo[rightTriangleId].first
 
-#define leftTriangleInfo adjacentTrianglesInfo[leftTriangleId]
-#define rightTriangleInfo adjacentTrianglesInfo[rightTriangleId]
+#define leftTriangleEdgeId adjacentTrianglesInfo[leftTriangleId].second
+#define rightTriangleEdgeId adjacentTrianglesInfo[rightTriangleId].second
 
-#define leftTriangle leftTriangleInfo.first
-#define rightTriangle rightTriangleInfo.first
-
-#define leftTriangleEdgeId leftTriangleInfo.second
-#define rightTriangleEdgeId rightTriangleInfo.second
-
-//  Fast lookup arrays to speed some of the mesh manipulation primitives
+//  Fast lookup arrays to speed up the mesh manipulation primitives
 int plus1mod3[3] = {1, 2, 0};
 int minus1mod3[3] = {2, 0, 1};
 
-Edge::Edge(int originVertexId, int destinationVertexId)
+Edge::Edge()
 {
     adjacentTrianglesInfo.reserve(2);
-    this->originVertexId = originVertexId;
-    this->destinationVertexId = destinationVertexId;
+    this->leftTriangleId = 0;
+    this->rightTriangleId = 1;
 }
 
 Edge::~Edge() = default;
@@ -45,17 +39,26 @@ void Edge::addAdjacentTriangle(TrianglePair adjacentTriangleWithEdgeId)
 
 void Edge::replaceAdjacentTriangle(const TriangleHandle& oldTriangle, const TrianglePair& newTriangleInfo)
 {
-    if (leftTriangle == oldTriangle) {
-        leftTriangleInfo = newTriangleInfo;
+    if (adjacentTrianglesInfo[0].first == oldTriangle) {
+        adjacentTrianglesInfo[0] = newTriangleInfo;
+        this->leftTriangleId = 0;
+        this->rightTriangleId = 1;
     } else {
-        rightTriangleInfo = newTriangleInfo;
+        adjacentTrianglesInfo[1] = newTriangleInfo;
+        this->leftTriangleId = 1;
+        this->rightTriangleId = 0;
     }
 }
 
-void Edge::checkOrientation(int apexVertexTriangleId)
+void Edge::determineAdjacentTriangles(int apexVertexLeftTriangleId)
 {
-    if (getApexVertexLeftTriangle()->id != apexVertexTriangleId) {
-        std::swap(leftTriangleInfo, rightTriangleInfo);
+    if (adjacentTrianglesInfo[0].first->vertices[minus1mod3[adjacentTrianglesInfo[0].second]]->id ==
+        apexVertexLeftTriangleId) {
+        this->leftTriangleId = 0;
+        this->rightTriangleId = 1;
+    } else {
+        this->leftTriangleId = 1;
+        this->rightTriangleId = 0;
     }
 }
 
@@ -137,7 +140,7 @@ EdgeHandle Edge::getApexEdgeRightTriangle()
     return rightTriangle->edges[rightTriangleEdgeId];
 }
 
-bool Edge::isBoundaryTriangle() const
+bool Edge::isBoundaryEdge() const
 {
     return adjacentTrianglesInfo.size() == 1;
 }

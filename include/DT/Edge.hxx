@@ -15,23 +15,19 @@
 #include "Triangle.hxx"
 
 
-//                                [Triangle, id of edge]
-using TrianglePair = std::pair<TriangleHandle, size_t>;
+//                            [Triangle,   id of edge of triangle]
+using TrianglePair = std::pair<TriangleHandle, unsigned char>;
 
-class Edge;
-
-using EdgeHandle = Edge*;
-
+/**
+ * @brief This class is a place holder for adjacent Triangles.
+ */
 class Edge
 {
 public:
     /**
      * @brief Constructor of Edge class.
-     *
-     * @param originVertexId is the id of the origin vertex of the edge
-     * @param destinationVertexId is the id of the destination vertex of the edge
      */
-    explicit Edge(int originVertexId, int destinationVertexId);
+    Edge();
 
     /**
      * @brief Destructor of Edge class
@@ -46,7 +42,7 @@ public:
     void addAdjacentTriangle(TrianglePair adjacentTriangleWithEdgeId);
 
     /**
-     * @brief Replaces an adjacent triangle we a new one.
+     * @brief Replaces an adjacent triangle with a new one.
      *
      * @param oldTriangle is the old adjacent triangle
      * @param newTriangleInfo is the new adjacent triangle along with its edge id
@@ -64,16 +60,26 @@ public:
      *                                  /\
      *                                 /  \
      *                                /    \
-     *                             Pi--------Pj
+     *                               /      \
+     *                              /        \
+     *                             /          \
+     *                            /            \
+     *                           /              \
+     *                        Pi ---------------- Pj
+     *                            \            /
+     *                             \          /
+     *                              \        /
+     *                               \      /
      *                                \    /
      *                                 \  /
      *                                  \/
      *                                  Pr
      *
-     * Before using the below primitives check orientation of PiPj edge against Pr vertex.
+     * Before using the below primitives, either determine adjacent Triangles of PiPj edge against Pr vertex
+     * or use replaceAdjacentTriangle if needed.
      */
 
-    void checkOrientation(int apexVertexTriangleId);
+    void determineAdjacentTriangles(int apexVertexLeftTriangleId);
 
     ////////////////////////////////////////////////////////////////
     //                 Left Triangle Primitives                   //
@@ -114,15 +120,15 @@ public:
     /**
      * @brief Checks if the edge is a boundary edge.
      *
-     * @return a boolean value which indicates if the edge is a boundary edge.
+     * @return a boolean value which indicates if the edge is a boundary edge
      */
-    [[nodiscard]] bool isBoundaryTriangle() const;
+    [[nodiscard]] bool isBoundaryEdge() const;
 
-public:
-    int originVertexId;
-    int destinationVertexId;
+private:
+    unsigned char leftTriangleId;
+    unsigned char rightTriangleId;
 
-    //  [Triangle, id of edge]
+    //  [Triangle,   id of edge of triangle]
     std::vector<TrianglePair> adjacentTrianglesInfo;
 };
 

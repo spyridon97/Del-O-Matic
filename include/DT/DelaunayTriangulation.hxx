@@ -12,7 +12,6 @@
 
 
 #include <vector>
-#include "GeometricPredicates.hxx"
 #include "Mesh.hxx"
 #include "Timer.hxx"
 #include "Edge.hxx"
@@ -53,7 +52,7 @@ private:
      * @param PiPj is the edge that will be legalized
      * @param Pr is the vertex that will be checked if it is inside PiPjPk triangle
      */
-    void legalizeEdge(EdgeHandle& PiPj, const VertexHandle& Pr);
+    static void legalizeEdge(EdgeHandle& PiPj, const VertexHandle& Pr);
 
 public:
     /**
