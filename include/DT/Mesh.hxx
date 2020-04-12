@@ -23,8 +23,6 @@ struct Mesh
         std::array<size_t, 3> indices;
     };
 
-    size_t numberOfVertices;
-
     std::vector<Vertex> vertices;
     std::vector<Triangle> triangles;
 };

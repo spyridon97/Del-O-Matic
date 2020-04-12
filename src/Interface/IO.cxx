@@ -114,7 +114,7 @@ namespace Io
         verticesOutputFile.open(verticesFilename.c_str());
 
         if (verticesOutputFile) {
-            verticesOutputFile << mesh.numberOfVertices << " 2 0 0" << std::endl;
+            verticesOutputFile << mesh.vertices.size() << " 2 0 0" << std::endl;
 
             //  print vertices
             for (size_t i = 0; i < mesh.vertices.size(); i++) {

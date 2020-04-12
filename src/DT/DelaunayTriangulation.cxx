@@ -434,8 +434,6 @@ Mesh DelaunayTriangulation::getCleanMesh(bool validateDelaunayProperty)
 
     Mesh mesh = Mesh();
 
-    mesh.numberOfVertices = meshVertices.size();
-
     std::vector<TriangleHandle> meshTriangles = getTriangulation();
 
     if (validateDelaunayProperty) {
