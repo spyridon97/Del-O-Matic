@@ -101,18 +101,18 @@ Output files
 Performance evaluation was performed with an [AMD Ryzen 5 3600 3.6GHz](https://www.amd.com/en/products/cpu/amd-ryzen-5-3600) using uniformly random distributed vertices and Robust Predicates.
 
 |  vertices | [Triangle](https://www.cs.cmu.edu/~quake/triangle.html)'s incremental-algorithm | [DelaunayTriangulation](https://github.com/spyridon97/DelaunayTriangulation)'s incremental-algorithm |
-|----------:|----------------:|------------------:|
-|     2,500 |   0.002 seconds |  0.010255 seconds |
-|     5,000 |   0.004 seconds |  0.022479 seconds |
-|    10,000 |   0.018 seconds |  0.039302 seconds |
-|    25,000 |   0.042 seconds |  0.096398 seconds |
-|    50,000 |   0.095 seconds |  0.201801 seconds |
-|   100,000 |   0.208 seconds |  0.445409 seconds |
-|   250,000 |   1.009 seconds |  1.309530 seconds |
-|   500,000 |   3.770 seconds |  3.009350 seconds |
-| 1,000,000 |  11.825 seconds |  6.721990 seconds |
-| 2,500,000 |  47.039 seconds | 19.567700 seconds |
-| 5,000,000 | 124.060 seconds | 42.784100 seconds |
+|----------:|--------------------------------------------------------------------------------:|-----------------------------------------------------------------------------------------------------:|
+|     2,500 |                                                                   0.002 seconds |                                                                                     0.010255 seconds |
+|     5,000 |                                                                   0.004 seconds |                                                                                     0.022479 seconds |
+|    10,000 |                                                                   0.018 seconds |                                                                                     0.039302 seconds |
+|    25,000 |                                                                   0.042 seconds |                                                                                     0.096398 seconds |
+|    50,000 |                                                                   0.095 seconds |                                                                                     0.201801 seconds |
+|   100,000 |                                                                   0.208 seconds |                                                                                     0.445409 seconds |
+|   250,000 |                                                                   1.009 seconds |                                                                                     1.309530 seconds |
+|   500,000 |                                                                   3.770 seconds |                                                                                     3.009350 seconds |
+| 1,000,000 |                                                                  11.825 seconds |                                                                                     6.721990 seconds |
+| 2,500,000 |                                                                  47.039 seconds |                                                                                    19.567700 seconds |
+| 5,000,000 |                                                                 124.060 seconds |                                                                                    42.784100 seconds |
 
 **Results**: DelaunayTriangulation's incremental-algorithm scales better than Triangle's incremental-algorithm.
 
