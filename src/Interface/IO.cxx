@@ -138,9 +138,9 @@ namespace Io
 
             //  print triangles
             for (size_t i = 0; i < mesh.triangles.size(); i++) {
-                trianglesOutputFile << i + 1 << " " << mesh.triangles[i].indices[0] << " "
-                                    << mesh.triangles[i].indices[1]
-                                    << " " << mesh.triangles[i].indices[2] << std::endl;
+                trianglesOutputFile << i + 1 << " " << mesh.triangles[i]->vertices[0]->id << " "
+                                    << mesh.triangles[i]->vertices[1]->id
+                                    << " " << mesh.triangles[i]->vertices[2]->id << std::endl;
             }
         } else {
             std::cerr << "Could not open " << trianglesFilename << " file" << std::endl;

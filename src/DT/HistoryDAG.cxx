@@ -49,31 +49,32 @@ TriangleHandle& HistoryDAG::locateTriangle(TriangleHandle& triangle, VertexHandl
     }
 }
 
-bool HistoryDAG::containsRootTriangleVertices(TriangleHandle triangle) const
+bool HistoryDAG::containsBoundingTriangleVertices(TriangleHandle triangle) const
 {
     return triangle->containsVertex(rootTriangle->vertices[0]) ||
            triangle->containsVertex(rootTriangle->vertices[1]) ||
            triangle->containsVertex(rootTriangle->vertices[2]);
 }
 
-void HistoryDAG::getTriangulation(std::vector<TriangleHandle>& triangles, TriangleHandle& triangle)
+void HistoryDAG::extractTriangulationWithoutBoundingTriangle(std::vector<TriangleHandle>& triangles,
+                                                             TriangleHandle& triangle)
 {
     if (!triangle->visitedTriangle) {
         size_t childrenSize = triangle->childrenTriangles.size();
         if (childrenSize == 0) {  //  base case
             triangle->visitedTriangle = true;
-            if (!containsRootTriangleVertices(triangle)) {
+            if (!containsBoundingTriangleVertices(triangle)) {
                 triangles.push_back(triangle);
             }
         } else if (childrenSize == 2) {
             triangle->visitedTriangle = true;
-            getTriangulation(triangles, triangle->childrenTriangles[0]);
-            getTriangulation(triangles, triangle->childrenTriangles[1]);
+            extractTriangulationWithoutBoundingTriangle(triangles, triangle->childrenTriangles[0]);
+            extractTriangulationWithoutBoundingTriangle(triangles, triangle->childrenTriangles[1]);
         } else { //   childrenSize == 3
             triangle->visitedTriangle = true;
-            getTriangulation(triangles, triangle->childrenTriangles[0]);
-            getTriangulation(triangles, triangle->childrenTriangles[1]);
-            getTriangulation(triangles, triangle->childrenTriangles[2]);
+            extractTriangulationWithoutBoundingTriangle(triangles, triangle->childrenTriangles[0]);
+            extractTriangulationWithoutBoundingTriangle(triangles, triangle->childrenTriangles[1]);
+            extractTriangulationWithoutBoundingTriangle(triangles, triangle->childrenTriangles[2]);
         }
     }
 }
@@ -83,11 +84,23 @@ TriangleHandle& HistoryDAG::locateTriangle(VertexHandle vertex, std::array<doubl
     return locateTriangle(rootTriangle, vertex, orientationTests);
 }
 
-std::vector<TriangleHandle> HistoryDAG::getTriangulation()
+std::vector<TriangleHandle> HistoryDAG::extractTriangulationWithoutBoundingTriangle()
 {
+    std::cout << std::endl << "Compute Mesh Results..." << std::endl;
+
     std::vector<TriangleHandle> triangles;
 
-    getTriangulation(triangles, rootTriangle);
+    extractTriangulationWithoutBoundingTriangle(triangles, rootTriangle);
+
+    delete rootTriangle->edges[0];
+    delete rootTriangle->edges[1];
+    delete rootTriangle->edges[2];
+
+    delete rootTriangle->vertices[0];
+    delete rootTriangle->vertices[1];
+    delete rootTriangle->vertices[2];
+
+    delete rootTriangle;
 
     return triangles;
 }

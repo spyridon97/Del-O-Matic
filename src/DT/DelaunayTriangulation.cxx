@@ -406,11 +406,18 @@ void DelaunayTriangulation::generateMesh()
         }
     }
 
+    meshTriangles = extractTriangulationWithoutBoundingTriangle();
+
+    std::cout << std::endl << "Mesh Vertices: " << meshVertices.size() << std::endl;
+    std::cout << "Mesh Triangles: " << meshTriangles.size() << std::endl;
+
     meshingTimer.stopTimer();
 }
 
-bool DelaunayTriangulation::validateDelaunayTriangulation(const std::vector<TriangleHandle>& meshTriangles)
+void DelaunayTriangulation::validateDelaunayTriangulation()
 {
+    validateDelaunayTriangulationTimer.startTimer();
+
     std::cout << std::endl << "Validating Delaunay property..." << std::endl;
     bool validDelaunay = true;
     for (auto meshTriangle : meshTriangles) {
@@ -423,44 +430,22 @@ bool DelaunayTriangulation::validateDelaunayTriangulation(const std::vector<Tria
             }
         }
     }
-    return validDelaunay;
+
+    if (!validDelaunay) {
+        std::cout << std::endl << "Triangulation is not Delaunay" << std::endl;
+    } else {
+        std::cout << std::endl << "Triangulation is Delaunay" << std::endl;
+    }
+
+    validateDelaunayTriangulationTimer.stopTimer();
 }
 
-Mesh DelaunayTriangulation::getCleanMesh(bool validateDelaunayProperty)
+Mesh DelaunayTriangulation::getOutputMesh()
 {
-    std::cout << std::endl << "Compute Mesh Results..." << std::endl;
-
-    computeMeshResultsTimer.startTimer();
-
     Mesh mesh = Mesh();
 
-    std::vector<TriangleHandle> meshTriangles = getTriangulation();
-
-    if (validateDelaunayProperty) {
-        if (!this->validateDelaunayTriangulation(meshTriangles)) {
-            std::cout << std::endl << "Triangulation is not Delaunay" << std::endl;
-        } else {
-            std::cout << std::endl << "Triangulation is Delaunay" << std::endl;
-        }
-    }
-
-    for (auto& meshVertex : meshVertices) {
-        mesh.vertices.emplace_back(*meshVertex);
-    }
-
-    for (auto triangle : meshTriangles) {
-        Mesh::Triangle newTriangle = Mesh::Triangle();
-        for (int d = 0; d < 3; ++d) {
-            newTriangle.indices[d] = triangle->vertices[d]->id;
-        }
-
-        mesh.triangles.push_back(newTriangle);
-    }
-
-    std::cout << std::endl << "Mesh Vertices: " << mesh.vertices.size() << std::endl;
-    std::cout << "Mesh Triangles: " << mesh.triangles.size() << std::endl;
-
-    computeMeshResultsTimer.stopTimer();
+    mesh.vertices = meshVertices;
+    mesh.triangles = meshTriangles;
 
     return mesh;
 }

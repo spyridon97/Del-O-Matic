@@ -17,15 +17,29 @@
 class Timer
 {
 public:
+    /**
+     * @brief Constructor of Timer.
+     */
     Timer();
 
+    /**
+     * @brief Starts timer.
+     */
     void startTimer();
 
+    /**
+     * @brief Stops timer.
+     */
     void stopTimer();
 
+    /**
+     * @brief Gets total time in seconds.
+     *
+     * @return total time in seconds
+     */
     double getSeconds();
 
-public:
+private:
     std::chrono::steady_clock::time_point start;
     std::chrono::steady_clock::time_point end;
 };

@@ -39,14 +39,18 @@ int main(int argc, char** argv)
 
     readingInputTimer.stopTimer();
 
-    std::unique_ptr<DelaunayTriangulation> triangulator =
+    std::unique_ptr<DelaunayTriangulation> triangulation =
             std::make_unique<DelaunayTriangulation>(Args::robustPredicates);
 
-    triangulator->setInputVertices(inputVertices);
+    triangulation->setInputVertices(inputVertices);
 
-    triangulator->generateMesh();
+    triangulation->generateMesh();
 
-    Mesh outputMesh = triangulator->getCleanMesh(Args::validateDelaunayProperty);
+    if (Args::validateDelaunayProperty) {
+        triangulation->validateDelaunayTriangulation();
+    }
+
+    Mesh outputMesh = triangulation->getOutputMesh();
 
     Timer writingMeshTimer{};
     writingMeshTimer.startTimer();
@@ -67,10 +71,12 @@ int main(int argc, char** argv)
                   << std::endl;
     }
     std::cout << "Computing Boundary Triangle time: "
-              << triangulator->computeBoundaryTriangleTimer.getSeconds() << " seconds" << std::endl;
-    std::cout << "Meshing time: " << triangulator->meshingTimer.getSeconds() << " seconds" << std::endl;
-    std::cout << "Computing Mesh Results time: " << triangulator->computeMeshResultsTimer.getSeconds()
-              << " seconds" << std::endl;
+              << triangulation->computeBoundaryTriangleTimer.getSeconds() << " seconds" << std::endl;
+    std::cout << "Meshing time: " << triangulation->meshingTimer.getSeconds() << " seconds" << std::endl;
+    if (Args::validateDelaunayProperty) {
+        std::cout << "Validating Delaunay Property time: "
+                  << triangulation->validateDelaunayTriangulationTimer.getSeconds() << " seconds" << std::endl;
+    }
     std::cout << "Writing Mesh I/O time: " << writingMeshTimer.getSeconds() << " seconds" << std::endl;
     std::cout << std::endl << "Execution Wall time: " << timer.getSeconds() << " seconds" << std::endl;
     std::cout << "================================================" << std::endl;

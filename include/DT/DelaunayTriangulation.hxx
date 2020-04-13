@@ -62,23 +62,19 @@ public:
 
     /**
      * @brief Validates if the triangulation is Delaunay. Cost: O (n log n)
-     *
-     * @param meshTriangles are the triangles that will be checked if they are Delaunay
-     * @return a boolean value which indicates if the triangulation is Delaunay.
      */
-    bool validateDelaunayTriangulation(const std::vector<TriangleHandle>& meshTriangles);
+    void validateDelaunayTriangulation();
 
     /**
      * @brief Gets outputMesh.
-     *
-     * @param validateDelaunayProperty is a flag which checks if the triangulation is Delaunay
      */
-    Mesh getCleanMesh(bool validateDelaunayProperty);
+    Mesh getOutputMesh();
 
 private:
     std::vector<VertexHandle> meshVertices;
+    std::vector<TriangleHandle> meshTriangles;
 public:
-    Timer computeBoundaryTriangleTimer{}, meshingTimer{}, computeMeshResultsTimer{};
+    Timer computeBoundaryTriangleTimer{}, meshingTimer{}, validateDelaunayTriangulationTimer{};
 };
 
 

@@ -11,8 +11,8 @@
 #define DELAUNAY_TRIANGULATION_HISTORY_DAG_HXX
 
 
+#include "Edge.hxx"
 #include "GeometricPredicates.hxx"
-#include "Triangle.hxx"
 
 
 class HistoryDAG
@@ -54,16 +54,16 @@ private:
      * @param triangle is the triangle that is checked
      * @return a boolean value which indicates if a triangle contains the vertices of the root triangle
      */
-    [[nodiscard]] bool containsRootTriangleVertices(TriangleHandle triangle) const;
+    [[nodiscard]] bool containsBoundingTriangleVertices(TriangleHandle triangle) const;
 
     /**
-     * @brief Gets the triangles of the Delaunay Triangulation.
-     * @note: this is a helper function of the public getTriangulation function.
+     * @brief Extracts the triangles of the Delaunay Triangulation without the bounding triangle.
+     * @note: this is a helper function of the public extractTriangulationWithoutBoundingTriangle function.
      *
      * @param triangles is a vector that includes the triangles of the Delaunay Triangulation
      * @param triangle is the triangle whose children are checked in the recursion
      */
-    void getTriangulation(std::vector<TriangleHandle>& triangles, TriangleHandle& triangle);
+    void extractTriangulationWithoutBoundingTriangle(std::vector<TriangleHandle>& triangles, TriangleHandle& triangle);
 
 public:
     /**
@@ -76,11 +76,11 @@ public:
     TriangleHandle& locateTriangle(VertexHandle vertex, std::array<double, 3>& orientationTests);
 
     /**
-     * @brief Gets the triangles of the Delaunay Triangulation.
+     * @brief Extracts the triangles of the Delaunay Triangulation without the bounding triangle.
      *
      * @return the triangles of the Delaunay Triangulation
      */
-    std::vector<TriangleHandle> getTriangulation();
+    std::vector<TriangleHandle> extractTriangulationWithoutBoundingTriangle();
 
 private:
     TriangleHandle rootTriangle;
