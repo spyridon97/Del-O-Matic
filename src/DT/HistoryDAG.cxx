@@ -1,29 +1,29 @@
 /*
- * Filename:    TrianglesDAG.cxx
+ * Filename:    HistoryDAG.cxx
  * 
- * Description: Source file of TrianglesDAG class.
+ * Description: Source file of HistoryDAG class.
  *
  * Author:      Spyridon Tsalikis
  * Created on   4/5/20.
  */
 
-#include "TrianglesDAG.hxx"
+#include "HistoryDAG.hxx"
 
 
-TrianglesDAG::TrianglesDAG()
+HistoryDAG::HistoryDAG()
 {
     rootTriangle = nullptr;
 }
 
-TrianglesDAG::~TrianglesDAG() = default;
+HistoryDAG::~HistoryDAG() = default;
 
-void TrianglesDAG::setRootTriangle(TriangleHandle& rootTriangle)
+void HistoryDAG::setRootTriangle(TriangleHandle& rootTriangle)
 {
     this->rootTriangle = rootTriangle;
 }
 
-TriangleHandle& TrianglesDAG::locateTriangle(TriangleHandle& triangle, VertexHandle vertex,
-                                             std::array<double, 3>& orientationTests)
+TriangleHandle& HistoryDAG::locateTriangle(TriangleHandle& triangle, VertexHandle vertex,
+                                           std::array<double, 3>& orientationTests)
 {
     size_t childrenSize = triangle->childrenTriangles.size();
 
@@ -49,14 +49,14 @@ TriangleHandle& TrianglesDAG::locateTriangle(TriangleHandle& triangle, VertexHan
     }
 }
 
-bool TrianglesDAG::containsRootTriangleVertices(TriangleHandle triangle) const
+bool HistoryDAG::containsRootTriangleVertices(TriangleHandle triangle) const
 {
     return triangle->containsVertex(rootTriangle->vertices[0]) ||
            triangle->containsVertex(rootTriangle->vertices[1]) ||
            triangle->containsVertex(rootTriangle->vertices[2]);
 }
 
-void TrianglesDAG::getTriangulation(std::vector<TriangleHandle>& triangles, TriangleHandle& triangle)
+void HistoryDAG::getTriangulation(std::vector<TriangleHandle>& triangles, TriangleHandle& triangle)
 {
     if (!triangle->visitedTriangle) {
         size_t childrenSize = triangle->childrenTriangles.size();
@@ -78,12 +78,12 @@ void TrianglesDAG::getTriangulation(std::vector<TriangleHandle>& triangles, Tria
     }
 }
 
-TriangleHandle& TrianglesDAG::locateTriangle(VertexHandle vertex, std::array<double, 3>& orientationTests)
+TriangleHandle& HistoryDAG::locateTriangle(VertexHandle vertex, std::array<double, 3>& orientationTests)
 {
     return locateTriangle(rootTriangle, vertex, orientationTests);
 }
 
-std::vector<TriangleHandle> TrianglesDAG::getTriangulation()
+std::vector<TriangleHandle> HistoryDAG::getTriangulation()
 {
     std::vector<TriangleHandle> triangles;
 

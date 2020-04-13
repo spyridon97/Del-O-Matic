@@ -15,10 +15,10 @@
 #include "Mesh.hxx"
 #include "Timer.hxx"
 #include "Edge.hxx"
-#include "TrianglesDAG.hxx"
+#include "HistoryDAG.hxx"
 
 
-class DelaunayTriangulation : public TrianglesDAG
+class DelaunayTriangulation : public HistoryDAG
 {
 public:
     /**

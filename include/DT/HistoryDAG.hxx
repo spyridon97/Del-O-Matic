@@ -1,32 +1,32 @@
 /*
- * Filename:    TrianglesDAG.hxx
+ * Filename:    HistoryDAG.hxx
  * 
- * Description: Header file of TrianglesDAG class.
+ * Description: Header file of HistoryDAG class.
  *
  * Author:      Spyridon Tsalikis
  * Created on   4/5/20.
  */
 
-#ifndef DELAUNAY_TRIANGULATION_TRIANGLE_LOCATOR_DAG_HXX
-#define DELAUNAY_TRIANGULATION_TRIANGLE_LOCATOR_DAG_HXX
+#ifndef DELAUNAY_TRIANGULATION_HISTORY_DAG_HXX
+#define DELAUNAY_TRIANGULATION_HISTORY_DAG_HXX
 
 
 #include "GeometricPredicates.hxx"
 #include "Triangle.hxx"
 
 
-class TrianglesDAG
+class HistoryDAG
 {
 public:
     /**
-     * @brief Constructor of TrianglesDAG.
+     * @brief Constructor of HistoryDAG.
      */
-    TrianglesDAG();
+    HistoryDAG();
 
     /**
-     * @brief Destructor of TrianglesDAG.
+     * @brief Destructor of HistoryDAG.
      */
-    ~TrianglesDAG();
+    ~HistoryDAG();
 
     /**
      * @brief Sets the root triangle of the DAG.
@@ -87,4 +87,4 @@ private:
 };
 
 
-#endif /* DELAUNAY_TRIANGULATION_TRIANGLE_LOCATOR_DAG_HXX */
+#endif /* DELAUNAY_TRIANGULATION_HISTORY_DAG_HXX */

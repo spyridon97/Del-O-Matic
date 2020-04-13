@@ -12,7 +12,7 @@
 #include "DelaunayTriangulation.hxx"
 
 
-DelaunayTriangulation::DelaunayTriangulation(bool robustPredicates) : TrianglesDAG()
+DelaunayTriangulation::DelaunayTriangulation(bool robustPredicates) : HistoryDAG()
 {
     GeometricPredicates::initialize(robustPredicates);
 }
@@ -206,7 +206,7 @@ void DelaunayTriangulation::generateMesh()
         //  locate a triangle that includes Pr. Cost: O(log n)
 
         //  This complexity is accurate because our vertices are shuffled uniformly,
-        //  therefore the depth of the History DaG is almost uniformly distributed.
+        //  therefore the depth of the History DAG is almost uniformly distributed.
         //  Since the max number of triangles created by this algorithm is 9n + 1,
         //  and assuming almost uniformly distributed DAG, we can say that: log(9n + 1) = O (log n)
         std::array<double, 3> orientationTests{};
