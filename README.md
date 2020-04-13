@@ -1,16 +1,16 @@
-                     ██████╗ ███████╗██╗      █████╗ ██╗   ██╗███╗   ██╗ █████╗ ██╗   ██╗               
-                     ██╔══██╗██╔════╝██║     ██╔══██╗██║   ██║████╗  ██║██╔══██╗╚██╗ ██╔╝               
-                     ██║  ██║█████╗  ██║     ███████║██║   ██║██╔██╗ ██║███████║ ╚████╔╝                
-                     ██║  ██║██╔══╝  ██║     ██╔══██║██║   ██║██║╚██╗██║██╔══██║  ╚██╔╝                 
-                     ██████╔╝███████╗███████╗██║  ██║╚██████╔╝██║ ╚████║██║  ██║   ██║                  
-                     ╚═════╝ ╚══════╝╚══════╝╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═══╝╚═╝  ╚═╝   ╚═╝             
-
-    ████████╗██████╗ ██╗ █████╗ ███╗   ██╗ ██████╗ ██╗   ██╗██╗      █████╗ ████████╗██╗ ██████╗ ███╗   ██╗
-    ╚══██╔══╝██╔══██╗██║██╔══██╗████╗  ██║██╔════╝ ██║   ██║██║     ██╔══██╗╚══██╔══╝██║██╔═══██╗████╗  ██║
-       ██║   ██████╔╝██║███████║██╔██╗ ██║██║  ███╗██║   ██║██║     ███████║   ██║   ██║██║   ██║██╔██╗ ██║
-       ██║   ██╔══██╗██║██╔══██║██║╚██╗██║██║   ██║██║   ██║██║     ██╔══██║   ██║   ██║██║   ██║██║╚██╗██║
-       ██║   ██║  ██║██║██║  ██║██║ ╚████║╚██████╔╝╚██████╔╝███████╗██║  ██║   ██║   ██║╚██████╔╝██║ ╚████║
-       ╚═╝   ╚═╝  ╚═╝╚═╝╚═╝  ╚═╝╚═╝  ╚═══╝ ╚═════╝  ╚═════╝ ╚══════╝╚═╝  ╚═╝   ╚═╝   ╚═╝ ╚═════╝ ╚═╝  ╚═══╝
+                         ██████╗ ███████╗██╗      █████╗ ██╗   ██╗███╗   ██╗ █████╗ ██╗   ██╗               
+                         ██╔══██╗██╔════╝██║     ██╔══██╗██║   ██║████╗  ██║██╔══██╗╚██╗ ██╔╝               
+                         ██║  ██║█████╗  ██║     ███████║██║   ██║██╔██╗ ██║███████║ ╚████╔╝                
+                         ██║  ██║██╔══╝  ██║     ██╔══██║██║   ██║██║╚██╗██║██╔══██║  ╚██╔╝                 
+                         ██████╔╝███████╗███████╗██║  ██║╚██████╔╝██║ ╚████║██║  ██║   ██║                  
+                         ╚═════╝ ╚══════╝╚══════╝╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═══╝╚═╝  ╚═╝   ╚═╝             
+    
+        ████████╗██████╗ ██╗ █████╗ ███╗   ██╗ ██████╗ ██╗   ██╗██╗      █████╗ ████████╗██╗ ██████╗ ███╗   ██╗
+        ╚══██╔══╝██╔══██╗██║██╔══██╗████╗  ██║██╔════╝ ██║   ██║██║     ██╔══██╗╚══██╔══╝██║██╔═══██╗████╗  ██║
+           ██║   ██████╔╝██║███████║██╔██╗ ██║██║  ███╗██║   ██║██║     ███████║   ██║   ██║██║   ██║██╔██╗ ██║
+           ██║   ██╔══██╗██║██╔══██║██║╚██╗██║██║   ██║██║   ██║██║     ██╔══██║   ██║   ██║██║   ██║██║╚██╗██║
+           ██║   ██║  ██║██║██║  ██║██║ ╚████║╚██████╔╝╚██████╔╝███████╗██║  ██║   ██║   ██║╚██████╔╝██║ ╚████║
+           ╚═╝   ╚═╝  ╚═╝╚═╝╚═╝  ╚═╝╚═╝  ╚═══╝ ╚═════╝  ╚═════╝ ╚══════╝╚═╝  ╚═╝   ╚═╝   ╚═╝ ╚═════╝ ╚═╝  ╚═══╝
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/9fef7ed014c24b2f84dbe6c6ccfc3733)](https://app.codacy.com/manual/spyridon97/DelaunayTriangulation?utm_source=github.com&utm_medium=referral&utm_content=spyridon97/DelaunayTriangulation&utm_campaign=Badge_Grade_Dashboard)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](./LICENSE)
@@ -20,8 +20,6 @@
 ## Description
 
 Given a set of vertices, using the [Randomized Incremental Algorithm](http://www.cs.uu.nl/geobook/interpolation.pdf) we can Delaunay-triangulate it with complexity = O(n log n).
-
-There is no warranty whatsoever. Use at your own risk.
 
 ![Example](https://i.imgur.com/Zlt6oUl.png)
 
@@ -78,27 +76,45 @@ Output files
 --------------------------------------------------------------------------------
 ## Usage
 
-```{flags: Array}
-DelaunayTriangulation
-Usage: ./delaunayTriangulation [OPTIONS]
+    DelaunayTriangulation
+    Usage: ./delaunayTriangulation [OPTIONS]
+    
+    Options:
+      -h,--help                   Print this help message and exit
+      -i,--input TEXT:FILE Excludes: --random
+                                  Input Vertices file to triangulate.
+                                  
+      -r,--random UINT:POSITIVE Excludes: --input
+                                  Generates and uniformly random set of N 2D Vertices.
+                                  
+      -p,--robust-predicates BOOLEAN
+                                  Uses Robust Predicates. '0' doesn't use Robust Predicates, '1' uses Robust Predicates.
+                                  (Default: 1)
+                                  
+      -d,--validate-delaunay      Validates the Delaunay Property of the triangulation.
+                                  
+      -o,--output TEXT REQUIRED   Output file that includes triangulation.
+      
+--------------------------------------------------------------------------------
+## Performance Evaluation
 
-Options:
-  -h,--help                   Print this help message and exit
-  -i,--input TEXT:FILE Excludes: --random
-                              Input Vertices file to triangulate.
-                              
-  -r,--random UINT:POSITIVE Excludes: --input
-                              Generates and uniformly random set of N 2D Vertices.
-                              
-  -p,--robust-predicates BOOLEAN
-                              Uses Robust Predicates. '0' doesn't use Robust Predicates, '1' uses Robust Predicates.
-                              (Default: 1)
-                              
-  -d,--validate-delaunay      Validates the Delaunay Property of the triangulation.
-                              
-  -o,--output TEXT REQUIRED   Output file that includes triangulation.
+Performance evaluation was performed with an [AMD Ryzen 5 3600 3.6GHz](https://www.amd.com/en/products/cpu/amd-ryzen-5-3600) using uniformly random distributed vertices and Robust Predicates.
 
-```
+|  vertices | [Triangle](https://www.cs.cmu.edu/~quake/triangle.html)'s incremental-algorithm | [DelaunayTriangulation](https://github.com/spyridon97/DelaunayTriangulation)'s incremental-algorithm |
+|-----------:|:----------------:|:------------------:|
+|     2,500  |    0.002 seconds |   0.010255 seconds |
+|     5,000  |    0.004 seconds |   0.022479 seconds |
+|    10,000  |    0.018 seconds |   0.039302 seconds |
+|    25,000  |    0.042 seconds |   0.096398 seconds |
+|    50,000  |    0.095 seconds |   0.201801 seconds |
+|   100,000  |    0.208 seconds |   0.445409 seconds |
+|   250,000  |    1.009 seconds |   1.30953  seconds |
+|   500,000  |    3.770 seconds |   3.00935  seconds |
+| 1,000,000  |   11.825 seconds |   6.72199  seconds |
+| 2,500,000  |   47.039 seconds |  19.5677   seconds |
+| 5,000,000  |  124.060 seconds |  42.7841   seconds |
+
+**Results**: DelaunayTriangulation's incremental-algorithm scales better than Triangle's incremental-algorithm.
 
 --------------------------------------------------------------------------------
 ## Contact Information
