@@ -3,12 +3,12 @@
  *
  * Description: Header file of Mesh struct.
  *
- * Author:      Spyridon Tsalikis
+ * Author:      Spiros Tsalikis
  * Created on   3/2/2020.
  */
 
-#ifndef DELAUNAY_TRIANGULATION_MESH_HXX
-#define DELAUNAY_TRIANGULATION_MESH_HXX
+#ifndef DELOMATIC_MESH_HXX
+#define DELOMATIC_MESH_HXX
 
 
 #include "Triangle.hxx"
@@ -21,4 +21,4 @@ struct Mesh
 };
 
 
-#endif /* DELAUNAY_TRIANGULATION_MESH_HXX */
+#endif /* DELOMATIC_MESH_HXX */

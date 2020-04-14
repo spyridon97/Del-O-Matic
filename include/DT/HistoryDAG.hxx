@@ -3,12 +3,12 @@
  * 
  * Description: Header file of HistoryDAG class.
  *
- * Author:      Spyridon Tsalikis
+ * Author:      Spiros Tsalikis
  * Created on   4/5/20.
  */
 
-#ifndef DELAUNAY_TRIANGULATION_HISTORY_DAG_HXX
-#define DELAUNAY_TRIANGULATION_HISTORY_DAG_HXX
+#ifndef DELOMATIC_HISTORY_DAG_HXX
+#define DELOMATIC_HISTORY_DAG_HXX
 
 
 #include "Edge.hxx"
@@ -87,4 +87,4 @@ private:
 };
 
 
-#endif /* DELAUNAY_TRIANGULATION_HISTORY_DAG_HXX */
+#endif /* DELOMATIC_HISTORY_DAG_HXX */

@@ -3,12 +3,12 @@
  * 
  * Description: Header file of Triangle class.
  *
- * Author:      Spyridon Tsalikis
+ * Author:      Spiros Tsalikis
  * Created on   4/1/20.
  */
 
-#ifndef DELAUNAY_TRIANGULATION_TRIANGLE_HXX
-#define DELAUNAY_TRIANGULATION_TRIANGLE_HXX
+#ifndef DELOMATIC_TRIANGLE_HXX
+#define DELOMATIC_TRIANGLE_HXX
 
 
 #include <vector>
@@ -70,4 +70,4 @@ public:
 };
 
 
-#endif /* DELAUNAY_TRIANGULATION_TRIANGLE_HXX */
+#endif /* DELOMATIC_TRIANGLE_HXX */

@@ -3,7 +3,7 @@
  * 
  * Description: Source file of GeometricPredicates class.
  *
- * Author:      Spyridon Tsalikis
+ * Author:      Spiros Tsalikis
  * Created on   4/5/20.
  */
 

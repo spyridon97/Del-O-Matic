@@ -3,7 +3,7 @@
  *
  * Description: Source file of Timer class.
  *
- * Author:      Spyridon Tsalikis
+ * Author:      Spiros Tsalikis
  * Created on   02/04/20.
  */
 

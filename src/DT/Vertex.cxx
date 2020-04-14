@@ -3,7 +3,7 @@
  * 
  * Description: Source file of Vertex class.
  *
- * Author:      Spyridon Tsalikis
+ * Author:      Spiros Tsalikis
  * Created on   4/1/20.
  */
 

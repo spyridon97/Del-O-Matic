@@ -3,7 +3,7 @@
  *
  * Description: File that contains the main function.
  *
- * Author:      Spyridon Tsalikis
+ * Author:      Spiros Tsalikis
  * Created on   02/26/20.
  */
 

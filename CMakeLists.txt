@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.1)
-project(DelaunayTriangulation)
+project(Del-O-Matic)
 
 set(CMAKE_CXX_STANDARD 17)
 
@@ -21,6 +21,6 @@ set(INTERFACE_SOURCE_FILES
         src/Interface/IO.cxx
         )
 
-add_executable(delaunayTriangulation ./src/main.cxx ${INTERFACE_SOURCE_FILES} ${DT_SOURCE_FILES})
-target_include_directories(delaunayTriangulation PUBLIC ./include/DT)
-target_include_directories(delaunayTriangulation PUBLIC ./include/Interface)
+add_executable(delomatic ./src/main.cxx ${INTERFACE_SOURCE_FILES} ${DT_SOURCE_FILES})
+target_include_directories(delomatic PUBLIC ./include/DT)
+target_include_directories(delomatic PUBLIC ./include/Interface)

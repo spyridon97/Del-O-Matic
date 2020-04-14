@@ -3,7 +3,7 @@
  * 
  * Description: Source file of Edge class.
  *
- * Author:      Spyridon Tsalikis
+ * Author:      Spiros Tsalikis
  * Created on   4/2/20.
  */
 

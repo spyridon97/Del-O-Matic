@@ -3,12 +3,12 @@
  * 
  * Description: Header file of namespace IO.
  *
- * Author:      Spyridon Tsalikis
+ * Author:      Spiros Tsalikis
  * Created on   2/25/2020.
  */
 
-#ifndef DELAUNAY_TRIANGULATION_IO_HXX
-#define DELAUNAY_TRIANGULATION_IO_HXX
+#ifndef DELOMATIC_IO_HXX
+#define DELOMATIC_IO_HXX
 
 
 #include <string>
@@ -46,4 +46,4 @@ namespace Io
 }
 
 
-#endif /* TRIANGULATEMONOTONEPOLYGON_IO_HXX */
+#endif /* DELOMATIC_IO_HXX */

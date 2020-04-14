@@ -3,12 +3,12 @@
  *
  * Description: Header file of namespace Args.
  *
- * Author:      Spyridon Tsalikis
+ * Author:      Spiros Tsalikis
  * Created on   9/10/19.
  */
 
-#ifndef DELAUNAY_TRIANGULATION_ARGS_HXX
-#define DELAUNAY_TRIANGULATION_ARGS_HXX
+#ifndef DELOMATIC_ARGS_HXX
+#define DELOMATIC_ARGS_HXX
 
 
 #include <iosfwd>
@@ -45,4 +45,4 @@ namespace Args
 }
 
 
-#endif /* DELAUNAY_TRIANGULATION_ARGS_HXX */
+#endif /* DELOMATIC_ARGS_HXX */

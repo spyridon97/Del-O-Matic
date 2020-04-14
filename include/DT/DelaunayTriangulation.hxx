@@ -3,12 +3,12 @@
  *
  * Description: Header file of DelaunayTriangulation class.
  *
- * Author:      Spyridon Tsalikis
+ * Author:      Spiros Tsalikis
  * Created on   4/1/20.
  */
 
-#ifndef DELAUNAY_TRIANGULATION_DELAUNAY_TRIANGULATION
-#define DELAUNAY_TRIANGULATION_DELAUNAY_TRIANGULATION
+#ifndef DELOMATIC_DELAUNAY_TRIANGULATION
+#define DELOMATIC_DELAUNAY_TRIANGULATION
 
 
 #include <vector>
@@ -78,4 +78,4 @@ public:
 };
 
 
-#endif /* DELAUNAY_TRIANGULATION_DELAUNAY_TRIANGULATION */
+#endif /* DELOMATIC_DELAUNAY_TRIANGULATION */

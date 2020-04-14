@@ -3,12 +3,12 @@
  * 
  * Description: Header file of GeometricPredicates class.
  *
- * Author:      Spyridon Tsalikis
+ * Author:      Spiros Tsalikis
  * Created on   4/5/20.
  */
 
-#ifndef DELAUNAY_TRIANGULATION_GEOMETRIC_PREDICATES_HXX
-#define DELAUNAY_TRIANGULATION_GEOMETRIC_PREDICATES_HXX
+#ifndef DELOMATIC_GEOMETRIC_PREDICATES_HXX
+#define DELOMATIC_GEOMETRIC_PREDICATES_HXX
 
 
 #include "Triangle.hxx"
@@ -45,4 +45,4 @@ namespace GeometricPredicates
 }
 
 
-#endif /* DELAUNAY_TRIANGULATION_GEOMETRIC_PREDICATES_HXX */
+#endif /* DELOMATIC_GEOMETRIC_PREDICATES_HXX */

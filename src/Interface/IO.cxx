@@ -3,7 +3,7 @@
  * 
  * Description: Source file of namespace IO.
  *
- * Author:      Spyridon Tsalikis.
+ * Author:      Spiros Tsalikis.
  * Created on   2/25/2020.
  */
 

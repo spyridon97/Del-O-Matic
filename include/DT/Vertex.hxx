@@ -3,12 +3,12 @@
  * 
  * Description: Header file of Vertex class.
  *
- * Author:      Spyridon Tsalikis
+ * Author:      Spiros Tsalikis
  * Created on   4/1/20.
  */
 
-#ifndef DELAUNAY_TRIANGULATION_VERTEX_HXX
-#define DELAUNAY_TRIANGULATION_VERTEX_HXX
+#ifndef DELOMATIC_VERTEX_HXX
+#define DELOMATIC_VERTEX_HXX
 
 
 #include <array>
@@ -81,4 +81,4 @@ std::istream& operator>>(std::istream& input, Vertex& vertex);
 std::ostream& operator<<(std::ostream& output, const Vertex& vertex);
 
 
-#endif /* DELAUNAY_TRIANGULATION_VERTEX_HXX */
+#endif /* DELOMATIC_VERTEX_HXX */

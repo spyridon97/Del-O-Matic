@@ -1,16 +1,6 @@
-                         ██████╗ ███████╗██╗      █████╗ ██╗   ██╗███╗   ██╗ █████╗ ██╗   ██╗               
-                         ██╔══██╗██╔════╝██║     ██╔══██╗██║   ██║████╗  ██║██╔══██╗╚██╗ ██╔╝               
-                         ██║  ██║█████╗  ██║     ███████║██║   ██║██╔██╗ ██║███████║ ╚████╔╝                
-                         ██║  ██║██╔══╝  ██║     ██╔══██║██║   ██║██║╚██╗██║██╔══██║  ╚██╔╝                 
-                         ██████╔╝███████╗███████╗██║  ██║╚██████╔╝██║ ╚████║██║  ██║   ██║                  
-                         ╚═════╝ ╚══════╝╚══════╝╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═══╝╚═╝  ╚═╝   ╚═╝             
-    
-        ████████╗██████╗ ██╗ █████╗ ███╗   ██╗ ██████╗ ██╗   ██╗██╗      █████╗ ████████╗██╗ ██████╗ ███╗   ██╗
-        ╚══██╔══╝██╔══██╗██║██╔══██╗████╗  ██║██╔════╝ ██║   ██║██║     ██╔══██╗╚══██╔══╝██║██╔═══██╗████╗  ██║
-           ██║   ██████╔╝██║███████║██╔██╗ ██║██║  ███╗██║   ██║██║     ███████║   ██║   ██║██║   ██║██╔██╗ ██║
-           ██║   ██╔══██╗██║██╔══██║██║╚██╗██║██║   ██║██║   ██║██║     ██╔══██║   ██║   ██║██║   ██║██║╚██╗██║
-           ██║   ██║  ██║██║██║  ██║██║ ╚████║╚██████╔╝╚██████╔╝███████╗██║  ██║   ██║   ██║╚██████╔╝██║ ╚████║
-           ╚═╝   ╚═╝  ╚═╝╚═╝╚═╝  ╚═╝╚═╝  ╚═══╝ ╚═════╝  ╚═════╝ ╚══════╝╚═╝  ╚═╝   ╚═╝   ╚═╝ ╚═════╝ ╚═╝  ╚═══╝
+<div style="text-align:center">Type a message
+    <img src="https://i.imgur.com/sH39gWv.png" alt="Logo">
+</div>
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/9fef7ed014c24b2f84dbe6c6ccfc3733)](https://app.codacy.com/manual/spyridon97/DelaunayTriangulation?utm_source=github.com&utm_medium=referral&utm_content=spyridon97/DelaunayTriangulation&utm_campaign=Badge_Grade_Dashboard)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](./LICENSE)
@@ -96,11 +86,16 @@ Output files
       -o,--output TEXT REQUIRED   Output file that includes triangulation.
       
 --------------------------------------------------------------------------------
+## Execution Example
+
+    delomatic --random 1000000 --output output.ele
+      
+--------------------------------------------------------------------------------
 ## Performance Evaluation
 
 Performance evaluation was performed with an [AMD Ryzen 5 3600 3.6GHz](https://www.amd.com/en/products/cpu/amd-ryzen-5-3600) using uniformly random distributed vertices and Robust Predicates.
 
-|  vertices | [Triangle](https://www.cs.cmu.edu/~quake/triangle.html)'s incremental-algorithm | [DelaunayTriangulation](https://github.com/spyridon97/DelaunayTriangulation)'s incremental-algorithm |
+|  vertices | [Triangle](https://www.cs.cmu.edu/~quake/triangle.html)'s incremental-algorithm | [Del-O-Matic](https://github.com/spyridon97/DelaunayTriangulation)'s incremental-algorithm |
 |----------:|--------------------------------------------------------------------------------:|-----------------------------------------------------------------------------------------------------:|
 |     2,500 |                                                                   0.002 seconds |                                                                                     0.012004 seconds |
 |     5,000 |                                                                   0.004 seconds |                                                                                     0.024208 seconds |
@@ -114,7 +109,7 @@ Performance evaluation was performed with an [AMD Ryzen 5 3600 3.6GHz](https://w
 | 2,500,000 |                                                                  47.039 seconds |                                                                                    21.639200 seconds |
 | 5,000,000 |                                                                 124.060 seconds |                                                                                    46.717200 seconds |
 
-**Results**: DelaunayTriangulation's incremental-algorithm scales better than Triangle's incremental-algorithm.
+**Results**: Del-O-Matic's incremental-algorithm scales better than Triangle's incremental-algorithm.
 
 --------------------------------------------------------------------------------
 ## Contact Information

@@ -3,12 +3,12 @@
  *
  * Description: Header file of Timer class.
  *
- * Author:      Spyridon Tsalikis
+ * Author:      Spiros Tsalikis
  * Created on   02/04/20.
  */
 
-#ifndef DELAUNAY_TRIANGULATION_TIMER_HXX
-#define DELAUNAY_TRIANGULATION_TIMER_HXX
+#ifndef DELOMATIC_TIMER_HXX
+#define DELOMATIC_TIMER_HXX
 
 
 #include <chrono>
@@ -45,4 +45,4 @@ private:
 };
 
 
-#endif /* DELAUNAY_TRIANGULATION_TIMER_HXX */
+#endif /* DELOMATIC_TIMER_HXX */

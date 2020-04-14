@@ -3,12 +3,12 @@
  * 
  * Description: Header file of Edge class.
  *
- * Author:      Spyridon Tsalikis
+ * Author:      Spiros Tsalikis
  * Created on   4/2/20.
  */
 
-#ifndef DELAUNAY_TRIANGULATION_EDGE_HXX
-#define DELAUNAY_TRIANGULATION_EDGE_HXX
+#ifndef DELOMATIC_EDGE_HXX
+#define DELOMATIC_EDGE_HXX
 
 
 #include <vector>
@@ -209,4 +209,4 @@ private:
 };
 
 
-#endif /* DELAUNAY_TRIANGULATION_EDGE_HXX */
+#endif /* DELOMATIC_EDGE_HXX */
