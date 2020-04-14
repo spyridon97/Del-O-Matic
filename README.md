@@ -1,4 +1,4 @@
-<div style="text-align:center">Type a message
+<div style="text-align:center">
     <img src="https://i.imgur.com/sH39gWv.png" alt="Logo">
 </div>
 
