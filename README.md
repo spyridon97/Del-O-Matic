@@ -97,18 +97,18 @@ Output files
 Performance evaluation was performed with an [AMD Ryzen 5 3600 3.6GHz](https://www.amd.com/en/products/cpu/amd-ryzen-5-3600) using uniformly random distributed vertices and Robust Predicates.
 
 |  vertices | [Triangle](https://www.cs.cmu.edu/~quake/triangle.html)'s incremental-algorithm | [Del-O-Matic](https://github.com/spyridon97/DelaunayTriangulation)'s incremental-algorithm |
-|----------:|--------------------------------------------------------------------------------:|-----------------------------------------------------------------------------------------------------:|
-|     2,500 |                                                                   0.002 seconds |                                                                                     0.012004 seconds |
-|     5,000 |                                                                   0.004 seconds |                                                                                     0.024208 seconds |
-|    10,000 |                                                                   0.018 seconds |                                                                                     0.041508 seconds |
-|    25,000 |                                                                   0.042 seconds |                                                                                     0.105986 seconds |
-|    50,000 |                                                                   0.095 seconds |                                                                                     0.239179 seconds |
-|   100,000 |                                                                   0.208 seconds |                                                                                     0.512371 seconds |
-|   250,000 |                                                                   1.009 seconds |                                                                                     1.510440 seconds |
-|   500,000 |                                                                   3.770 seconds |                                                                                     3.361120 seconds |
-| 1,000,000 |                                                                  11.825 seconds |                                                                                     7.401540 seconds |
-| 2,500,000 |                                                                  47.039 seconds |                                                                                    21.639200 seconds |
-| 5,000,000 |                                                                 124.060 seconds |                                                                                    46.717200 seconds |
+|----------:|--------------------------------------------------------------------------------:|-------------------------------------------------------------------------------------------:|
+|     2,500 |                                                                   0.002 seconds |                                                                           0.012004 seconds |
+|     5,000 |                                                                   0.004 seconds |                                                                           0.024208 seconds |
+|    10,000 |                                                                   0.018 seconds |                                                                           0.041508 seconds |
+|    25,000 |                                                                   0.042 seconds |                                                                           0.105986 seconds |
+|    50,000 |                                                                   0.095 seconds |                                                                           0.239179 seconds |
+|   100,000 |                                                                   0.208 seconds |                                                                           0.512371 seconds |
+|   250,000 |                                                                   1.009 seconds |                                                                           1.510440 seconds |
+|   500,000 |                                                                   3.770 seconds |                                                                           3.361120 seconds |
+| 1,000,000 |                                                                  11.825 seconds |                                                                           7.401540 seconds |
+| 2,500,000 |                                                                  47.039 seconds |                                                                          21.639200 seconds |
+| 5,000,000 |                                                                 124.060 seconds |                                                                          46.717200 seconds |
 
 **Results**: Del-O-Matic's incremental-algorithm scales better than Triangle's incremental-algorithm.
 
