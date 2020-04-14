@@ -20,7 +20,10 @@ Triangle::Triangle(std::array<VertexHandle, 3> vertices)
     visitedTriangle = false;
 }
 
-Triangle::~Triangle() = default;
+Triangle::~Triangle()
+{
+    childrenTriangles.clear();
+}
 
 void Triangle::setEdges(std::array<EdgeHandle, 3> edges)
 {

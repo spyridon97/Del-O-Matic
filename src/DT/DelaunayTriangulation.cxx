@@ -23,6 +23,11 @@ DelaunayTriangulation::~DelaunayTriangulation()
         delete vertex;
     }
     meshVertices.clear();
+
+    for (auto& triangle : meshTriangles) {
+        delete triangle;
+    }
+    meshTriangles.clear();
 }
 
 void DelaunayTriangulation::setInputVertices(std::vector<Vertex>& vertices)

@@ -30,7 +30,10 @@ Edge::Edge()
     this->rightTriangleId = 1;
 }
 
-Edge::~Edge() = default;
+Edge::~Edge()
+{
+    adjacentTrianglesInfo.clear();
+}
 
 void Edge::addAdjacentTriangle(TrianglePair adjacentTriangleWithEdgeId)
 {
