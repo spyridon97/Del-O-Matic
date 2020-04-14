@@ -62,7 +62,7 @@ int main(int argc, char** argv)
     //  print timers
     timer.stopTimer();
 
-    std::cout << std::endl << "DelaunayTriangulion Times" << std::endl;
+    std::cout << std::endl << "Del-O-Matic Times" << std::endl;
     std::cout << "================================================" << std::endl;
     if (!Args::inputFileName.empty()) {
         std::cout << "Reading Input I/O time: " << readingInputTimer.getSeconds() << " seconds" << std::endl;

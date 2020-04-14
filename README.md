@@ -66,8 +66,8 @@ Output files
 --------------------------------------------------------------------------------
 ## Usage
 
-    DelaunayTriangulation
-    Usage: ./delaunayTriangulation [OPTIONS]
+    Del-O-Matic
+    Usage: ./delomatic [OPTIONS]
     
     Options:
       -h,--help                   Print this help message and exit
@@ -84,6 +84,7 @@ Output files
       -d,--validate-delaunay      Validates the Delaunay Property of the triangulation.
                                   
       -o,--output TEXT REQUIRED   Output file that includes triangulation.
+
       
 --------------------------------------------------------------------------------
 ## Execution Example

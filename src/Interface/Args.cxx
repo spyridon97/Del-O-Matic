@@ -26,7 +26,7 @@ namespace Args
 
     int parseArguments(int argc, char** argv)
     {
-        constexpr char DESCRIPTION[] = "DelaunayTriangulation";
+        constexpr char DESCRIPTION[] = "Del-O-Matic";
 
         // Initialize CLI application
         std::unique_ptr<CLI::App> app = std::make_unique<CLI::App>(DESCRIPTION);
@@ -95,7 +95,7 @@ namespace Args
             << std::endl;
 
         constexpr char SEPARATOR[] = "================================================";
-        out << "DelaunayTriangulation Argument Values" << std::endl;;
+        out << "Del-O-Matic Argument Values" << std::endl;;
         out << SEPARATOR << std::endl;;
 
         const auto yesNo = [](bool val) -> std::string {
