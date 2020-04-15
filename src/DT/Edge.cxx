@@ -13,11 +13,11 @@
 //                 Triangles Information                  //
 ////////////////////////////////////////////////////////////
 
-#define leftTriangle adjacentTrianglesInfo[leftTriangleId].first
-#define rightTriangle adjacentTrianglesInfo[rightTriangleId].first
+#define leftTriangle adjacentTrianglesInfo[!correctOrientation].first
+#define rightTriangle adjacentTrianglesInfo[correctOrientation].first
 
-#define leftTriangleEdgeId adjacentTrianglesInfo[leftTriangleId].second
-#define rightTriangleEdgeId adjacentTrianglesInfo[rightTriangleId].second
+#define leftTriangleEdgeId adjacentTrianglesInfo[!correctOrientation].second
+#define rightTriangleEdgeId adjacentTrianglesInfo[correctOrientation].second
 
 //  Fast lookup arrays to speed up the mesh manipulation primitives
 int plus1mod3[3] = {1, 2, 0};
@@ -26,8 +26,7 @@ int minus1mod3[3] = {2, 0, 1};
 Edge::Edge()
 {
     adjacentTrianglesInfo.reserve(2);
-    this->leftTriangleId = 0;
-    this->rightTriangleId = 1;
+    this->correctOrientation = true;
 }
 
 Edge::~Edge()
@@ -44,25 +43,18 @@ void Edge::replaceAdjacentTriangle(const TriangleHandle& oldTriangle, const Tria
 {
     if (adjacentTrianglesInfo[0].first == oldTriangle) {
         adjacentTrianglesInfo[0] = newTriangleInfo;
-        this->leftTriangleId = 0;
-        this->rightTriangleId = 1;
+        this->correctOrientation = true;
     } else {
         adjacentTrianglesInfo[1] = newTriangleInfo;
-        this->leftTriangleId = 1;
-        this->rightTriangleId = 0;
+        this->correctOrientation = false;
     }
 }
 
 void Edge::determineAdjacentTriangles(int apexVertexLeftTriangleId)
 {
-    if (adjacentTrianglesInfo[0].first->vertices[minus1mod3[adjacentTrianglesInfo[0].second]]->id ==
-        apexVertexLeftTriangleId) {
-        this->leftTriangleId = 0;
-        this->rightTriangleId = 1;
-    } else {
-        this->leftTriangleId = 1;
-        this->rightTriangleId = 0;
-    }
+    this->correctOrientation =
+            adjacentTrianglesInfo[0].first->vertices[minus1mod3[adjacentTrianglesInfo[0].second]]->id ==
+            apexVertexLeftTriangleId;
 }
 
 ////////////////////////////////////////////////////////////////

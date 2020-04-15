@@ -201,8 +201,8 @@ public:
     [[nodiscard]] bool isBoundaryEdge() const;
 
 private:
-    unsigned char leftTriangleId;
-    unsigned char rightTriangleId;
+    //  variable that saves the orientation of the edge
+    bool correctOrientation;
 
     //  [Triangle,   id of edge of triangle]
     std::vector<TrianglePair> adjacentTrianglesInfo;
